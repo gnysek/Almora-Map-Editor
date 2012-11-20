@@ -33,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -47,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Components\RoomEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -60,11 +61,17 @@
     <Compile Include="Components\RoomPanel.Designer.cs">
       <DependentUpon>RoomPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="Forms\MapEditorMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\MapEditorMain.Designer.cs">
+      <DependentUpon>MapEditorMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="Graphics\GraphicsCanvas.cs" />
     <Compile Include="Graphics\GraphicsManager.cs" />
@@ -77,8 +84,11 @@
     <EmbeddedResource Include="Components\RoomEditor.resx">
       <DependentUpon>RoomEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\MapEditorMain.resx">
+      <DependentUpon>MapEditorMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -130,6 +140,66 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\sort-rating.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\skull-old.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tick.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user-silhouette-question.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layers-stack-arrange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tree.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bug.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow-move.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow-circle-135-left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layer--pencil.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\maps.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\disks.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\grid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\equalizer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\plus-button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\minus-button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pencil-button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ui-buttons.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\animal-penguin.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
