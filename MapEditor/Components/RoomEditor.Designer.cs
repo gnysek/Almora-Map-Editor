@@ -32,7 +32,7 @@
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.horizontalScroll = new System.Windows.Forms.HScrollBar();
 			this.verticalScroll = new System.Windows.Forms.VScrollBar();
-			this._rPanel = new MapEditor.Components.RoomPanel();
+			this._rPanel = new Components.RoomPanel();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
