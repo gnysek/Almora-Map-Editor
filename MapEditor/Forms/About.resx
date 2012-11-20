@@ -123,14 +123,9 @@ RPG map editor for GM:Studio
 © 2012 - 2013 Gear-Studio
 © Piotr 'gnysek' Gnys
 
-Gear-Studio take no reponsibility for breaking your project.
-Always remember to create backup or use source code to rollback any changes.
-AME can read your project and save GML files into it, by using this software you agree that it cna modify your project.
-We cannot give you guarranty that it will work with every GM:Studio version and it will be always compatible with all of them.
-It should works with GM:Studio at least v.1.1.600 or newer.
-
 Created using MS Visual C# 2010 Express.
 Program cannot be sold, it's freeware to use.
+__________________________________________________
 
 Special Thanks &amp; Licences:
 
@@ -145,6 +140,15 @@ Infini - OpenGL framework
 www.binaryphoenix.com
 
 Based on GMare developed by Michael 'Xfixium' Mercado (Pyxosoft)
-gmare.codeplex.com</value>
+gmare.codeplex.com
+__________________________________________________
+
+Important Information:
+
+Gear-Studio take no reponsibility for breaking your project.
+Always remember to create backup or use source code to rollback any changes.
+AME can read your project and save GML files into it, by using this software you agree that it cna modify your project.
+We cannot give you guarranty that it will work with every GM:Studio version and it will be always compatible with all of them.
+It should works with GM:Studio at least v.1.1.600 or newer.</value>
   </data>
 </root>
