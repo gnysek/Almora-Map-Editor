@@ -12,5 +12,10 @@ namespace MapEditor.Components
 		{
 			InitializeComponent();
 		}
+
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			_rPanel.Invalidate();
+		}
 	}
 }
