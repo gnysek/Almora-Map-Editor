@@ -95,6 +95,13 @@ namespace MapEditor.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap chain {
+            get {
+                object obj = ResourceManager.GetObject("chain", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap cross {
             get {
                 object obj = ResourceManager.GetObject("cross", resourceCulture);

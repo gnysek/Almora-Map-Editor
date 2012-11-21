@@ -196,6 +196,9 @@
   <data name="disks" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\disks.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="animal-penguin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\animal-penguin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="sort-number" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sort-number.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -205,7 +208,7 @@
   <data name="cursor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cursor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="animal-penguin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\animal-penguin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="chain" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\chain.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
