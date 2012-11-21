@@ -72,6 +72,7 @@ namespace MapEditor.Common
 			{
 				if (n.Attributes["name"] != null)
 				{
+                    // group
 					//TreeNode sub = main.Nodes.Add(n.Attributes["name"].InnerText);
 					GMItem sub = new GMItem(n.Attributes["name"].InnerText);
 					_readSubNode(n, nodeName, nodeElementsName, sub);
@@ -83,7 +84,7 @@ namespace MapEditor.Common
 					//sub.ImageIndex = sub.SelectedImageIndex = 1;
 					//sub.ContextMenuStrip = contextMenuStrip2;
 					string name = (nodeName == "scripts") ? /*n.InnerText*/ Path.GetFileName(n.InnerText) /*+ ".gml"*/ : Path.GetFileName(n.InnerText)/*n.InnerText + "." + n.Name + ".gmx"*/;
-					GMItem sub = new GMItem(name, GMItemType.Object);
+					GMItem sub = new GMItem(name, nodeName);
 					main.add(sub);
 				}
 			}
