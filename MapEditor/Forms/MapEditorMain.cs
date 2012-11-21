@@ -28,16 +28,21 @@ namespace MapEditor
 
         public void ensureButtonsDisabled()
         {
-            if (Manager.Project == null)
-            {
-                tbSaveProject.Enabled = false;
-                tsOptions.Enabled = tsEditors.Enabled = tsMap.Enabled = false;
-            }
+			if (Manager.Project == null)
+			{
+				tbSaveProject.Enabled = false;
+				tsOptions.Enabled = tsEditors.Enabled = tsMap.Enabled = false;
+			}
+			else
+			{
+				tbSaveProject.Enabled = true;
+				tsEditors.Enabled = true;
+			}
 
-            ensureMenusDisabled();
+            _ensureMenusDisabled();
         }
 
-        public void ensureMenusDisabled()
+        private void _ensureMenusDisabled()
         {
             tmSaveProject.Enabled = tbSaveProject.Enabled;
             tmSaveProjectAs.Enabled = false;
@@ -53,44 +58,16 @@ namespace MapEditor
             DialogResult result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                Manager.newProject(openFileDialog1.FileName);
+				if (Manager.newProject(openFileDialog1.FileName))
+				{
+					Manager.Project.renderItemsTree(treeViewGMX);
 
-                treeViewGMX.Nodes.Clear();
-                TreeNode NodeGM = treeViewGMX.Nodes.Add("NodeGM", "Project: " + Manager.Project.gmxFilename);
-                treeViewGMX.Nodes.Add("NodeInternal", "Internal Files");
+					treeViewGMX.Nodes[0].Expand();
 
-                //TreeNode t = treeViewGMX.Nodes["NodeGM"].Nodes.Add(Manager.Project.allItems.Name);
-                treeViewGMX.ExpandAll();
-
-                _treeAddGMItemGroup(NodeGM, Manager.Project.allItems.getSubitems());
+					ensureButtonsDisabled();
+				}
             }
             //}
-        }
-
-        private void _treeAddGMItemGroup(TreeNode t, List<GMItem> items)
-        {
-            foreach (GMItem item in items)
-            {
-                TreeNode newT = t.Nodes.Add(item.Name);
-                if (item.isGroup)
-                {
-                    newT.ImageIndex = 0;
-                    newT.SelectedImageIndex = 1;
-                    //newT.StateImageIndex = 2;
-                    _treeAddGMItemGroup(newT, item.getSubitems());
-                }
-                else
-                {
-                    newT.ImageIndex = 3;
-                    switch (item.ResourceType)
-                    {
-                        case GMItemType.Background:
-                        case GMItemType.Sprite: newT.ImageIndex = 6; break;
-                        case GMItemType.Script: newT.ImageIndex = 5; break;
-                    }
-                    newT.SelectedImageIndex = newT.ImageIndex;
-                }
-            }
         }
 
         private void MapEditorMain_Load(object sender, EventArgs e)

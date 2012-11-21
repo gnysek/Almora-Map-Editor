@@ -21,15 +21,16 @@ namespace MapEditor.Common
 			//XMLFormatter xml = new XMLFormatter();
 		}
 
-		public static void newProject(string filename)
+		public static bool newProject(string filename)
 		{
 			if (Project != null)
 			{
 				MessageBox.Show("Please close your project first!");
-				return;
+				return false;
 			}
 
 			Project = new ProjectData(filename);
+			return true;
 		}
 	}
 }
