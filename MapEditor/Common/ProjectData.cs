@@ -27,10 +27,10 @@ namespace MapEditor.Common
 			Src = srcPath;
 			gmxFilename = Path.GetFileName(srcPath);
 			_readGMX();
-			_saveProject();
+			saveProject();
 		}
 
-		private void _saveProject()
+		public bool saveProject()
 		{
 			string path;
 			path = Path.GetDirectoryName(Src);
@@ -42,7 +42,7 @@ namespace MapEditor.Common
 
 			List<XmlElement> optionsElements = new List<XmlElement>();
 
-			options.AppendChild(_addXmlElement(file, "gmsProjectFile",gmxFilename));
+			options.AppendChild(_addXmlElement(file, "gmsProjectFile", gmxFilename));
 			options.AppendChild(_addXmlElement(file, "gridEnabled", "0"));
 
 			assets.AppendChild(options);
@@ -50,7 +50,16 @@ namespace MapEditor.Common
 			file.AppendChild(comment);
 			file.AppendChild(assets);
 
-			file.Save(path + "\\" + Path.GetFileNameWithoutExtension(gmxFilename) + ".ame");
+			try
+			{
+				file.Save(path + "\\" + Path.GetFileNameWithoutExtension(gmxFilename) + ".ame");
+			}
+			catch (Exception e)
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		private XmlElement _addXmlElement(XmlDocument xml, string nodeName, string nodeValue)
@@ -104,7 +113,7 @@ namespace MapEditor.Common
 			{
 				if (n.Attributes["name"] != null)
 				{
-                    // group
+					// group
 					//TreeNode sub = main.Nodes.Add(n.Attributes["name"].InnerText);
 					GMItem sub = new GMItem(n.Attributes["name"].InnerText);
 					_readSubNode(n, nodeName, nodeElementsName, sub);
