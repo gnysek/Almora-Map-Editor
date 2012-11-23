@@ -18,6 +18,7 @@ namespace MapEditor.Common
 	public class GMItem
 	{
 		public bool isGroup = false;
+		public bool used = false;
 		public string Name = "unknown";
         public GMItemType ResourceType = GMItemType.Group;
 		public List<GMItem> subitems = null;

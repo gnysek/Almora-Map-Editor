@@ -32,6 +32,10 @@ namespace MapEditor
 			{
 				tbSaveProject.Enabled = false;
 				tsOptions.Enabled = tsEditors.Enabled = tsMap.Enabled = false;
+				if (treeViewGMX.Nodes.Count > 0)
+				{
+					treeViewGMX.Nodes.Clear();
+				}
 			}
 			else
 			{
@@ -44,7 +48,7 @@ namespace MapEditor
 
 		private void _ensureMenusDisabled()
 		{
-			tmSaveProject.Enabled = tbSaveProject.Enabled;
+			tmCloseProject.Enabled = tmSaveProject.Enabled = tbSaveProject.Enabled;
 			tmSaveProjectAs.Enabled = false;
 			tmEdit.Enabled = (Manager.Project != null);
 		}
@@ -55,19 +59,35 @@ namespace MapEditor
 			//    == DialogResult.Yes)
 			//{
 			// ok, create new project
+			openFileDialog1.DefaultExt = ".project.gmx";
+			openFileDialog1.Filter = "GM:S Project|*.project.gmx";
 			DialogResult result = openFileDialog1.ShowDialog();
 			if (result == DialogResult.OK)
 			{
 				if (Manager.newProject(openFileDialog1.FileName))
 				{
 					Manager.Project.renderItemsTree(treeViewGMX);
-
 					treeViewGMX.Nodes[0].Expand();
-
 					ensureButtonsDisabled();
 				}
 			}
 			//}
+		}
+
+		private void tbOpenProject_Click(object sender, EventArgs e)
+		{
+			openFileDialog1.DefaultExt = ".project.ame";
+			openFileDialog1.Filter = "AME Project|*.project.ame";
+			DialogResult result = openFileDialog1.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				if (Manager.loadProject(openFileDialog1.FileName))
+				{
+					Manager.Project.renderItemsTree(treeViewGMX);
+					treeViewGMX.Nodes[0].Expand();
+					ensureButtonsDisabled();
+				}
+			}
 		}
 
 		private void MapEditorMain_Load(object sender, EventArgs e)
@@ -81,8 +101,27 @@ namespace MapEditor
 			{
 				if (form.ShowDialog() == DialogResult.OK)
 				{
+					Manager.Project.checkForRegisteredRes();
+					Manager.Project.renderItemsTree(treeViewGMX);
 				}
 			}
 		}
+
+		private void tbSaveProject_Click(object sender, EventArgs e)
+		{
+			Manager.Project.saveProject();
+		}
+
+		private void tmCloseProject_Click(object sender, EventArgs e)
+		{
+			Manager.dropProject();
+			ensureButtonsDisabled();
+		}
+
+		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
+
 	}
 }
