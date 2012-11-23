@@ -41,6 +41,7 @@ namespace MapEditor
 			{
 				tbSaveProject.Enabled = true;
 				tsEditors.Enabled = true;
+				tsOptions.Enabled = true;
 			}
 
 			_ensureMenusDisabled();
@@ -121,6 +122,11 @@ namespace MapEditor
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Close();
+		}
+
+		private void tbAddItem_Click(object sender, EventArgs e)
+		{
+			lbPlaceables.Items.Add("Test");
 		}
 
 	}
