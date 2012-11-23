@@ -17,50 +17,120 @@ namespace MapEditor.Forms
 			InitializeComponent();
 		}
 
+		private TreeNode tempTreeNode = null;
+
 		private void ResourceUsage_Shown(object sender, EventArgs e)
 		{
 			// fill rsListView
-			if (rsListView.Groups.Count == 0)
+			//if (rsListView.Groups.Count == 0)
+			//{
+			//    rsListView.Groups.Add("sprites", "Sprites");
+			//    rsListView.Groups.Add("backgrounds", "Backgrounds");
+			//    rsListView.Groups.Add("scripts", "Scripts");
+			//    rsListView.Groups.Add("objects", "Objects");
+			//    rsListView.Groups.Add("rooms", "Rooms");
+
+			//    _addResourceItem(Manager.Project.allItems);
+			if (treeView1.Nodes.Count == 0)
 			{
-				rsListView.Groups.Add("sprites", "Sprites");
-				rsListView.Groups.Add("backgrounds", "Backgrounds");
-				rsListView.Groups.Add("scripts", "Scripts");
-				rsListView.Groups.Add("objects", "Objects");
-				rsListView.Groups.Add("rooms", "Rooms");
+				Manager.Project.renderItemsTree(treeView1, true);
+			}
+			//    treeView1.Nodes[0].Expand();
 
-				_addResourceItem(Manager.Project.allItems);
-				Manager.Project.renderItemsTree(treeView1);
-				treeView1.Nodes[0].Expand();
+			//    rsListView.Refresh();
+			//}
+		}
 
-				rsListView.Refresh();
+		//private void _addResourceItem(GMItem item)
+		//{
+		//    _addResourceItem(item.getSubitems());
+		//}
+
+		//private void _addResourceItem(List<GMItem> items)
+		//{
+		//    foreach (GMItem item in items)
+		//    {
+		//        if (item.ResourceType == GMItemType.Group)
+		//        {
+		//            _addResourceItem(item.getSubitems());
+		//        }
+		//        else
+		//        {
+		//            ListViewItem added = rsListView.Items.Add(item.Name);
+
+		//            switch (item.ResourceType)
+		//            {
+		//                case GMItemType.Sprite: added.Group = rsListView.Groups[0]; break;
+		//                case GMItemType.Background: added.Group = rsListView.Groups[1]; break;
+		//                case GMItemType.Script: added.Group = rsListView.Groups[2]; break;
+		//                case GMItemType.Object: added.Group = rsListView.Groups[3]; break;
+		//                case GMItemType.Room: added.Group = rsListView.Groups[4]; break;
+		//            }
+		//        }
+		//    }
+		//}
+
+		private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
+		{
+			if (tempTreeNode == null)
+			{
+				tempTreeNode = e.Node;
+				CheckTreeViewNode(e.Node, e.Node.Checked);
+				if (e.Node.Checked == false)
+				{
+					CheckTreeViewNodeParent(e.Node);
+				}
+				tempTreeNode = null;
 			}
 		}
 
-		private void _addResourceItem(GMItem item)
+		private void CheckTreeViewNodeParent(TreeNode node)
 		{
-			_addResourceItem(item.getSubitems());
+			if (node.Parent != null && node.Checked == false)
+			{
+				node.Parent.Checked = false;
+				CheckTreeViewNodeParent(node.Parent);
+			}
 		}
 
-		private void _addResourceItem(List<GMItem> items)
+		private void CheckTreeViewNode(TreeNode node, Boolean isChecked)
 		{
-			foreach (GMItem item in items)
+			foreach (TreeNode item in node.Nodes)
 			{
-				if (item.ResourceType == GMItemType.Group)
-				{
-					_addResourceItem(item.getSubitems());
-				}
-				else
-				{
-					ListViewItem added = rsListView.Items.Add(item.Name);
+				item.Checked = isChecked;
 
-					switch (item.ResourceType)
-					{
-						case GMItemType.Sprite: added.Group = rsListView.Groups[0]; break;
-						case GMItemType.Background: added.Group = rsListView.Groups[1]; break;
-						case GMItemType.Script: added.Group = rsListView.Groups[2]; break;
-						case GMItemType.Object: added.Group = rsListView.Groups[3]; break;
-						case GMItemType.Room: added.Group = rsListView.Groups[4]; break;
-					}
+				if (item.Nodes.Count > 0)
+				{
+					this.CheckTreeViewNode(item, isChecked);
+				}
+			}
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			Manager.Project.resetUsedRes();
+
+			string[] nodes = { "sprites", "backgrounds", "scripts", "objects", "rooms" };
+			foreach (string node in nodes)
+			{
+				if (treeView1.Nodes[0].Nodes[node].Nodes != null)
+				{
+					_checkForChecked(treeView1.Nodes[0].Nodes[node]);
+				}
+			}
+		}
+
+		private void _checkForChecked(TreeNode MainNode)
+		{
+			foreach (TreeNode node in MainNode.Nodes)
+			{
+				if (node.Nodes.Count > 0)
+				{
+					_checkForChecked(node);
+				}
+				else if (node.Checked)
+				{
+					Manager.Project.addUsedRes(node.Text);
 				}
 			}
 		}

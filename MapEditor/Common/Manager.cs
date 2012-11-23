@@ -23,14 +23,30 @@ namespace MapEditor.Common
 
 		public static bool newProject(string filename)
 		{
+			return loadProject(filename, false);
+		}
+
+		public static bool loadProject(string filename)
+		{
+			return loadProject(filename, true);
+		}
+
+		public static bool dropProject() {
+			Project = null;
+			return true;
+		}
+
+		public static bool loadProject(string filename, bool load)
+		{
 			if (Project != null)
 			{
 				MessageBox.Show("Please close your project first!");
 				return false;
 			}
 
-			Project = new ProjectData(filename);
+			Project = new ProjectData(filename, load);
 			return true;
 		}
+
 	}
 }
