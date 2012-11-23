@@ -112,12 +112,15 @@ namespace MapEditor
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.tmCloseProject = new System.Windows.Forms.ToolStripMenuItem();
 			this.roomEditor1 = new MapEditor.Components.RoomEditor();
+			this.lbPlaceables = new MapEditor.Components.ListBoxEx();
+			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tsMap.SuspendLayout();
 			this.tabControlMain.SuspendLayout();
 			this.tabPage0.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabControl2.SuspendLayout();
+			this.tabPage2.SuspendLayout();
 			this.tabPage4.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.panel2.SuspendLayout();
@@ -323,6 +326,8 @@ namespace MapEditor
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.listBox1);
+			this.tabPage2.Controls.Add(this.lbPlaceables);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -418,6 +423,7 @@ namespace MapEditor
 			this.tbAddItem.Name = "tbAddItem";
 			this.tbAddItem.Size = new System.Drawing.Size(23, 20);
 			this.tbAddItem.Text = "Add";
+			this.tbAddItem.Click += new System.EventHandler(this.tbAddItem_Click);
 			// 
 			// tbRemoveItem
 			// 
@@ -692,6 +698,7 @@ namespace MapEditor
 			this.tmSaveProject.ShortcutKeyDisplayString = "Ctrl+S";
 			this.tmSaveProject.Size = new System.Drawing.Size(262, 22);
 			this.tmSaveProject.Text = "&Save ProjectData";
+			this.tmSaveProject.Click += new System.EventHandler(this.tbSaveProject_Click);
 			// 
 			// tmOpenProject
 			// 
@@ -701,6 +708,7 @@ namespace MapEditor
 			this.tmOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
 			this.tmOpenProject.Size = new System.Drawing.Size(262, 22);
 			this.tmOpenProject.Text = "&Open Existing ProjectData...";
+			this.tmOpenProject.Click += new System.EventHandler(this.tbOpenProject_Click);
 			// 
 			// tmCreateProject
 			// 
@@ -710,6 +718,7 @@ namespace MapEditor
 			this.tmCreateProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
 			this.tmCreateProject.Size = new System.Drawing.Size(262, 22);
 			this.tmCreateProject.Text = "&Create New ProjectData...";
+			this.tmCreateProject.Click += new System.EventHandler(this.tbNewProject_Click);
 			// 
 			// toolStripMenuItem3
 			// 
@@ -880,6 +889,30 @@ namespace MapEditor
 			this.roomEditor1.Size = new System.Drawing.Size(461, 403);
 			this.roomEditor1.TabIndex = 6;
 			// 
+			// lbPlaceables
+			// 
+			this.lbPlaceables.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbPlaceables.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.lbPlaceables.FormattingEnabled = true;
+			this.lbPlaceables.Location = new System.Drawing.Point(3, 3);
+			this.lbPlaceables.Name = "lbPlaceables";
+			this.lbPlaceables.Size = new System.Drawing.Size(439, 345);
+			this.lbPlaceables.TabIndex = 0;
+			// 
+			// listBox1
+			// 
+			this.listBox1.FormattingEnabled = true;
+			this.listBox1.Items.AddRange(new object[] {
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"});
+			this.listBox1.Location = new System.Drawing.Point(226, 57);
+			this.listBox1.Name = "listBox1";
+			this.listBox1.Size = new System.Drawing.Size(120, 95);
+			this.listBox1.TabIndex = 1;
+			// 
 			// MapEditorMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -902,6 +935,7 @@ namespace MapEditor
 			this.tabPage0.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabControl2.ResumeLayout(false);
+			this.tabPage2.ResumeLayout(false);
 			this.tabPage4.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
@@ -1003,6 +1037,8 @@ namespace MapEditor
 		private System.Windows.Forms.ToolStripButton tbNewProject;
 		private System.Windows.Forms.ToolStripButton tbUsedResList;
 		private System.Windows.Forms.ToolStripMenuItem tmCloseProject;
+		private ListBoxEx lbPlaceables;
+		private System.Windows.Forms.ListBox listBox1;
 	}
 }
 

@@ -55,6 +55,12 @@
     <Compile Include="Common\GmCommon.cs" />
     <Compile Include="Common\Manager.cs" />
     <Compile Include="Common\ProjectData.cs" />
+    <Compile Include="Components\ListBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\ListBoxEx.Designer.cs">
+      <DependentUpon>ListBoxEx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ResourceUsage.cs">
       <SubType>Form</SubType>
     </Compile>

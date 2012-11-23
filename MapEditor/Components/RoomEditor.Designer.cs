@@ -111,8 +111,8 @@
 
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private RoomPanel _rPanel;
 		private System.Windows.Forms.HScrollBar horizontalScroll;
 		private System.Windows.Forms.VScrollBar verticalScroll;
-		private RoomPanel _rPanel;
 	}
 }
