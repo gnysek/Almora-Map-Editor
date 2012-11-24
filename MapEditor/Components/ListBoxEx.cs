@@ -160,7 +160,7 @@ namespace MapEditor.Components
 					else
 						args.Graphics.FillRectangle(new SolidBrush(this.BackColor), args.Bounds);
 
-					e.Graphics.DrawString(this.Items[0].ToString(), this.Font, Brushes.Black, 0, item * this.ItemHeight);
+					e.Graphics.DrawString(this.Items[i].ToString(), this.Font, Brushes.Black, 0, item * this.ItemHeight);
 
 					// Increment item draw index.
 					item++;

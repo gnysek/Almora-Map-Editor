@@ -9,6 +9,7 @@ namespace MapEditor.Common
 	public static class Manager
 	{
 		public static ProjectData Project = null;
+		public static MapEditorMain MainWindow = null;
 
 		public static void saveProject()
 		{

@@ -50,8 +50,9 @@ namespace MapEditor
 			this.treeViewGMX = new System.Windows.Forms.TreeView();
 			this.imageListFolders = new System.Windows.Forms.ImageList(this.components);
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.tabControl2 = new System.Windows.Forms.TabControl();
+			this.tabControlEnv = new System.Windows.Forms.TabControl();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -82,7 +83,7 @@ namespace MapEditor
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-			this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.statusLabelPlaceables = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel5 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel6 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -90,6 +91,7 @@ namespace MapEditor
 			this.tmSaveProject = new System.Windows.Forms.ToolStripMenuItem();
 			this.tmOpenProject = new System.Windows.Forms.ToolStripMenuItem();
 			this.tmCreateProject = new System.Windows.Forms.ToolStripMenuItem();
+			this.tmCloseProject = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tmSaveProjectAs = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
@@ -110,16 +112,14 @@ namespace MapEditor
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-			this.tmCloseProject = new System.Windows.Forms.ToolStripMenuItem();
 			this.roomEditor1 = new MapEditor.Components.RoomEditor();
 			this.lbPlaceables = new MapEditor.Components.ListBoxEx();
-			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tsMap.SuspendLayout();
 			this.tabControlMain.SuspendLayout();
 			this.tabPage0.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.tabControl2.SuspendLayout();
+			this.tabControlEnv.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			this.tabPage4.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -166,9 +166,10 @@ namespace MapEditor
             this.toolStripButton7,
             this.toolStripDropDownButton1,
             this.toolStripSeparator3});
+			this.tsMap.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.tsMap.Location = new System.Drawing.Point(467, 0);
 			this.tsMap.Name = "tsMap";
-			this.tsMap.Size = new System.Drawing.Size(467, 25);
+			this.tsMap.Size = new System.Drawing.Size(467, 23);
 			this.tsMap.TabIndex = 5;
 			this.tsMap.Text = "toolStrip3";
 			// 
@@ -178,7 +179,7 @@ namespace MapEditor
 			this.tbSelectMap.Image = global::MapEditor.Properties.Resources.cursor;
 			this.tbSelectMap.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tbSelectMap.Name = "tbSelectMap";
-			this.tbSelectMap.Size = new System.Drawing.Size(23, 22);
+			this.tbSelectMap.Size = new System.Drawing.Size(23, 20);
 			this.tbSelectMap.Text = "Select";
 			// 
 			// tbMoveMap
@@ -187,7 +188,7 @@ namespace MapEditor
 			this.tbMoveMap.Image = global::MapEditor.Properties.Resources.arrow_move;
 			this.tbMoveMap.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tbMoveMap.Name = "tbMoveMap";
-			this.tbMoveMap.Size = new System.Drawing.Size(23, 22);
+			this.tbMoveMap.Size = new System.Drawing.Size(23, 20);
 			this.tbMoveMap.Text = "Move";
 			// 
 			// tbRotateMap
@@ -196,13 +197,13 @@ namespace MapEditor
 			this.tbRotateMap.Image = global::MapEditor.Properties.Resources.arrow_circle_135_left;
 			this.tbRotateMap.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tbRotateMap.Name = "tbRotateMap";
-			this.tbRotateMap.Size = new System.Drawing.Size(23, 22);
+			this.tbRotateMap.Size = new System.Drawing.Size(23, 20);
 			this.tbRotateMap.Text = "Rotate";
 			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 23);
 			// 
 			// tbAdjustMap
 			// 
@@ -210,25 +211,25 @@ namespace MapEditor
 			this.tbAdjustMap.Image = global::MapEditor.Properties.Resources.equalizer;
 			this.tbAdjustMap.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tbAdjustMap.Name = "tbAdjustMap";
-			this.tbAdjustMap.Size = new System.Drawing.Size(23, 22);
+			this.tbAdjustMap.Size = new System.Drawing.Size(23, 20);
 			this.tbAdjustMap.Text = "Properties";
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 23);
 			// 
 			// toolStripLabel1
 			// 
 			this.toolStripLabel1.Name = "toolStripLabel1";
-			this.toolStripLabel1.Size = new System.Drawing.Size(35, 22);
+			this.toolStripLabel1.Size = new System.Drawing.Size(35, 15);
 			this.toolStripLabel1.Text = "Layer";
 			// 
 			// toolStripComboBox1
 			// 
 			this.toolStripComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.toolStripComboBox1.Name = "toolStripComboBox1";
-			this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
+			this.toolStripComboBox1.Size = new System.Drawing.Size(121, 23);
 			// 
 			// toolStripButton7
 			// 
@@ -236,7 +237,7 @@ namespace MapEditor
 			this.toolStripButton7.Image = global::MapEditor.Properties.Resources.layer__pencil;
 			this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton7.Name = "toolStripButton7";
-			this.toolStripButton7.Size = new System.Drawing.Size(23, 22);
+			this.toolStripButton7.Size = new System.Drawing.Size(23, 20);
 			this.toolStripButton7.Text = "toolStripButton7";
 			// 
 			// toolStripDropDownButton1
@@ -245,13 +246,13 @@ namespace MapEditor
 			this.toolStripDropDownButton1.Image = global::MapEditor.Properties.Resources.layers_stack_arrange;
 			this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-			this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 22);
+			this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 20);
 			this.toolStripDropDownButton1.Text = "toolStripDropDownButton1";
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 23);
 			// 
 			// tabControlMain
 			// 
@@ -305,7 +306,7 @@ namespace MapEditor
 			// 
 			// tabPage1
 			// 
-			this.tabPage1.Controls.Add(this.tabControl2);
+			this.tabPage1.Controls.Add(this.tabControlEnv);
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Size = new System.Drawing.Size(453, 377);
@@ -313,16 +314,16 @@ namespace MapEditor
 			this.tabPage1.Text = "Enviroment";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// tabControl2
+			// tabControlEnv
 			// 
-			this.tabControl2.Controls.Add(this.tabPage2);
-			this.tabControl2.Controls.Add(this.tabPage3);
-			this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl2.Location = new System.Drawing.Point(0, 0);
-			this.tabControl2.Name = "tabControl2";
-			this.tabControl2.SelectedIndex = 0;
-			this.tabControl2.Size = new System.Drawing.Size(453, 377);
-			this.tabControl2.TabIndex = 2;
+			this.tabControlEnv.Controls.Add(this.tabPage2);
+			this.tabControlEnv.Controls.Add(this.tabPage3);
+			this.tabControlEnv.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabControlEnv.Location = new System.Drawing.Point(0, 0);
+			this.tabControlEnv.Name = "tabControlEnv";
+			this.tabControlEnv.SelectedIndex = 0;
+			this.tabControlEnv.Size = new System.Drawing.Size(453, 377);
+			this.tabControlEnv.TabIndex = 2;
 			// 
 			// tabPage2
 			// 
@@ -335,6 +336,20 @@ namespace MapEditor
 			this.tabPage2.TabIndex = 0;
 			this.tabPage2.Text = "Definitions";
 			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
+			// listBox1
+			// 
+			this.listBox1.FormattingEnabled = true;
+			this.listBox1.Items.AddRange(new object[] {
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"});
+			this.listBox1.Location = new System.Drawing.Point(226, 57);
+			this.listBox1.Name = "listBox1";
+			this.listBox1.Size = new System.Drawing.Size(120, 95);
+			this.listBox1.TabIndex = 1;
 			// 
 			// tabPage3
 			// 
@@ -614,7 +629,7 @@ namespace MapEditor
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2,
             this.toolStripStatusLabel3,
-            this.toolStripStatusLabel4,
+            this.statusLabelPlaceables,
             this.toolStripStatusLabel5,
             this.toolStripStatusLabel6});
 			this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
@@ -643,12 +658,12 @@ namespace MapEditor
 			this.toolStripStatusLabel3.Size = new System.Drawing.Size(54, 19);
 			this.toolStripStatusLabel3.Text = "Env defs:";
 			// 
-			// toolStripStatusLabel4
+			// statusLabelPlaceables
 			// 
-			this.toolStripStatusLabel4.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
-			this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-			this.toolStripStatusLabel4.Size = new System.Drawing.Size(17, 19);
-			this.toolStripStatusLabel4.Text = "0";
+			this.statusLabelPlaceables.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
+			this.statusLabelPlaceables.Name = "statusLabelPlaceables";
+			this.statusLabelPlaceables.Size = new System.Drawing.Size(17, 19);
+			this.statusLabelPlaceables.Text = "0";
 			// 
 			// toolStripStatusLabel5
 			// 
@@ -720,6 +735,14 @@ namespace MapEditor
 			this.tmCreateProject.Text = "&Create New ProjectData...";
 			this.tmCreateProject.Click += new System.EventHandler(this.tbNewProject_Click);
 			// 
+			// tmCloseProject
+			// 
+			this.tmCloseProject.Image = global::MapEditor.Properties.Resources.cross;
+			this.tmCloseProject.Name = "tmCloseProject";
+			this.tmCloseProject.Size = new System.Drawing.Size(262, 22);
+			this.tmCloseProject.Text = "C&lose Project";
+			this.tmCloseProject.Click += new System.EventHandler(this.tmCloseProject_Click);
+			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
@@ -729,8 +752,8 @@ namespace MapEditor
 			// 
 			this.tmSaveProjectAs.Image = global::MapEditor.Properties.Resources.disks;
 			this.tmSaveProjectAs.Name = "tmSaveProjectAs";
-			this.tmSaveProjectAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.O)));
+			this.tmSaveProjectAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.O)));
 			this.tmSaveProjectAs.Size = new System.Drawing.Size(262, 22);
 			this.tmSaveProjectAs.Text = "Save ProjectData &As...";
 			// 
@@ -873,14 +896,6 @@ namespace MapEditor
 			this.openFileDialog1.Filter = "GM:S Projects|*.project.gmx";
 			this.openFileDialog1.SupportMultiDottedExtensions = true;
 			// 
-			// tmCloseProject
-			// 
-			this.tmCloseProject.Image = global::MapEditor.Properties.Resources.cross;
-			this.tmCloseProject.Name = "tmCloseProject";
-			this.tmCloseProject.Size = new System.Drawing.Size(262, 22);
-			this.tmCloseProject.Text = "C&lose Project";
-			this.tmCloseProject.Click += new System.EventHandler(this.tmCloseProject_Click);
-			// 
 			// roomEditor1
 			// 
 			this.roomEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -898,20 +913,7 @@ namespace MapEditor
 			this.lbPlaceables.Name = "lbPlaceables";
 			this.lbPlaceables.Size = new System.Drawing.Size(439, 345);
 			this.lbPlaceables.TabIndex = 0;
-			// 
-			// listBox1
-			// 
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.Items.AddRange(new object[] {
-            "a",
-            "b",
-            "c",
-            "d",
-            "e"});
-			this.listBox1.Location = new System.Drawing.Point(226, 57);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(120, 95);
-			this.listBox1.TabIndex = 1;
+			this.lbPlaceables.DoubleClick += new System.EventHandler(this.lbPlaceables_DoubleClick);
 			// 
 			// MapEditorMain
 			// 
@@ -922,6 +924,7 @@ namespace MapEditor
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.menuStrip1);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MapEditorMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -934,7 +937,7 @@ namespace MapEditor
 			this.tabControlMain.ResumeLayout(false);
 			this.tabPage0.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
-			this.tabControl2.ResumeLayout(false);
+			this.tabControlEnv.ResumeLayout(false);
 			this.tabPage2.ResumeLayout(false);
 			this.tabPage4.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
@@ -1009,7 +1012,6 @@ namespace MapEditor
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
-		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel5;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel6;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
@@ -1022,7 +1024,7 @@ namespace MapEditor
 		private System.Windows.Forms.ToolStripMenuItem defaultSortToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem sortAZToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem sortZAToolStripMenuItem;
-        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabControl tabControlEnv;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
 		private System.Windows.Forms.Panel panel2;
@@ -1037,8 +1039,9 @@ namespace MapEditor
 		private System.Windows.Forms.ToolStripButton tbNewProject;
 		private System.Windows.Forms.ToolStripButton tbUsedResList;
 		private System.Windows.Forms.ToolStripMenuItem tmCloseProject;
-		private ListBoxEx lbPlaceables;
+		public ListBoxEx lbPlaceables;
 		private System.Windows.Forms.ListBox listBox1;
+		public System.Windows.Forms.ToolStripStatusLabel statusLabelPlaceables;
 	}
 }
 

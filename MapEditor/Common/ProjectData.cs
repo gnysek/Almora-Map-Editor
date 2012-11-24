@@ -6,6 +6,7 @@ using System.IO;
 using System.Xml;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using MapEditor.Components;
 
 namespace MapEditor.Common
 {
@@ -17,10 +18,10 @@ namespace MapEditor.Common
 		public bool Saved = false;
 		public bool Loaded = false;
 
-		public EnvElement[] EnvElementsList = null;
-		public EventElement[] EventElementsList = null;
-		public EnvInstance[] EnvInstancesList = null;
-		public EventInstance[] EventInstancesList = null;
+		public List<PlacebleElement> EnvElementsList = null;
+		public List<EventElement> EventElementsList = null;
+		public List<PlaceableInstance> EnvInstancesList = null;
+		public List<EventInstance> EventInstancesList = null;
 		public List<string> RegisteredResources = null;
 		public GMItem allItems = null;
 
@@ -36,6 +37,8 @@ namespace MapEditor.Common
 
 		public bool createNewProject(string sourcePath, bool load)
 		{
+			EnvInstancesList = new List<PlaceableInstance>();
+
 			resetUsedRes();
 			ProjectSource = Path.GetDirectoryName(sourcePath);
 
@@ -77,8 +80,15 @@ namespace MapEditor.Common
 				resources.AppendChild(_addXmlElement(file, "resource", name));
 			}
 
+			XmlElement placeables = file.CreateElement("placeables");
+			foreach (PlacebleElement elem in EnvElementsList)
+			{
+				placeables.AppendChild(elem.toXml(file));
+			}
+
 			assets.AppendChild(options);
 			assets.AppendChild(resources);
+			assets.AppendChild(placeables);
 
 			file.AppendChild(comment);
 			file.AppendChild(assets);
@@ -113,6 +123,31 @@ namespace MapEditor.Common
 			{
 				addUsedRes(n.InnerText);
 			}
+
+			root = XMLfile.SelectSingleNode("assets/placeables");
+
+			EnvElementsList = new List<PlacebleElement>();
+
+			foreach (XmlNode n in root)
+			{
+				PlacebleElement e = new PlacebleElement()
+				{
+					Name = n.Attributes["name"].Value,
+					Sprite = n.SelectSingleNode("sprite").InnerText,
+					Mask = n.SelectSingleNode("mask").InnerText,
+					Depth = int.Parse(n.SelectSingleNode("depth").InnerText),
+					ShadowSize = int.Parse(n.SelectSingleNode("shadowsize").InnerText),
+					Solid = (n.SelectSingleNode("solid").InnerText == "1"),
+					Wind = (n.SelectSingleNode("wind").InnerText == "1"),
+					MultiDraw = (n.SelectSingleNode("multidraw").InnerText == "1"),
+					Shadow = (n.SelectSingleNode("shadow").InnerText == "1")
+				};
+
+				EnvElementsList.Add(e);
+			}
+
+			regenerateEnvDefList();
+
 		}
 
 		private void _readGMX()
@@ -271,5 +306,33 @@ namespace MapEditor.Common
 				}
 			}
 		}
+
+		#region ENVinstances
+		public void addEnvDef(string name)
+		{
+			if (EnvElementsList == null)
+			{
+				EnvElementsList = new List<PlacebleElement>();
+			}
+			PlacebleElement n = new PlacebleElement() { Name = name };
+			EnvElementsList.Add(n);
+		}
+
+		public void regenerateEnvDefList()
+		{
+			regenerateEnvDefList(Manager.MainWindow.lbPlaceables);
+		}
+
+		public void regenerateEnvDefList(ListBoxEx list)
+		{
+			list.Items.Clear();
+			foreach (PlacebleElement elem in EnvElementsList)
+			{
+				list.Items.Add(elem.Name);
+			}
+
+			Manager.MainWindow.statusLabelPlaceables.Text = EnvElementsList.Count.ToString();
+		}
+		#endregion
 	}
 }

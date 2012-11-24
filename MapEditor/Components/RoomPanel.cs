@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using MapEditor.Graphics;
 using System.Drawing;
+using MapEditor.Common;
 
 namespace MapEditor.Components
 {
@@ -15,7 +16,9 @@ namespace MapEditor.Components
 		private int _gridX = 32;
 		private int _gridY = 32;
 		private int _zoom = 1;
-		private bool _enabled = false;
+		private bool _enabled = true;
+		private int _mouseX = 0;
+		private int _mouseY = 0;
 
 		public RoomPanel()
 		{
@@ -79,6 +82,20 @@ namespace MapEditor.Components
 
 			GraphicsManager.DrawLineBatch();
 		}
+
+		private void DrawInstances()
+		{
+			if (Manager.Project != null)
+			{
+				foreach (PlaceableInstance instance in Manager.Project.EnvInstancesList)
+				{
+					GraphicsManager.DrawSprite(0, instance.X, instance.Y, Color.White);
+					//GraphicsManager.DrawRectangle(new Rectangle(instance.X, instance.Y, 16, 16), Color.White, true);
+				}
+
+				GraphicsManager.DrawSpriteBatch(false);
+			}
+		}
 		#endregion
 
 		/// <summary>
@@ -114,6 +131,7 @@ namespace MapEditor.Components
 				GraphicsManager.Scissor = new Rectangle(0, this.Height - 300, 300, 300);
 
 				DrawGrid();
+				DrawInstances();
 
 				// Disable scissor testing.
 				OpenGL.glDisable(GLOption.ScissorTest);
@@ -159,6 +177,44 @@ namespace MapEditor.Components
 			int y = (int)((((position.Y + offsetY) / height) * height) / _zoom);
 
 			return new Point(x, y);
+		}
+
+		public void enable()
+		{
+			_enabled = true;
+		}
+
+		/////
+
+		protected override void OnMouseDown(MouseEventArgs e)
+		{
+			base.OnMouseDown(e);
+
+			if (Manager.Project == null) return;			
+
+			Point snap = GetSnappedPoint(e.Location, new Size(_gridX, _gridY));
+
+			// If mouse left button clicked.
+			if (e.Button == MouseButtons.Left)
+			{
+				//Invalidate();
+				_mouseX = snap.X;
+				_mouseY = snap.Y;
+			}
+		}
+
+		protected override void OnMouseUp(MouseEventArgs e)
+		{
+			base.OnMouseUp(e);
+
+			PlaceableInstance instance = new PlaceableInstance();
+			instance.X = _mouseX;
+			instance.Y = _mouseY;
+
+			Manager.Project.EnvInstancesList.Add(instance);
+
+			// Force redraw
+			Invalidate();
 		}
 	}
 }

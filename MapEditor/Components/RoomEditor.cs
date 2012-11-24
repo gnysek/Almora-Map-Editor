@@ -8,6 +8,8 @@ namespace MapEditor.Components
 {
 	public partial class RoomEditor : UserControl
 	{
+		private bool _dragging = false;
+
 		public RoomEditor()
 		{
 			InitializeComponent();
