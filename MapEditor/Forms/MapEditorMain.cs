@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using MapEditor.Components;
 using MapEditor.Forms;
 using MapEditor.Common;
+using MapEditor.Graphics;
 
 namespace MapEditor
 {
@@ -16,6 +17,7 @@ namespace MapEditor
 		public MapEditorMain()
 		{
 			InitializeComponent();
+			Manager.MainWindow = this;
 		}
 
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -87,6 +89,8 @@ namespace MapEditor
 					Manager.Project.renderItemsTree(treeViewGMX);
 					treeViewGMX.Nodes[0].Expand();
 					ensureButtonsDisabled();
+
+					GraphicsManager.LoadTexture(new Bitmap("C:\\Users\\gnysek\\Documents\\GameMaker\\Projects\\Almora1.project\\AlmoraTouch.gmx\\sprites\\images\\sprPlaceholderInv_0.png"), 0);
 				}
 			}
 		}
@@ -126,7 +130,40 @@ namespace MapEditor
 
 		private void tbAddItem_Click(object sender, EventArgs e)
 		{
-			lbPlaceables.Items.Add("Test");
+			if (tabControlMain.SelectedIndex == 1 && tabControlEnv.SelectedIndex == 0)
+			{
+				string defName = "Undefined Placeable " + lbPlaceables.Items.Count.ToString();
+				using (PlaceableForm form = new PlaceableForm())
+				{
+					form.Element = new PlacebleElement() { Name = defName };
+					form.Text = "Add new Placeable Definition: " + defName;
+
+					if (form.ShowDialog() == DialogResult.OK)
+					{
+						Manager.Project.EnvElementsList.Add(form.Element);
+						Manager.Project.regenerateEnvDefList();
+					}
+				}
+			}
+		}
+
+		private void lbPlaceables_DoubleClick(object sender, EventArgs e)
+		{
+			if (lbPlaceables.SelectedIndex > -1 && lbPlaceables.SelectedIndex < lbPlaceables.Items.Count)
+			{
+				using (PlaceableForm form = new PlaceableForm())
+				{
+					PlacebleElement elem = Manager.Project.EnvElementsList[lbPlaceables.SelectedIndex];
+					form.Element = elem;
+					form.Text = "Edit Placeable Definition: " + elem.Name;
+
+					if (form.ShowDialog() == DialogResult.OK)
+					{
+						elem = form.Element;
+						Manager.Project.regenerateEnvDefList();
+					}
+				}
+			}
 		}
 
 	}

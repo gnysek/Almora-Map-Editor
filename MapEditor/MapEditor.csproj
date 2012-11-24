@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>1353775151_Maps.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\EnvElement.cs" />
+    <Compile Include="Common\PlaceableElement.cs" />
     <Compile Include="Common\EnvInstance.cs" />
     <Compile Include="Common\EventElement.cs" />
     <Compile Include="Common\EventInstance.cs" />
@@ -60,6 +66,12 @@
     </Compile>
     <Compile Include="Components\ListBoxEx.Designer.cs">
       <DependentUpon>ListBoxEx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PlaceableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PlaceableForm.Designer.cs">
+      <DependentUpon>PlaceableForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ResourceUsage.cs">
       <SubType>Form</SubType>
@@ -108,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PlaceableForm.resx">
+      <DependentUpon>PlaceableForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ResourceUsage.resx">
       <DependentUpon>ResourceUsage.cs</DependentUpon>
@@ -225,6 +240,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\chain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="1353775151_Maps.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
