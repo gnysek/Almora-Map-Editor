@@ -30,121 +30,129 @@ using System.Drawing;
 
 namespace MapEditor.Graphics
 {
-    public class Line
-    {
-        #region Fields
+	public class Line
+	{
+		#region Fields
 
-        private Point _start = Point.Empty;
-        private Point _end = Point.Empty;
-        private Color _color = Color.White;
+		private Point _start = Point.Empty;
+		private Point _end = Point.Empty;
+		private Color _color = Color.White;
 
-        #endregion
+		#endregion
 
-        #region Properties
+		#region Properties
 
-        public Point Start
-        {
-            get { return _start; }
-        }
+		public Point Start
+		{
+			get { return _start; }
+		}
 
-        public Point End
-        {
-            get { return _end; }
-        }
+		public Point End
+		{
+			get { return _end; }
+		}
 
-        public Color Color
-        {
-            get { return _color; }
-        }
+		public Color Color
+		{
+			get { return _color; }
+		}
 
-        #endregion
+		#endregion
 
-        #region Constructor | Destructor
+		#region Constructor | Destructor
 
-        public Line(Point start, Point end, Color color)
-        {
-            _start = start;
-            _end = end;
-            _color = color;
-        }
+		public Line(Point start, Point end, Color color)
+		{
+			_start = start;
+			_end = end;
+			_color = color;
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 
-    public class Quad
-    {
-        #region Fields
-        
-        private uint _textureId = 0;                           // The texture id.
-        private PointF[] _textureCoordinates = new PointF[4];  // The tetxure coordinates.
-        private PointF[] _vertices = new PointF[4];            // The vertices.
-        private Color _color = Color.White;                    // The blending color.
+	public class Quad
+	{
+		#region Fields
 
-        #endregion
+		private uint _textureId = 0;                           // The texture id.
+		private PointF[] _textureCoordinates = new PointF[4];  // The tetxure coordinates.
+		private PointF[] _vertices = new PointF[4];            // The vertices.
+		private float _angle = 0;
+		private Color _color = Color.White;                    // The blending color.
 
-        #region Properties
+		#endregion
 
-        /// <summary>
-        /// Get the texture id for the quad.
-        /// </summary>
-        public uint TextureId
-        {
-            get { return _textureId; }
-        }
+		#region Properties
 
-        /// <summary>
-        /// Gets the quad's texture coordinates.
-        /// </summary>
-        public PointF[] TextureCoordinates
-        {
-            get { return _textureCoordinates; }
-        }
+		/// <summary>
+		/// Get the texture id for the quad.
+		/// </summary>
+		public uint TextureId
+		{
+			get { return _textureId; }
+		}
 
-        /// <summary>
-        /// Gets the quad's vertices.
-        /// </summary>
-        public PointF[] Vertices
-        {
-            get { return _vertices; }
-        }
+		/// <summary>
+		/// Gets the quad's texture coordinates.
+		/// </summary>
+		public PointF[] TextureCoordinates
+		{
+			get { return _textureCoordinates; }
+		}
 
-        /// <summary>
-        /// Gets the blend color of the quad.
-        /// </summary>
-        public Color Color
-        {
-            get { return _color; }
-        }
+		/// <summary>
+		/// Gets the quad's vertices.
+		/// </summary>
+		public PointF[] Vertices
+		{
+			get { return _vertices; }
+		}
 
-        #endregion
+		/// <summary>
+		/// Gets the blend color of the quad.
+		/// </summary>
+		public Color Color
+		{
+			get { return _color; }
+		}
 
-        #region Constructor
+		public float Angle
+		{
+			get { return _angle; }
+		}
 
-        /// <summary>
-        /// Constructs a new quad.
-        /// </summary>
-        /// <param name="textureId"></param>
-        /// <param name="vertices"></param>
-        /// <param name="textureCoordinates"></param>
-        /// <param name="color"></param>
-        public Quad(ResTexture texture, PointF position, PointF scale, float angle, Color color)
-        {
-            _textureId = texture.TextureId;
-            _color = color;
-            
-            // Set vertices.
-            _vertices[0] = new PointF(position.X, position.Y);
-            _vertices[1] = new PointF(texture.TextureSize + _vertices[0].X, position.Y);
-            _vertices[2] = new PointF(texture.TextureSize + _vertices[0].X, texture.TextureSize + _vertices[0].Y);
-            _vertices[3] = new PointF(position.X, texture.TextureSize + _vertices[0].Y);
+		#endregion
 
-            // Set texture coordinates.
-            _textureCoordinates[0] = new PointF(0.0f, 0.0f);
-            _textureCoordinates[1] = new PointF(scale.X, 0.0f);
-            _textureCoordinates[2] = new PointF(scale.X, scale.Y);
-            _textureCoordinates[3] = new PointF(0.0f, scale.Y);
-        }
+		#region Constructor
 
-        #endregion
-    }
+		/// <summary>
+		/// Constructs a new quad.
+		/// </summary>
+		/// <param name="textureId"></param>
+		/// <param name="vertices"></param>
+		/// <param name="textureCoordinates"></param>
+		/// <param name="color"></param>
+		public Quad(ResTexture texture, PointF position, PointF scale, float angle, Color color)
+		{
+			_textureId = texture.TextureId;
+			_color = color;
+
+			_angle = angle;
+
+			// Set vertices.
+			_vertices[0] = new PointF(position.X, position.Y);
+			_vertices[1] = new PointF(texture.TextureSize + _vertices[0].X, position.Y);
+			_vertices[2] = new PointF(texture.TextureSize + _vertices[0].X, texture.TextureSize + _vertices[0].Y);
+			_vertices[3] = new PointF(position.X, texture.TextureSize + _vertices[0].Y);
+
+			// Set texture coordinates.
+			_textureCoordinates[0] = new PointF(0.0f, 0.0f);
+			_textureCoordinates[1] = new PointF(scale.X, 0.0f);
+			_textureCoordinates[2] = new PointF(scale.X, scale.Y);
+			_textureCoordinates[3] = new PointF(0.0f, scale.Y);
+		}
+
+		#endregion
+	}
 }
