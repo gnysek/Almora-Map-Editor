@@ -89,7 +89,7 @@ namespace MapEditor.Components
 			{
 				foreach (PlaceableInstance instance in Manager.Project.EnvInstancesList)
 				{
-					GraphicsManager.DrawSprite(0, instance.X, instance.Y, Color.White);
+					GraphicsManager.DrawSprite(0, instance.X, instance.Y, 180, Color.White);
 					//GraphicsManager.DrawRectangle(new Rectangle(instance.X, instance.Y, 16, 16), Color.White, true);
 				}
 
