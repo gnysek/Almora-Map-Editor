@@ -90,7 +90,7 @@ namespace MapEditor
 					treeViewGMX.Nodes[0].Expand();
 					ensureButtonsDisabled();
 
-					GraphicsManager.LoadTexture(new Bitmap("C:\\Users\\gnysek\\Documents\\GameMaker\\Projects\\Almora1.project\\AlmoraTouch.gmx\\sprites\\images\\sprPlaceholderInv_0.png"), 0);
+					GraphicsManager.LoadTexture(new Bitmap(Manager.Project.ProjectSource + "\\sprites\\images\\sprPlant2_0.png"), 0);
 				}
 			}
 		}

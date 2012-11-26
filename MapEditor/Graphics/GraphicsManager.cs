@@ -497,7 +497,7 @@ namespace MapEditor.Graphics
             uint last = 0;
             OpenGL.glEnable(GLOption.Texture2D);
             OpenGL.glPolygonMode(GLPolygonFaces.Back, GLPolygonMode.Fill);
-
+			
             // If the sprites should be batched by texture to minimize texture binding.
             if (optimize == true)
                 _quads.Sort(delegate(Quad quad1, Quad quad2) { return quad2.TextureId.CompareTo(quad1.TextureId); });
@@ -509,7 +509,7 @@ namespace MapEditor.Graphics
                 if (last != quad.TextureId)
                 {
                     OpenGL.glBindTexture(GLTexture.Texture2D, quad.TextureId);
-                    last = quad.TextureId;
+					last = quad.TextureId;
                 }
 
 				OpenGL.glPushMatrix();
@@ -517,8 +517,8 @@ namespace MapEditor.Graphics
 				if (quad.Angle != 0)
 				{
 					float w, h;
-					w = 40;// quad.Vertices[1].X - quad.Vertices[0].X;
-					h = 40;// quad.Vertices[3].Y - quad.Vertices[0].Y;
+					w = quad.Width;
+					h = quad.Height;
 					OpenGL.glTranslatef(quad.Vertices[0].X + (w/2), quad.Vertices[0].Y + (h/2), 0);
 					OpenGL.glRotatef(quad.Angle, 0, 0, 1);
 					OpenGL.glTranslatef(-(quad.Vertices[0].X + (w/2)), -(quad.Vertices[0].Y + (h/2)), 0);
@@ -537,25 +537,9 @@ namespace MapEditor.Graphics
 				OpenGL.glTexCoord2f(quad.TextureCoordinates[3].X, quad.TextureCoordinates[3].Y);
 				OpenGL.glVertex2f(quad.Vertices[3].X - _offsetX, quad.Vertices[3].Y - _offsetY);
 
-				//float w, h;
-
-				//w = Math.Abs(quad.Vertices[1].X - quad.Vertices[0].X);
-				//h = Math.Abs(quad.Vertices[1].Y - quad.Vertices[0].Y);
-
-				//OpenGL.glTexCoord2f(quad.TextureCoordinates[0].X, quad.TextureCoordinates[0].Y);
-				//OpenGL.glVertex2f(0 - _offsetX, 0 - _offsetY);
-				//OpenGL.glTexCoord2f(quad.TextureCoordinates[1].X, quad.TextureCoordinates[1].Y);
-				//OpenGL.glVertex2f(w - _offsetX, 0- _offsetY);
-				//OpenGL.glTexCoord2f(quad.TextureCoordinates[2].X, quad.TextureCoordinates[2].Y);
-				//OpenGL.glVertex2f(w - _offsetX, h - _offsetY);
-				//OpenGL.glTexCoord2f(quad.TextureCoordinates[3].X, quad.TextureCoordinates[3].Y);
-				//OpenGL.glVertex2f(0 - _offsetX, h - _offsetY);
-
                 OpenGL.glEnd();
-
 				
 				OpenGL.glPopMatrix();
-				
             }
 
             _quads.Clear();

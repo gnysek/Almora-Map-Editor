@@ -38,6 +38,7 @@ namespace MapEditor.Common
 		public bool createNewProject(string sourcePath, bool load)
 		{
 			EnvInstancesList = new List<PlaceableInstance>();
+			EnvElementsList = new List<PlacebleElement>();
 
 			resetUsedRes();
 			ProjectSource = Path.GetDirectoryName(sourcePath);
