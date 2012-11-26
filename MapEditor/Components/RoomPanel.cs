@@ -19,6 +19,7 @@ namespace MapEditor.Components
 		private bool _enabled = true;
 		private int _mouseX = 0;
 		private int _mouseY = 0;
+		private bool _drawMousePosition = false;
 
 		public RoomPanel()
 		{
@@ -89,8 +90,8 @@ namespace MapEditor.Components
 			{
 				foreach (PlaceableInstance instance in Manager.Project.EnvInstancesList)
 				{
-					GraphicsManager.DrawSprite(0, instance.X, instance.Y, 180, Color.White);
-					//GraphicsManager.DrawRectangle(new Rectangle(instance.X, instance.Y, 16, 16), Color.White, true);
+					GraphicsManager.DrawSprite(0, instance.X+5, instance.Y+5, 70, Color.Black);
+					GraphicsManager.DrawSprite(0, instance.X, instance.Y, 70, Color.White);
 				}
 
 				GraphicsManager.DrawSpriteBatch(false);
@@ -119,19 +120,23 @@ namespace MapEditor.Components
 		{
 			if (_enabled)
 			{
-				//base.OnPaint(e);
 				// Clear the screen.
 				GraphicsManager.DrawClear(this.BackColor);
 
 				// Begin drawing the scene.
 				GraphicsManager.BeginScene();
-
 				GraphicsManager.DrawRectangle(new Rectangle(0, 0, 301, 301), Color.Orange, false);
-
 				GraphicsManager.Scissor = new Rectangle(0, this.Height - 300, 300, 300);
 
-				DrawGrid();
 				DrawInstances();
+				DrawGrid();
+
+				OpenGL.glTexParameteri(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MAG_FILTER, OpenGL.GL_LINEAR);
+
+				if (_drawMousePosition)
+				{
+					drawMouseGrid(new Rectangle(_mouseX, _mouseY, _gridX, _gridY));
+				}
 
 				// Disable scissor testing.
 				OpenGL.glDisable(GLOption.ScissorTest);
@@ -143,6 +148,28 @@ namespace MapEditor.Components
 			{
 				e.Graphics.Clear(this.BackColor);
 			}
+		}
+
+		private void drawSelectionTool(Rectangle rec, Color c, int offset)
+		{
+			GraphicsManager.DrawStippledRectangle(rec, c, offset);
+		}
+
+		private void drawMouseGrid(Rectangle rec)
+		{
+			rec.Width++;
+			rec.Height++;
+			GraphicsManager.DrawRectangle(rec, Color.Black, true);
+			rec.X += 1;
+			rec.Y += 1;
+			rec.Width -= 2;
+			rec.Height -= 2;
+			GraphicsManager.DrawRectangle(rec, Color.White, true);
+			rec.X += 1;
+			rec.Y += 1;
+			rec.Width -= 2;
+			rec.Height -= 2;
+			GraphicsManager.DrawRectangle(rec, Color.Black, true);
 		}
 
 		protected override void OnPaintBackground(PaintEventArgs e)
@@ -190,7 +217,7 @@ namespace MapEditor.Components
 		{
 			base.OnMouseDown(e);
 
-			if (Manager.Project == null) return;			
+			if (Manager.Project == null) return;
 
 			Point snap = GetSnappedPoint(e.Location, new Size(_gridX, _gridY));
 
@@ -214,6 +241,35 @@ namespace MapEditor.Components
 			Manager.Project.EnvInstancesList.Add(instance);
 
 			// Force redraw
+			Invalidate();
+		}
+
+		protected override void OnMouseMove(MouseEventArgs e)
+		{
+			base.OnMouseMove(e);
+
+			Point snap = GetSnappedPoint(e.Location, new Size(_gridX, _gridY));
+			_drawMousePosition = true;
+
+			if (snap.X != _mouseX || snap.Y != _mouseY)
+			{
+				_mouseX = snap.X;
+				_mouseY = snap.Y;
+				Invalidate();
+			}
+		}
+
+		protected override void OnMouseLeave(EventArgs e)
+		{
+			//base.OnMouseLeave(e);
+			_drawMousePosition = false;
+			Invalidate();
+		}
+
+		protected override void OnMouseEnter(EventArgs e)
+		{
+			base.OnMouseEnter(e);
+			_drawMousePosition = true;
 			Invalidate();
 		}
 	}

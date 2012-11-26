@@ -79,6 +79,8 @@ namespace MapEditor.Graphics
 		private PointF[] _textureCoordinates = new PointF[4];  // The tetxure coordinates.
 		private PointF[] _vertices = new PointF[4];            // The vertices.
 		private float _angle = 0;
+		private int _spriteWidth = 0;
+		private int _spriteHeight = 0;
 		private Color _color = Color.White;                    // The blending color.
 
 		#endregion
@@ -122,6 +124,14 @@ namespace MapEditor.Graphics
 			get { return _angle; }
 		}
 
+		public int Width {
+		get{return _spriteWidth;}
+		}
+		public int Height
+		{
+			get { return _spriteHeight; }
+		}
+
 		#endregion
 
 		#region Constructor
@@ -139,6 +149,8 @@ namespace MapEditor.Graphics
 			_color = color;
 
 			_angle = angle;
+			_spriteWidth = texture.Width;
+			_spriteHeight = texture.Height;
 
 			// Set vertices.
 			_vertices[0] = new PointF(position.X, position.Y);
