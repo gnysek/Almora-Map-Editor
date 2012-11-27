@@ -30,9 +30,9 @@
 		{
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this._rPanel = new MapEditor.Components.RoomPanel();
 			this.horizontalScroll = new System.Windows.Forms.HScrollBar();
 			this.verticalScroll = new System.Windows.Forms.VScrollBar();
-			this._rPanel = new Components.RoomPanel();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
@@ -49,35 +49,34 @@
 			// tableLayoutPanel1
 			// 
 			this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-			this.tableLayoutPanel1.ColumnCount = 2;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 17F));
-			this.tableLayoutPanel1.Controls.Add(this.horizontalScroll, 0, 1);
-			this.tableLayoutPanel1.Controls.Add(this.verticalScroll, 1, 0);
-			this.tableLayoutPanel1.Controls.Add(this._rPanel, 0, 0);
-			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(150, 150);
+			this.tableLayoutPanel1.ColumnCount = 2;
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 17F));
+			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.TabIndex = 0;
+			this.tableLayoutPanel1.Controls.Add(this.horizontalScroll, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.verticalScroll, 1, 0);
+			this.tableLayoutPanel1.Controls.Add(this._rPanel, 0, 0);
 			// 
 			// horizontalScroll
 			// 
 			this.horizontalScroll.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.horizontalScroll.Enabled = false;
 			this.horizontalScroll.Location = new System.Drawing.Point(1, 132);
 			this.horizontalScroll.Maximum = 9;
 			this.horizontalScroll.Name = "horizontalScroll";
 			this.horizontalScroll.Size = new System.Drawing.Size(130, 17);
 			this.horizontalScroll.TabIndex = 0;
+			this.horizontalScroll.Value = 9;
 			// 
 			// verticalScroll
 			// 
 			this.verticalScroll.Dock = System.Windows.Forms.DockStyle.Right;
-			this.verticalScroll.Enabled = false;
 			this.verticalScroll.Location = new System.Drawing.Point(132, 1);
 			this.verticalScroll.Maximum = 9;
 			this.verticalScroll.Name = "verticalScroll";

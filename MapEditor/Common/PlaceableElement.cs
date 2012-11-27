@@ -75,8 +75,7 @@ namespace MapEditor.Common
 		{
 			XmlElement self = doc.CreateElement("placeable");
 
-
-			XmlElement sprite = doc.CreateElement("sprite");//doc.CreateElement("sprite");
+			XmlElement sprite = doc.CreateElement("sprite");
 			sprite.InnerText = Sprite;
 
 			XmlElement mask = doc.CreateElement("mask");

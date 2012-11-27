@@ -23,7 +23,9 @@ namespace MapEditor.Components
 			Placeables,
 			PlaceableInstances,
 			Events,
-			EventInstances
+			EventInstances,
+			Rooms,
+			Layers
 		}
 
 		private ListType _listBoxType = ListType.Placeables;
@@ -178,6 +180,7 @@ namespace MapEditor.Components
 					case ListType.EventInstances: text = "- No Instances -"; break;
 					case ListType.Events: text = "- No Event Definitions -"; break;
 					case ListType.Placeables: text = "- No Placeable Definitions -"; break;
+					default: text = "- No Definitions -"; break;
 				}
 
 				// Calculate the position of the text, which is the center of the control.
