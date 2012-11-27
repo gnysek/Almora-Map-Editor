@@ -49,5 +49,9 @@ namespace MapEditor.Common
 			return true;
 		}
 
+		public static MapRoom Room {
+			get { return (Project == null) ? null : Project.Room; }
+		}
+
 	}
 }

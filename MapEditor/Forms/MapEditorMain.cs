@@ -90,7 +90,7 @@ namespace MapEditor
 					treeViewGMX.Nodes[0].Expand();
 					ensureButtonsDisabled();
 
-					GraphicsManager.LoadTexture(new Bitmap(Manager.Project.ProjectSource + "\\sprites\\images\\sprPlant2_0.png"), 0);
+					//GraphicsManager.LoadTexture(new Bitmap(Manager.Project.ProjectSource + "\\sprites\\images\\sprPlant2_0.png"), 0);
 				}
 			}
 		}
@@ -128,22 +128,84 @@ namespace MapEditor
 			Close();
 		}
 
+		private void addOrEditRoom(bool edit)
+		{
+			string defName = "Undefined Room " + lbRooms.Items.Count.ToString();
+			using (RoomForm form = new RoomForm())
+			{
+				MapRoom elem;
+				if (edit)
+				{
+					elem = Manager.Project.RoomList[lbRooms.SelectedIndex];
+					form.Element = elem;
+					form.Text = "Edit Room Definition: " + defName;
+				}
+				else
+				{
+					elem = new MapRoom() { Name = defName, Width = 1024, Height = 768 };
+					form.Element = elem;
+					form.Text = "Add new Room Definition: " + defName;
+				}
+
+				if (form.ShowDialog() == DialogResult.OK)
+				{
+					if (edit)
+					{
+						elem = form.Element;
+					}
+					else
+					{
+						Manager.Project.RoomList.Add(form.Element);
+					}
+					Manager.Project.regenerateRoomList();
+					Manager.Project.Room = elem;
+				}
+			}
+		}
+
+		private void addOrEditPlaceable(bool edit)
+		{
+			string defName = "Undefined Room " + lbPlaceables.Items.Count.ToString();
+			using (PlaceableForm form = new PlaceableForm())
+			{
+				PlacebleElement elem;
+				if (edit)
+				{
+					elem = Manager.Project.PlaceableList[lbPlaceables.SelectedIndex];
+					form.Element = elem;
+					form.Text = "Edit Placeable Definition: " + defName;
+				}
+				else
+				{
+					elem = new PlacebleElement() { Name = defName };
+					form.Element = elem;
+					form.Text = "Add new Placeable Definition: " + defName;
+				}
+
+				if (form.ShowDialog() == DialogResult.OK)
+				{
+					if (edit)
+					{
+						elem = form.Element;
+					}
+					else
+					{
+						Manager.Project.PlaceableList.Add(form.Element);
+					}
+					Manager.Project.regenerateEnvDefList();
+				}
+			}
+		}
+
 		private void tbAddItem_Click(object sender, EventArgs e)
 		{
-			if (tabControlMain.SelectedIndex == 1 && tabControlEnv.SelectedIndex == 0)
+			if (tabControlMain.SelectedTab == tabRooms)
 			{
-				string defName = "Undefined Placeable " + lbPlaceables.Items.Count.ToString();
-				using (PlaceableForm form = new PlaceableForm())
-				{
-					form.Element = new PlacebleElement() { Name = defName };
-					form.Text = "Add new Placeable Definition: " + defName;
-
-					if (form.ShowDialog() == DialogResult.OK)
-					{
-						Manager.Project.EnvElementsList.Add(form.Element);
-						Manager.Project.regenerateEnvDefList();
-					}
-				}
+				addOrEditRoom(false);
+			}
+			else if (tabControlMain.SelectedTab == tabPlaceables && tabControlEnv.SelectedIndex == 0)
+			{
+				addOrEditPlaceable(false);
 			}
 		}
 
@@ -151,20 +213,18 @@ namespace MapEditor
 		{
 			if (lbPlaceables.SelectedIndex > -1 && lbPlaceables.SelectedIndex < lbPlaceables.Items.Count)
 			{
-				using (PlaceableForm form = new PlaceableForm())
-				{
-					PlacebleElement elem = Manager.Project.EnvElementsList[lbPlaceables.SelectedIndex];
-					form.Element = elem;
-					form.Text = "Edit Placeable Definition: " + elem.Name;
-
-					if (form.ShowDialog() == DialogResult.OK)
-					{
-						elem = form.Element;
-						Manager.Project.regenerateEnvDefList();
-					}
-				}
+				addOrEditPlaceable(true);
 			}
 		}
+
+		private void lbRooms_DoubleClick(object sender, EventArgs e)
+		{
+			if (lbRooms.SelectedIndex > -1 && lbRooms.SelectedIndex < lbRooms.Items.Count)
+			{
+				addOrEditRoom(true);
+			}
+		}
+
 
 	}
 }

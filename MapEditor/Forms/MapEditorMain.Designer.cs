@@ -45,19 +45,23 @@ namespace MapEditor
 			this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.roomEditor1 = new MapEditor.Components.RoomEditor();
 			this.tabControlMain = new System.Windows.Forms.TabControl();
-			this.tabPage0 = new System.Windows.Forms.TabPage();
+			this.tabProjectData = new System.Windows.Forms.TabPage();
 			this.treeViewGMX = new System.Windows.Forms.TreeView();
 			this.imageListFolders = new System.Windows.Forms.ImageList(this.components);
-			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.tabRooms = new System.Windows.Forms.TabPage();
+			this.lbRooms = new MapEditor.Components.ListBoxEx();
+			this.tabPlaceables = new System.Windows.Forms.TabPage();
 			this.tabControlEnv = new System.Windows.Forms.TabControl();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.lbPlaceables = new MapEditor.Components.ListBoxEx();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
-			this.tabPage4 = new System.Windows.Forms.TabPage();
+			this.tabEvents = new System.Windows.Forms.TabPage();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage5 = new System.Windows.Forms.TabPage();
 			this.tabPage66 = new System.Windows.Forms.TabPage();
+			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.tsOptions = new System.Windows.Forms.ToolStrip();
 			this.tbAddItem = new System.Windows.Forms.ToolStripButton();
@@ -78,7 +82,6 @@ namespace MapEditor
 			this.tbSaveProject = new System.Windows.Forms.ToolStripButton();
 			this.tbOpenProject = new System.Windows.Forms.ToolStripButton();
 			this.tbNewProject = new System.Windows.Forms.ToolStripButton();
-			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -112,16 +115,15 @@ namespace MapEditor
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-			this.roomEditor1 = new MapEditor.Components.RoomEditor();
-			this.lbPlaceables = new MapEditor.Components.ListBoxEx();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tsMap.SuspendLayout();
 			this.tabControlMain.SuspendLayout();
-			this.tabPage0.SuspendLayout();
-			this.tabPage1.SuspendLayout();
+			this.tabProjectData.SuspendLayout();
+			this.tabRooms.SuspendLayout();
+			this.tabPlaceables.SuspendLayout();
 			this.tabControlEnv.SuspendLayout();
 			this.tabPage2.SuspendLayout();
-			this.tabPage4.SuspendLayout();
+			this.tabEvents.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.tsOptions.SuspendLayout();
@@ -134,8 +136,8 @@ namespace MapEditor
 			// tableLayoutPanel1
 			// 
 			this.tableLayoutPanel1.ColumnCount = 2;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 467F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.tsMap, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.roomEditor1, 1, 1);
 			this.tableLayoutPanel1.Controls.Add(this.tabControlMain, 0, 1);
@@ -148,7 +150,6 @@ namespace MapEditor
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 211F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(934, 434);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
@@ -254,12 +255,22 @@ namespace MapEditor
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 23);
 			// 
+			// roomEditor1
+			// 
+			this.roomEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.roomEditor1.Location = new System.Drawing.Point(470, 28);
+			this.roomEditor1.Name = "roomEditor1";
+			this.roomEditor1.Size = new System.Drawing.Size(461, 403);
+			this.roomEditor1.TabIndex = 6;
+			// 
 			// tabControlMain
 			// 
-			this.tabControlMain.Controls.Add(this.tabPage0);
-			this.tabControlMain.Controls.Add(this.tabPage1);
-			this.tabControlMain.Controls.Add(this.tabPage4);
+			this.tabControlMain.Controls.Add(this.tabProjectData);
+			this.tabControlMain.Controls.Add(this.tabRooms);
+			this.tabControlMain.Controls.Add(this.tabPlaceables);
+			this.tabControlMain.Controls.Add(this.tabEvents);
 			this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabControlMain.ImageList = this.imageList1;
 			this.tabControlMain.Location = new System.Drawing.Point(3, 28);
 			this.tabControlMain.Multiline = true;
 			this.tabControlMain.Name = "tabControlMain";
@@ -267,16 +278,17 @@ namespace MapEditor
 			this.tabControlMain.Size = new System.Drawing.Size(461, 403);
 			this.tabControlMain.TabIndex = 4;
 			// 
-			// tabPage0
+			// tabProjectData
 			// 
-			this.tabPage0.Controls.Add(this.treeViewGMX);
-			this.tabPage0.Location = new System.Drawing.Point(4, 22);
-			this.tabPage0.Name = "tabPage0";
-			this.tabPage0.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage0.Size = new System.Drawing.Size(453, 377);
-			this.tabPage0.TabIndex = 4;
-			this.tabPage0.Text = "ProjectData";
-			this.tabPage0.UseVisualStyleBackColor = true;
+			this.tabProjectData.Controls.Add(this.treeViewGMX);
+			this.tabProjectData.ImageIndex = 2;
+			this.tabProjectData.Location = new System.Drawing.Point(4, 23);
+			this.tabProjectData.Name = "tabProjectData";
+			this.tabProjectData.Padding = new System.Windows.Forms.Padding(3);
+			this.tabProjectData.Size = new System.Drawing.Size(453, 376);
+			this.tabProjectData.TabIndex = 4;
+			this.tabProjectData.Text = "ProjectData";
+			this.tabProjectData.UseVisualStyleBackColor = true;
 			// 
 			// treeViewGMX
 			// 
@@ -287,7 +299,7 @@ namespace MapEditor
 			this.treeViewGMX.Name = "treeViewGMX";
 			this.treeViewGMX.PathSeparator = "/";
 			this.treeViewGMX.SelectedImageIndex = 0;
-			this.treeViewGMX.Size = new System.Drawing.Size(447, 371);
+			this.treeViewGMX.Size = new System.Drawing.Size(447, 370);
 			this.treeViewGMX.StateImageList = this.imageListFolders;
 			this.treeViewGMX.TabIndex = 0;
 			// 
@@ -304,15 +316,39 @@ namespace MapEditor
 			this.imageListFolders.Images.SetKeyName(6, "images.png");
 			this.imageListFolders.Images.SetKeyName(7, "control-record-small.png");
 			// 
-			// tabPage1
+			// tabRooms
 			// 
-			this.tabPage1.Controls.Add(this.tabControlEnv);
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Size = new System.Drawing.Size(453, 377);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "Enviroment";
-			this.tabPage1.UseVisualStyleBackColor = true;
+			this.tabRooms.Controls.Add(this.lbRooms);
+			this.tabRooms.ImageIndex = 0;
+			this.tabRooms.Location = new System.Drawing.Point(4, 23);
+			this.tabRooms.Name = "tabRooms";
+			this.tabRooms.Size = new System.Drawing.Size(453, 376);
+			this.tabRooms.TabIndex = 5;
+			this.tabRooms.Text = "Rooms";
+			this.tabRooms.UseVisualStyleBackColor = true;
+			// 
+			// lbRooms
+			// 
+			this.lbRooms.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbRooms.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.lbRooms.FormattingEnabled = true;
+			this.lbRooms.Location = new System.Drawing.Point(0, 0);
+			this.lbRooms.Name = "lbRooms";
+			this.lbRooms.Size = new System.Drawing.Size(453, 376);
+			this.lbRooms.TabIndex = 0;
+			this.lbRooms.Type = MapEditor.Components.ListBoxEx.ListType.Rooms;
+			this.lbRooms.DoubleClick += new System.EventHandler(this.lbRooms_DoubleClick);
+			// 
+			// tabPlaceables
+			// 
+			this.tabPlaceables.Controls.Add(this.tabControlEnv);
+			this.tabPlaceables.ImageIndex = 1;
+			this.tabPlaceables.Location = new System.Drawing.Point(4, 23);
+			this.tabPlaceables.Name = "tabPlaceables";
+			this.tabPlaceables.Size = new System.Drawing.Size(453, 376);
+			this.tabPlaceables.TabIndex = 0;
+			this.tabPlaceables.Text = "Placeables";
+			this.tabPlaceables.UseVisualStyleBackColor = true;
 			// 
 			// tabControlEnv
 			// 
@@ -322,54 +358,51 @@ namespace MapEditor
 			this.tabControlEnv.Location = new System.Drawing.Point(0, 0);
 			this.tabControlEnv.Name = "tabControlEnv";
 			this.tabControlEnv.SelectedIndex = 0;
-			this.tabControlEnv.Size = new System.Drawing.Size(453, 377);
+			this.tabControlEnv.Size = new System.Drawing.Size(453, 376);
 			this.tabControlEnv.TabIndex = 2;
 			// 
 			// tabPage2
 			// 
-			this.tabPage2.Controls.Add(this.listBox1);
 			this.tabPage2.Controls.Add(this.lbPlaceables);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(445, 351);
+			this.tabPage2.Size = new System.Drawing.Size(445, 350);
 			this.tabPage2.TabIndex = 0;
 			this.tabPage2.Text = "Definitions";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
-			// listBox1
+			// lbPlaceables
 			// 
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.Items.AddRange(new object[] {
-            "a",
-            "b",
-            "c",
-            "d",
-            "e"});
-			this.listBox1.Location = new System.Drawing.Point(226, 57);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(120, 95);
-			this.listBox1.TabIndex = 1;
+			this.lbPlaceables.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbPlaceables.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.lbPlaceables.FormattingEnabled = true;
+			this.lbPlaceables.Location = new System.Drawing.Point(3, 3);
+			this.lbPlaceables.Name = "lbPlaceables";
+			this.lbPlaceables.Size = new System.Drawing.Size(439, 344);
+			this.lbPlaceables.TabIndex = 0;
+			this.lbPlaceables.DoubleClick += new System.EventHandler(this.lbPlaceables_DoubleClick);
 			// 
 			// tabPage3
 			// 
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage3.Size = new System.Drawing.Size(445, 351);
+			this.tabPage3.Size = new System.Drawing.Size(445, 350);
 			this.tabPage3.TabIndex = 1;
 			this.tabPage3.Text = "Instances";
 			this.tabPage3.UseVisualStyleBackColor = true;
 			// 
-			// tabPage4
+			// tabEvents
 			// 
-			this.tabPage4.Controls.Add(this.tabControl1);
-			this.tabPage4.Location = new System.Drawing.Point(4, 22);
-			this.tabPage4.Name = "tabPage4";
-			this.tabPage4.Size = new System.Drawing.Size(453, 377);
-			this.tabPage4.TabIndex = 3;
-			this.tabPage4.Text = "NPCs / Events / Spawns";
-			this.tabPage4.UseVisualStyleBackColor = true;
+			this.tabEvents.Controls.Add(this.tabControl1);
+			this.tabEvents.ImageIndex = 3;
+			this.tabEvents.Location = new System.Drawing.Point(4, 23);
+			this.tabEvents.Name = "tabEvents";
+			this.tabEvents.Size = new System.Drawing.Size(453, 376);
+			this.tabEvents.TabIndex = 3;
+			this.tabEvents.Text = "NPCs / Events / Spawns";
+			this.tabEvents.UseVisualStyleBackColor = true;
 			// 
 			// tabControl1
 			// 
@@ -379,7 +412,7 @@ namespace MapEditor
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(453, 377);
+			this.tabControl1.Size = new System.Drawing.Size(453, 376);
 			this.tabControl1.TabIndex = 1;
 			// 
 			// tabPage5
@@ -387,7 +420,7 @@ namespace MapEditor
 			this.tabPage5.Location = new System.Drawing.Point(4, 22);
 			this.tabPage5.Name = "tabPage5";
 			this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage5.Size = new System.Drawing.Size(445, 351);
+			this.tabPage5.Size = new System.Drawing.Size(445, 350);
 			this.tabPage5.TabIndex = 0;
 			this.tabPage5.Text = "Definitions";
 			this.tabPage5.UseVisualStyleBackColor = true;
@@ -397,10 +430,21 @@ namespace MapEditor
 			this.tabPage66.Location = new System.Drawing.Point(4, 22);
 			this.tabPage66.Name = "tabPage66";
 			this.tabPage66.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage66.Size = new System.Drawing.Size(445, 351);
+			this.tabPage66.Size = new System.Drawing.Size(445, 350);
 			this.tabPage66.TabIndex = 1;
 			this.tabPage66.Text = "Instances";
 			this.tabPage66.UseVisualStyleBackColor = true;
+			// 
+			// imageList1
+			// 
+			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+			this.imageList1.Images.SetKeyName(0, "zone.png");
+			this.imageList1.Images.SetKeyName(1, "leaf.png");
+			this.imageList1.Images.SetKeyName(2, "home.png");
+			this.imageList1.Images.SetKeyName(3, "user-silhouette-question.png");
+			this.imageList1.Images.SetKeyName(4, "exclamation--frame.png");
+			this.imageList1.Images.SetKeyName(5, "bug.png");
 			// 
 			// panel2
 			// 
@@ -610,17 +654,6 @@ namespace MapEditor
 			this.tbNewProject.Size = new System.Drawing.Size(23, 20);
 			this.tbNewProject.Text = "Create New Project";
 			this.tbNewProject.Click += new System.EventHandler(this.tbNewProject_Click);
-			// 
-			// imageList1
-			// 
-			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-			this.imageList1.Images.SetKeyName(0, "zone.png");
-			this.imageList1.Images.SetKeyName(1, "leaf.png");
-			this.imageList1.Images.SetKeyName(2, "home.png");
-			this.imageList1.Images.SetKeyName(3, "user-silhouette-question.png");
-			this.imageList1.Images.SetKeyName(4, "exclamation--frame.png");
-			this.imageList1.Images.SetKeyName(5, "bug.png");
 			// 
 			// statusStrip1
 			// 
@@ -892,28 +925,8 @@ namespace MapEditor
 			// openFileDialog1
 			// 
 			this.openFileDialog1.DefaultExt = "*.project.gmx";
-			this.openFileDialog1.FileName = "openFileDialog1";
 			this.openFileDialog1.Filter = "GM:S Projects|*.project.gmx";
 			this.openFileDialog1.SupportMultiDottedExtensions = true;
-			// 
-			// roomEditor1
-			// 
-			this.roomEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.roomEditor1.Location = new System.Drawing.Point(470, 28);
-			this.roomEditor1.Name = "roomEditor1";
-			this.roomEditor1.Size = new System.Drawing.Size(461, 403);
-			this.roomEditor1.TabIndex = 6;
-			// 
-			// lbPlaceables
-			// 
-			this.lbPlaceables.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lbPlaceables.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-			this.lbPlaceables.FormattingEnabled = true;
-			this.lbPlaceables.Location = new System.Drawing.Point(3, 3);
-			this.lbPlaceables.Name = "lbPlaceables";
-			this.lbPlaceables.Size = new System.Drawing.Size(439, 345);
-			this.lbPlaceables.TabIndex = 0;
-			this.lbPlaceables.DoubleClick += new System.EventHandler(this.lbPlaceables_DoubleClick);
 			// 
 			// MapEditorMain
 			// 
@@ -935,11 +948,12 @@ namespace MapEditor
 			this.tsMap.ResumeLayout(false);
 			this.tsMap.PerformLayout();
 			this.tabControlMain.ResumeLayout(false);
-			this.tabPage0.ResumeLayout(false);
-			this.tabPage1.ResumeLayout(false);
+			this.tabProjectData.ResumeLayout(false);
+			this.tabRooms.ResumeLayout(false);
+			this.tabPlaceables.ResumeLayout(false);
 			this.tabControlEnv.ResumeLayout(false);
 			this.tabPage2.ResumeLayout(false);
-			this.tabPage4.ResumeLayout(false);
+			this.tabEvents.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
@@ -986,8 +1000,8 @@ namespace MapEditor
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
         private System.Windows.Forms.ToolStripButton toolStripButton7;
         private System.Windows.Forms.TabControl tabControlMain;
-		private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage4;
+		private System.Windows.Forms.TabPage tabPlaceables;
+        private System.Windows.Forms.TabPage tabEvents;
         private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPage5;
 		private System.Windows.Forms.TabPage tabPage66;
@@ -1006,7 +1020,7 @@ namespace MapEditor
         private System.Windows.Forms.ToolStripMenuItem rotateToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem instancePropertiesToolStripMenuItem;
-		private System.Windows.Forms.TabPage tabPage0;
+		private System.Windows.Forms.TabPage tabProjectData;
 		private System.Windows.Forms.TreeView treeViewGMX;
 		private System.Windows.Forms.ImageList imageListFolders;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
@@ -1040,8 +1054,9 @@ namespace MapEditor
 		private System.Windows.Forms.ToolStripButton tbUsedResList;
 		private System.Windows.Forms.ToolStripMenuItem tmCloseProject;
 		public ListBoxEx lbPlaceables;
-		private System.Windows.Forms.ListBox listBox1;
 		public System.Windows.Forms.ToolStripStatusLabel statusLabelPlaceables;
+		private System.Windows.Forms.TabPage tabRooms;
+		public ListBoxEx lbRooms;
 	}
 }
 

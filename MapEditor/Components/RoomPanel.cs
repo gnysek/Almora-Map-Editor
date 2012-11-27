@@ -86,11 +86,11 @@ namespace MapEditor.Components
 
 		private void DrawInstances()
 		{
-			if (Manager.Project != null)
+			if (Manager.Room != null)
 			{
-				foreach (PlaceableInstance instance in Manager.Project.EnvInstancesList)
+				foreach (PlaceableInstance instance in Manager.Project.PlaceableInstances)
 				{
-					GraphicsManager.DrawSprite(0, instance.X+5, instance.Y+5, 70, Color.Black);
+					GraphicsManager.DrawSprite(0, instance.X + 5, instance.Y + 5, 70, Color.Black);
 					GraphicsManager.DrawSprite(0, instance.X, instance.Y, 70, Color.White);
 				}
 
@@ -118,7 +118,7 @@ namespace MapEditor.Components
 		#region Paint
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			if (_enabled)
+			if (Manager.Room != null)
 			{
 				// Clear the screen.
 				GraphicsManager.DrawClear(this.BackColor);
@@ -217,7 +217,7 @@ namespace MapEditor.Components
 		{
 			base.OnMouseDown(e);
 
-			if (Manager.Project == null) return;
+			if (Manager.Room == null) return;
 
 			Point snap = GetSnappedPoint(e.Location, new Size(_gridX, _gridY));
 
@@ -234,19 +234,24 @@ namespace MapEditor.Components
 		{
 			base.OnMouseUp(e);
 
+			if (Manager.Room == null) return;
+
 			PlaceableInstance instance = new PlaceableInstance();
 			instance.X = _mouseX;
 			instance.Y = _mouseY;
 
-			Manager.Project.EnvInstancesList.Add(instance);
+			Manager.Project.PlaceableInstances.Add(instance);
 
 			// Force redraw
 			Invalidate();
+
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
+
+			if (Manager.Room == null) return;
 
 			Point snap = GetSnappedPoint(e.Location, new Size(_gridX, _gridY));
 			_drawMousePosition = true;
@@ -257,6 +262,7 @@ namespace MapEditor.Components
 				_mouseY = snap.Y;
 				Invalidate();
 			}
+
 		}
 
 		protected override void OnMouseLeave(EventArgs e)
