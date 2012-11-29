@@ -41,7 +41,7 @@ namespace MapEditor.Components
 			int y1 = 0;
 			int x2 = 0;
 			int y2 = 0;
-			Size canvas = new Size(this.Width, this.Height);
+			Size canvas = getCurrentCanvas();//new Size(this.Width, this.Height);
 			// Calculate line amounts.
 			int cols = (int)(canvas.Width / _gridX / _zoom) + 2;
 			int rows = (int)(canvas.Height / _gridY / _zoom) + 2;
@@ -50,8 +50,8 @@ namespace MapEditor.Components
 			Color color = Color.FromArgb(128, Color.Black);
 
 			// Calculate offsets.
-			int offsetX = Offset.X % 500;
-			int offsetY = Offset.Y % 500;
+			int offsetX = Offset.X % Manager.Room.Width;
+			int offsetY = Offset.Y % Manager.Room.Height;
 
 			Point snap = GetSnappedPoint(new Point(Offset.X - offsetX, Offset.Y - offsetY), new Size(_gridX, _gridY));
 
@@ -84,14 +84,32 @@ namespace MapEditor.Components
 			GraphicsManager.DrawLineBatch();
 		}
 
+		private Size getCurrentCanvas()
+		{
+			Size size = ClientSize;
+
+			if (Manager.Room == null) return size;
+
+			if (ClientSize.Width > Manager.Room.Width)
+			{
+				size.Width = Manager.Room.Width;
+			}
+			if (ClientSize.Height > Manager.Room.Height)
+			{
+				size.Height = Manager.Room.Height;
+			}
+
+			return size;
+		}
+
 		private void DrawInstances()
 		{
 			if (Manager.Room != null)
 			{
 				foreach (PlaceableInstance instance in Manager.Project.PlaceableInstances)
 				{
-					GraphicsManager.DrawSprite(0, instance.X + 5, instance.Y + 5, 70, Color.Black);
-					GraphicsManager.DrawSprite(0, instance.X, instance.Y, 70, Color.White);
+					//GraphicsManager.DrawSprite(0, instance.X + 5, instance.Y + 5, 70, Color.Black);
+					GraphicsManager.DrawSprite(0, instance.X, instance.Y, 0, Color.White);
 				}
 
 				GraphicsManager.DrawSpriteBatch(false);
@@ -125,8 +143,8 @@ namespace MapEditor.Components
 
 				// Begin drawing the scene.
 				GraphicsManager.BeginScene();
-				GraphicsManager.DrawRectangle(new Rectangle(0, 0, 301, 301), Color.Orange, false);
-				GraphicsManager.Scissor = new Rectangle(0, this.Height - 300, 300, 300);
+				GraphicsManager.DrawRectangle(new Rectangle(0, 0, Math.Min(Manager.Room.Width, this.Width) + 1, Math.Min(Manager.Room.Height, this.Height) + 1), Color.Orange, false);
+				GraphicsManager.Scissor = new Rectangle(0, 0, this.Width, this.Height);
 
 				DrawInstances();
 				DrawGrid();
@@ -260,6 +278,7 @@ namespace MapEditor.Components
 			{
 				_mouseX = snap.X;
 				_mouseY = snap.Y;
+				Manager.MainWindow.statusLabelMousePos.Text = "X: " + _mouseX.ToString() + ", Y: " + _mouseY.ToString();
 				Invalidate();
 			}
 
