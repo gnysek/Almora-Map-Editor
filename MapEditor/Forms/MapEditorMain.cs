@@ -211,17 +211,35 @@ namespace MapEditor
 
 		private void lbPlaceables_DoubleClick(object sender, EventArgs e)
 		{
-			if (lbPlaceables.SelectedIndex > -1 && lbPlaceables.SelectedIndex < lbPlaceables.Items.Count)
+			//if (lbPlaceables.SelectedIndex > -1 && lbPlaceables.SelectedIndex < lbPlaceables.Items.Count)
+			//{
+			addOrEditPlaceable(true);
+			//}
+		}
+
+		private void tbEditItem_Click(object sender, EventArgs e)
+		{
+			switch (tabControlMain.SelectedTab.Text)
 			{
-				addOrEditPlaceable(true);
+				case "Placeables": addOrEditPlaceable(true); break;
+				case "Rooms": addOrEditRoom(true); break;
 			}
 		}
 
 		private void lbRooms_DoubleClick(object sender, EventArgs e)
 		{
-			if (lbRooms.SelectedIndex > -1 && lbRooms.SelectedIndex < lbRooms.Items.Count)
+			if (lbRooms.SelectedIndex > -1)
 			{
-				addOrEditRoom(true);
+				if (Manager.Room != null)
+				{
+					if (MessageBox.Show("Do you want to close current room?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.OK)
+					{
+						return;
+					}
+				}
+
+				Manager.Project.Room = Manager.Project.RoomList[lbRooms.SelectedIndex];
+				roomEditor1.Invalidate();
 			}
 		}
 

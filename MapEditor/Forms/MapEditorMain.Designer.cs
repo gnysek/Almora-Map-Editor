@@ -45,17 +45,14 @@ namespace MapEditor
 			this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.roomEditor1 = new MapEditor.Components.RoomEditor();
 			this.tabControlMain = new System.Windows.Forms.TabControl();
 			this.tabProjectData = new System.Windows.Forms.TabPage();
 			this.treeViewGMX = new System.Windows.Forms.TreeView();
 			this.imageListFolders = new System.Windows.Forms.ImageList(this.components);
 			this.tabRooms = new System.Windows.Forms.TabPage();
-			this.lbRooms = new MapEditor.Components.ListBoxEx();
 			this.tabPlaceables = new System.Windows.Forms.TabPage();
 			this.tabControlEnv = new System.Windows.Forms.TabControl();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.lbPlaceables = new MapEditor.Components.ListBoxEx();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.tabEvents = new System.Windows.Forms.TabPage();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -115,6 +112,10 @@ namespace MapEditor
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+			this.statusLabelMousePos = new System.Windows.Forms.ToolStripStatusLabel();
+			this.roomEditor1 = new MapEditor.Components.RoomEditor();
+			this.lbRooms = new MapEditor.Components.ListBoxEx();
+			this.lbPlaceables = new MapEditor.Components.ListBoxEx();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tsMap.SuspendLayout();
 			this.tabControlMain.SuspendLayout();
@@ -255,14 +256,6 @@ namespace MapEditor
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 23);
 			// 
-			// roomEditor1
-			// 
-			this.roomEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.roomEditor1.Location = new System.Drawing.Point(470, 28);
-			this.roomEditor1.Name = "roomEditor1";
-			this.roomEditor1.Size = new System.Drawing.Size(461, 403);
-			this.roomEditor1.TabIndex = 6;
-			// 
 			// tabControlMain
 			// 
 			this.tabControlMain.Controls.Add(this.tabProjectData);
@@ -327,18 +320,6 @@ namespace MapEditor
 			this.tabRooms.Text = "Rooms";
 			this.tabRooms.UseVisualStyleBackColor = true;
 			// 
-			// lbRooms
-			// 
-			this.lbRooms.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lbRooms.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-			this.lbRooms.FormattingEnabled = true;
-			this.lbRooms.Location = new System.Drawing.Point(0, 0);
-			this.lbRooms.Name = "lbRooms";
-			this.lbRooms.Size = new System.Drawing.Size(453, 376);
-			this.lbRooms.TabIndex = 0;
-			this.lbRooms.Type = MapEditor.Components.ListBoxEx.ListType.Rooms;
-			this.lbRooms.DoubleClick += new System.EventHandler(this.lbRooms_DoubleClick);
-			// 
 			// tabPlaceables
 			// 
 			this.tabPlaceables.Controls.Add(this.tabControlEnv);
@@ -371,17 +352,6 @@ namespace MapEditor
 			this.tabPage2.TabIndex = 0;
 			this.tabPage2.Text = "Definitions";
 			this.tabPage2.UseVisualStyleBackColor = true;
-			// 
-			// lbPlaceables
-			// 
-			this.lbPlaceables.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lbPlaceables.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-			this.lbPlaceables.FormattingEnabled = true;
-			this.lbPlaceables.Location = new System.Drawing.Point(3, 3);
-			this.lbPlaceables.Name = "lbPlaceables";
-			this.lbPlaceables.Size = new System.Drawing.Size(439, 344);
-			this.lbPlaceables.TabIndex = 0;
-			this.lbPlaceables.DoubleClick += new System.EventHandler(this.lbPlaceables_DoubleClick);
 			// 
 			// tabPage3
 			// 
@@ -501,6 +471,7 @@ namespace MapEditor
 			this.tbEditItem.Name = "tbEditItem";
 			this.tbEditItem.Size = new System.Drawing.Size(23, 20);
 			this.tbEditItem.Text = "Edit";
+			this.tbEditItem.Click += new System.EventHandler(this.tbEditItem_Click);
 			// 
 			// tbDuplicateItem
 			// 
@@ -664,7 +635,8 @@ namespace MapEditor
             this.toolStripStatusLabel3,
             this.statusLabelPlaceables,
             this.toolStripStatusLabel5,
-            this.toolStripStatusLabel6});
+            this.toolStripStatusLabel6,
+            this.statusLabelMousePos});
 			this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.statusStrip1.Location = new System.Drawing.Point(0, 458);
 			this.statusStrip1.Name = "statusStrip1";
@@ -928,6 +900,43 @@ namespace MapEditor
 			this.openFileDialog1.Filter = "GM:S Projects|*.project.gmx";
 			this.openFileDialog1.SupportMultiDottedExtensions = true;
 			// 
+			// statusLabelMousePos
+			// 
+			this.statusLabelMousePos.Name = "statusLabelMousePos";
+			this.statusLabelMousePos.Size = new System.Drawing.Size(12, 19);
+			this.statusLabelMousePos.Text = "-";
+			// 
+			// roomEditor1
+			// 
+			this.roomEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.roomEditor1.Location = new System.Drawing.Point(470, 28);
+			this.roomEditor1.Name = "roomEditor1";
+			this.roomEditor1.Size = new System.Drawing.Size(461, 403);
+			this.roomEditor1.TabIndex = 6;
+			// 
+			// lbRooms
+			// 
+			this.lbRooms.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbRooms.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.lbRooms.FormattingEnabled = true;
+			this.lbRooms.Location = new System.Drawing.Point(0, 0);
+			this.lbRooms.Name = "lbRooms";
+			this.lbRooms.Size = new System.Drawing.Size(453, 376);
+			this.lbRooms.TabIndex = 0;
+			this.lbRooms.Type = MapEditor.Components.ListBoxEx.ListType.Rooms;
+			this.lbRooms.DoubleClick += new System.EventHandler(this.lbRooms_DoubleClick);
+			// 
+			// lbPlaceables
+			// 
+			this.lbPlaceables.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbPlaceables.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.lbPlaceables.FormattingEnabled = true;
+			this.lbPlaceables.Location = new System.Drawing.Point(3, 3);
+			this.lbPlaceables.Name = "lbPlaceables";
+			this.lbPlaceables.Size = new System.Drawing.Size(439, 344);
+			this.lbPlaceables.TabIndex = 0;
+			this.lbPlaceables.DoubleClick += new System.EventHandler(this.lbPlaceables_DoubleClick);
+			// 
 			// MapEditorMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1057,6 +1066,7 @@ namespace MapEditor
 		public System.Windows.Forms.ToolStripStatusLabel statusLabelPlaceables;
 		private System.Windows.Forms.TabPage tabRooms;
 		public ListBoxEx lbRooms;
+		public System.Windows.Forms.ToolStripStatusLabel statusLabelMousePos;
 	}
 }
 
