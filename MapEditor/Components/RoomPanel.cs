@@ -112,6 +112,15 @@ namespace MapEditor.Components
 					GraphicsManager.DrawSprite(0, instance.X, instance.Y, 0, Color.White);
 				}
 
+				if (Manager.MainWindow.lbPlaceables.SelectedIndex > -1)
+				{
+					try
+					{
+						GraphicsManager.DrawSprite(0, _mouseX, _mouseY, 0, Color.Orange);
+					}
+					catch { }
+				}
+
 				GraphicsManager.DrawSpriteBatch(false);
 			}
 		}
@@ -143,7 +152,7 @@ namespace MapEditor.Components
 
 				// Begin drawing the scene.
 				GraphicsManager.BeginScene();
-				GraphicsManager.DrawRectangle(new Rectangle(0, 0, Math.Min(Manager.Room.Width, this.Width) + 1, Math.Min(Manager.Room.Height, this.Height) + 1), Color.Orange, false);
+				GraphicsManager.DrawRectangle(new Rectangle(Offset.X, Offset.Y, Math.Min(Manager.Room.Width, this.Width) + 1, Math.Min(Manager.Room.Height, this.Height) + 1), Color.Orange, false);
 				GraphicsManager.Scissor = new Rectangle(0, 0, this.Width, this.Height);
 
 				DrawInstances();
