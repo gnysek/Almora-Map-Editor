@@ -166,6 +166,12 @@ namespace MapEditor
 		private void addOrEditPlaceable(bool edit)
 		{
 			string defName = "Undefined Room " + lbPlaceables.Items.Count.ToString();
+
+			if (edit)
+			{
+				if (lbPlaceables.Items.Count < 1 || lbPlaceables.SelectedIndex < 0) return;
+			}
+
 			using (PlaceableForm form = new PlaceableForm())
 			{
 				PlacebleElement elem;

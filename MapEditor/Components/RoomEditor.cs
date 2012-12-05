@@ -23,9 +23,8 @@ namespace MapEditor.Components
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			SetupScrollbars();
-
 			_rPanel.Invalidate();
+			SetupScrollbars();
 		}
 
 		private void SetupScrollbars()
@@ -38,18 +37,15 @@ namespace MapEditor.Components
 
 			if (Manager.Room == null) return;
 
-			if (Manager.Room.Width > _rPanel.ClientSize.Width)
+			if (Manager.Room.Width - _rPanel/*.ClientSize*/.Width > 0)
 			{
 				tableLayoutPanel1.RowStyles[1].Height = 17;
+				horizontalScroll.Maximum = Manager.Room.Width - _rPanel.ClientSize.Width - 1;
 			}
-			if (Manager.Room.Height > _rPanel.ClientSize.Height)
+			if (Manager.Room.Height - _rPanel.ClientSize.Height > 0)
 			{
 				tableLayoutPanel1.ColumnStyles[1].Width = 17;
-			}
-
-			if (Manager.Room.Width - _rPanel.ClientSize.Width > 0)
-			{
-				horizontalScroll.Maximum = Manager.Room.Width - _rPanel.ClientSize.Width - 1;
+				verticalScroll.Maximum = Manager.Room.Height - _rPanel.ClientSize.Height - 1;
 			}
 		}
 
