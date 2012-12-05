@@ -2,6 +2,5 @@
 syntax: glob
 
 MapEditor\bin\Debug\*
-MapEditor\bin\Release\*.pdb
-MapEditor\bin\Release\*.vshost*
+MapEditor\bin\Release\*
 obj\*
