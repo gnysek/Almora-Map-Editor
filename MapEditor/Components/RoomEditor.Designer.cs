@@ -71,6 +71,7 @@
 			this.horizontalScroll.Maximum = 10;
 			this.horizontalScroll.Name = "horizontalScroll";
 			this.horizontalScroll.Size = new System.Drawing.Size(130, 17);
+			this.horizontalScroll.SmallChange = 5;
 			this.horizontalScroll.TabIndex = 0;
 			this.horizontalScroll.ValueChanged += new System.EventHandler(this.horizontalScroll_ValueChanged);
 			// 

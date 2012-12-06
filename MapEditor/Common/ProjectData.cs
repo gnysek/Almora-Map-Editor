@@ -19,15 +19,39 @@ namespace MapEditor.Common
 		public string ProjectSource = "";
 		public bool Saved = false;
 		public bool Loaded = false;
-		public MapRoom Room = null;
+		private MapRoom _Room = null;
+		private PlaceableElement _Instance = null;
+		private EventElement _Event = null;
 
-		public List<PlacebleElement> PlaceableList = new List<PlacebleElement>();
-		public List<PlaceableInstance> PlaceableInstances = new List<PlaceableInstance>();
+		public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
+		public List<PlaceableInstance> PlacedInstances = new List<PlaceableInstance>();
 		public List<EventElement> EventList = new List<EventElement>();
-		public List<EventInstance> EventInstances = new List<EventInstance>();
+		public List<EventInstance> PlacedEvents = new List<EventInstance>();
 		public List<MapRoom> RoomList = new List<MapRoom>();
 		public List<string> RegisteredResources = new List<string>();
 		public GMItem allItems = null;
+
+		#region Magical Properties
+
+		public MapRoom Room
+		{
+			get { return _Room; }
+			set { _Room = value; Instance = PlaceableList[1]; }
+		}
+
+		public PlaceableElement Instance
+		{
+			get { return (_Room == null) ? null : _Instance; }
+			set { _Instance = (_Room == null) ? null : value; }
+		}
+
+		public EventElement Event
+		{
+			get { return (_Room == null) ? null : _Event; }
+			set { _Event = (_Room == null) ? null : value; }
+		}
+
+		#endregion
 
 		public ProjectData(string srcPath)
 		{
@@ -83,7 +107,7 @@ namespace MapEditor.Common
 			}
 
 			XmlElement placeables = file.CreateElement("placeables");
-			foreach (PlacebleElement elem in PlaceableList)
+			foreach (PlaceableElement elem in PlaceableList)
 			{
 				placeables.AppendChild(elem.toXml(file));
 			}
@@ -92,6 +116,7 @@ namespace MapEditor.Common
 			foreach (MapRoom elem in RoomList)
 			{
 				rooms.AppendChild(elem.toXml(file));
+				elem.saveRoomToXml();
 			}
 
 			assets.AppendChild(options);
@@ -138,7 +163,7 @@ namespace MapEditor.Common
 				root = XMLfile.SelectSingleNode("assets/placeables");
 				foreach (XmlNode n in root)
 				{
-					PlacebleElement e = new PlacebleElement()
+					PlaceableElement e = new PlaceableElement()
 					{
 						Name = n.Attributes["name"].Value,
 						Sprite = n.SelectSingleNode("sprite").InnerText,
@@ -172,6 +197,7 @@ namespace MapEditor.Common
 					};
 
 					RoomList.Add(e);
+					_readAMERoom(ProjectSource + "\\amedata\\" + e.Name + ".room.ame");
 				}
 			}
 			catch (Exception e)
@@ -181,7 +207,35 @@ namespace MapEditor.Common
 
 			regenerateEnvDefList();
 			regenerateRoomList();
+			regenerateTextureList();
+		}
 
+		private void _readAMERoom(string path)
+		{
+			XmlDocument XMLfile = new XmlDocument();
+			XMLfile.Load(path);
+
+			XmlNode root = XMLfile.SelectSingleNode("assets/instances");
+
+			foreach (XmlNode n in root)
+			{
+				foreach (PlaceableElement pl in PlaceableList)
+				{
+					if (pl.Name == n.Attributes["name"].Value)
+					{
+						PlaceableInstance inst = new PlaceableInstance()
+						{
+							X = int.Parse(n.Attributes["x"].Value),
+							Y = int.Parse(n.Attributes["y"].Value),
+							Element = pl,
+						};
+						PlacedInstances.Add(inst);
+						break;
+					}
+				}
+
+
+			}
 		}
 
 		private void _readGMX()
@@ -314,11 +368,11 @@ namespace MapEditor.Common
 			}
 
 
-			string spritePath = ProjectSource + "\\sprites\\images\\" + name + "_0.png";
-			if (File.Exists(spritePath))
-			{
-				GraphicsManager.LoadTexture(new Bitmap(spritePath), RegisteredResources.Count);
-			}
+			//string spritePath = ProjectSource + "\\sprites\\images\\" + name + "_0.png";
+			//if (File.Exists(spritePath))
+			//{
+			//    GraphicsManager.LoadTexture(new Bitmap(spritePath), RegisteredResources.Count);
+			//}
 			RegisteredResources.Add(name);
 		}
 
@@ -349,7 +403,7 @@ namespace MapEditor.Common
 		#region ENVinstances
 		public void addEnvDef(string name)
 		{
-			PlacebleElement n = new PlacebleElement() { Name = name };
+			PlaceableElement n = new PlaceableElement() { Name = name };
 			PlaceableList.Add(n);
 		}
 
@@ -358,7 +412,7 @@ namespace MapEditor.Common
 			ListBoxEx list = Manager.MainWindow.lbPlaceables;
 			{
 				list.Items.Clear();
-				foreach (PlacebleElement elem in PlaceableList)
+				foreach (PlaceableElement elem in PlaceableList)
 				{
 					list.Items.Add(elem.Name);
 				}
@@ -376,6 +430,30 @@ namespace MapEditor.Common
 				{
 					list.Items.Add(elem.Name);
 				}
+			}
+		}
+
+		public void regenerateTextureList()
+		{
+			GraphicsManager.DeleteTextures();
+			int i = 0;
+			Manager.MainWindow.tsProgress.Maximum = RegisteredResources.Count;
+			Manager.MainWindow.tsProgress.Value = 0;
+			Manager.MainWindow.tsProgress.Visible = true;
+			foreach (string file in RegisteredResources)
+			{
+				string spritePath = ProjectSource + "\\sprites\\images\\" + file + "_0.png";
+				if (File.Exists(spritePath))
+				{
+					GraphicsManager.LoadTexture(new Bitmap(spritePath), i++);
+				}
+				Manager.MainWindow.tsProgress.Value++;
+			}
+			Manager.MainWindow.tsProgress.Visible = false;
+
+			foreach (PlaceableElement elem in PlaceableList)
+			{
+				elem.textureId = RegisteredResources.IndexOf(elem.Sprite);
 			}
 		}
 		#endregion

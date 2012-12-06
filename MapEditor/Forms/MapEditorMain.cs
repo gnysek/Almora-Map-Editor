@@ -38,12 +38,14 @@ namespace MapEditor
 				{
 					treeViewGMX.Nodes.Clear();
 				}
+				tsMap.Enabled = false;
 			}
 			else
 			{
 				tbSaveProject.Enabled = true;
 				tsEditors.Enabled = true;
 				tsOptions.Enabled = true;
+				tsMap.Enabled = (Manager.Room != null);
 			}
 
 			_ensureMenusDisabled();
@@ -108,6 +110,7 @@ namespace MapEditor
 				{
 					Manager.Project.checkForRegisteredRes();
 					Manager.Project.renderItemsTree(treeViewGMX);
+					Manager.Project.regenerateTextureList();
 				}
 			}
 		}
@@ -120,6 +123,9 @@ namespace MapEditor
 		private void tmCloseProject_Click(object sender, EventArgs e)
 		{
 			Manager.dropProject();
+			lbPlaceables.Items.Clear();
+			lbRooms.Items.Clear();
+			roomEditor1.Invalidate();
 			ensureButtonsDisabled();
 		}
 
@@ -165,7 +171,7 @@ namespace MapEditor
 
 		private void addOrEditPlaceable(bool edit)
 		{
-			string defName = "Undefined Room " + lbPlaceables.Items.Count.ToString();
+			string defName = "Undefined Placeable " + lbPlaceables.Items.Count.ToString();
 
 			if (edit)
 			{
@@ -174,7 +180,7 @@ namespace MapEditor
 
 			using (PlaceableForm form = new PlaceableForm())
 			{
-				PlacebleElement elem;
+				PlaceableElement elem;
 				if (edit)
 				{
 					elem = Manager.Project.PlaceableList[lbPlaceables.SelectedIndex];
@@ -183,7 +189,7 @@ namespace MapEditor
 				}
 				else
 				{
-					elem = new PlacebleElement() { Name = defName };
+					elem = new PlaceableElement() { Name = defName };
 					form.Element = elem;
 					form.Text = "Add new Placeable Definition: " + defName;
 				}
@@ -201,6 +207,8 @@ namespace MapEditor
 					Manager.Project.regenerateEnvDefList();
 				}
 			}
+
+			statusLabelPlaceables.Text = Manager.Project.PlaceableList.Count.ToString();
 		}
 
 		private void tbAddItem_Click(object sender, EventArgs e)
@@ -219,8 +227,15 @@ namespace MapEditor
 		{
 			//if (lbPlaceables.SelectedIndex > -1 && lbPlaceables.SelectedIndex < lbPlaceables.Items.Count)
 			//{
-			addOrEditPlaceable(true);
+			//addOrEditPlaceable(true);
 			//}
+			if (lbPlaceables.SelectedIndex > -1)
+			{
+				if (Manager.Room != null)
+				{
+					Manager.Project.Instance = Manager.Project.PlaceableList[lbPlaceables.SelectedIndex];
+				}
+			}
 		}
 
 		private void tbEditItem_Click(object sender, EventArgs e)
@@ -245,7 +260,12 @@ namespace MapEditor
 				}
 
 				Manager.Project.Room = Manager.Project.RoomList[lbRooms.SelectedIndex];
+				if (Manager.Project.PlaceableList.Count > 0)
+				{
+					Manager.Project.Instance = Manager.Project.PlaceableList[0];
+				}
 				roomEditor1.Invalidate();
+				ensureButtonsDisabled();
 			}
 		}
 

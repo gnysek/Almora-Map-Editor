@@ -106,17 +106,29 @@ namespace MapEditor.Components
 		{
 			if (Manager.Room != null)
 			{
-				foreach (PlaceableInstance instance in Manager.Project.PlaceableInstances)
+				foreach (PlaceableInstance instance in Manager.Project.PlacedInstances)
 				{
-					//GraphicsManager.DrawSprite(0, instance.X + 5, instance.Y + 5, 70, Color.Black);
-					GraphicsManager.DrawSprite(0, instance.X, instance.Y, 0, Color.White);
+					if (instance.Element != null)
+					{
+						GraphicsManager.DrawSprite(instance.Element.textureId, instance.X, instance.Y, 0, Color.White);
+					}
 				}
 
 				if (Manager.MainWindow.lbPlaceables.SelectedIndex > -1)
 				{
 					try
 					{
-						GraphicsManager.DrawSprite(0, _mouseX, _mouseY, 0, Color.Orange);
+						//string spr = Manager.Project.PlaceableList[Manager.MainWindow.lbPlaceables.SelectedIndex].Sprite;
+						//int iof = Manager.Project.RegisteredResources.IndexOf(spr);
+						//if (iof > -1)
+						//{
+						//    GraphicsManager.DrawSprite(iof, _mouseX, _mouseY, 0, Color.Orange);
+						//}
+
+						if (Manager.Project.Instance != null)
+						{
+							GraphicsManager.DrawSprite(Manager.Project.Instance.textureId, _mouseX, _mouseY, 0, Color.Yellow);
+						}
 					}
 					catch { }
 				}
@@ -152,7 +164,29 @@ namespace MapEditor.Components
 
 				// Begin drawing the scene.
 				GraphicsManager.BeginScene();
-				GraphicsManager.DrawRectangle(new Rectangle(Offset.X, Offset.Y, Math.Min(Manager.Room.Width, this.Width) + 1, Math.Min(Manager.Room.Height, this.Height) + 1), Color.Orange, false);
+				int sq = 0;
+				int lastStartedFrom = 1;
+				for (int i = 0; i < Math.Min(Manager.Room.Width, this.Width); i += _gridX / 2)
+				{
+					if (lastStartedFrom == sq % 2)
+					{
+						sq++;
+					}
+
+					lastStartedFrom = sq % 2;
+
+					for (int j = 0; j < Math.Min(Manager.Room.Height, this.Height); j += _gridY / 2)
+					{
+						GraphicsManager.DrawRectangle(
+							new Rectangle(Offset.X + i, Offset.Y + j, 30, 30),
+							(sq % 2 == 1) ? Color.Silver : Color.White,
+							false
+							);
+						sq++;
+					}
+				}
+
+				//GraphicsManager.DrawRectangle(new Rectangle(Offset.X, Offset.Y, Math.Min(Manager.Room.Width, this.Width) + 1, Math.Min(Manager.Room.Height, this.Height) + 1), Color.Orange, false);
 				GraphicsManager.Scissor = new Rectangle(0, 0, this.Width, this.Height);
 
 				DrawInstances();
@@ -262,12 +296,14 @@ namespace MapEditor.Components
 			base.OnMouseUp(e);
 
 			if (Manager.Room == null) return;
+			if (Manager.Project.Instance == null) return;
 
 			PlaceableInstance instance = new PlaceableInstance();
 			instance.X = _mouseX;
 			instance.Y = _mouseY;
+			instance.Element = Manager.Project.Instance;
 
-			Manager.Project.PlaceableInstances.Add(instance);
+			Manager.Project.PlacedInstances.Add(instance);
 
 			// Force redraw
 			Invalidate();
