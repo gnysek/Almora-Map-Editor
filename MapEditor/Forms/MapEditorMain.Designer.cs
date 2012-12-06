@@ -86,6 +86,7 @@ namespace MapEditor
 			this.statusLabelPlaceables = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel5 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel6 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.statusLabelMousePos = new System.Windows.Forms.ToolStripStatusLabel();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tmSaveProject = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,7 +113,7 @@ namespace MapEditor
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-			this.statusLabelMousePos = new System.Windows.Forms.ToolStripStatusLabel();
+			this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
 			this.roomEditor1 = new MapEditor.Components.RoomEditor();
 			this.lbRooms = new MapEditor.Components.ListBoxEx();
 			this.lbPlaceables = new MapEditor.Components.ListBoxEx();
@@ -636,7 +637,8 @@ namespace MapEditor
             this.statusLabelPlaceables,
             this.toolStripStatusLabel5,
             this.toolStripStatusLabel6,
-            this.statusLabelMousePos});
+            this.statusLabelMousePos,
+            this.tsProgress});
 			this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.statusStrip1.Location = new System.Drawing.Point(0, 458);
 			this.statusStrip1.Name = "statusStrip1";
@@ -682,6 +684,12 @@ namespace MapEditor
 			this.toolStripStatusLabel6.Name = "toolStripStatusLabel6";
 			this.toolStripStatusLabel6.Size = new System.Drawing.Size(17, 19);
 			this.toolStripStatusLabel6.Text = "0";
+			// 
+			// statusLabelMousePos
+			// 
+			this.statusLabelMousePos.Name = "statusLabelMousePos";
+			this.statusLabelMousePos.Size = new System.Drawing.Size(12, 19);
+			this.statusLabelMousePos.Text = "-";
 			// 
 			// menuStrip1
 			// 
@@ -900,11 +908,11 @@ namespace MapEditor
 			this.openFileDialog1.Filter = "GM:S Projects|*.project.gmx";
 			this.openFileDialog1.SupportMultiDottedExtensions = true;
 			// 
-			// statusLabelMousePos
+			// tsProgress
 			// 
-			this.statusLabelMousePos.Name = "statusLabelMousePos";
-			this.statusLabelMousePos.Size = new System.Drawing.Size(12, 19);
-			this.statusLabelMousePos.Text = "-";
+			this.tsProgress.Name = "tsProgress";
+			this.tsProgress.Size = new System.Drawing.Size(100, 18);
+			this.tsProgress.Visible = false;
 			// 
 			// roomEditor1
 			// 
@@ -1067,6 +1075,7 @@ namespace MapEditor
 		private System.Windows.Forms.TabPage tabRooms;
 		public ListBoxEx lbRooms;
 		public System.Windows.Forms.ToolStripStatusLabel statusLabelMousePos;
+		public System.Windows.Forms.ToolStripProgressBar tsProgress;
 	}
 }
 

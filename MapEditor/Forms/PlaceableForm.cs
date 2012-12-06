@@ -12,7 +12,7 @@ namespace MapEditor.Forms
 {
 	public partial class PlaceableForm : Form
 	{
-		public PlacebleElement Element = null;
+		public PlaceableElement Element = null;
 
 		public PlaceableForm()
 		{

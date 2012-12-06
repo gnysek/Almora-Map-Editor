@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace MapEditor.Common
 {
-	public class PlacebleElement
+	public class PlaceableElement
 	{
 		public const string SprDefName = "<no sprite>";
 		public const string MaskDefName = "<same as sprite>";
@@ -19,6 +19,7 @@ namespace MapEditor.Common
 		private bool _wind = false;
 		private bool _multi = false;
 		private bool _shadow = false;
+		public int textureId = -1;
 
 		public string Name
 		{

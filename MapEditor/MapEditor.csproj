@@ -68,6 +68,12 @@
     <Compile Include="Components\ListBoxEx.Designer.cs">
       <DependentUpon>ListBoxEx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LoadingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoadingForm.Designer.cs">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\PlaceableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +127,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Components\RoomEditor.resx">
       <DependentUpon>RoomEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoadingForm.resx">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MapEditorMain.resx">
       <DependentUpon>MapEditorMain.cs</DependentUpon>
