@@ -20,6 +20,19 @@ namespace MapEditor
 			Manager.MainWindow = this;
 		}
 
+		public BrushMode CurrentBrush
+		{
+			get { return roomEditor1._rPanel.CurrentBrush; }
+			set
+			{
+				roomEditor1._rPanel.CurrentBrush = value;
+				tbSelectMap.Checked = (value == BrushMode.Select);
+				tbPaintMap.Checked = (value == BrushMode.Paint);
+				tbRotateMap.Checked = (value == BrushMode.Rotate);
+				tbMoveMap.Checked = (value == BrushMode.Move);
+			}
+		}
+
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using (AboutWindow form = new AboutWindow())
@@ -150,7 +163,7 @@ namespace MapEditor
 				{
 					elem = new MapRoom() { Name = defName, Width = 1024, Height = 768 };
 					form.Element = elem;
-					form.Text = "Add new Room Definition: " + defName;
+					form.Text = "Paint new Room Definition: " + defName;
 				}
 
 				if (form.ShowDialog() == DialogResult.OK)
@@ -191,7 +204,7 @@ namespace MapEditor
 				{
 					elem = new PlaceableElement() { Name = defName };
 					form.Element = elem;
-					form.Text = "Add new Placeable Definition: " + defName;
+					form.Text = "Paint new Placeable Definition: " + defName;
 				}
 
 				if (form.ShowDialog() == DialogResult.OK)
@@ -225,15 +238,12 @@ namespace MapEditor
 
 		private void lbPlaceables_DoubleClick(object sender, EventArgs e)
 		{
-			//if (lbPlaceables.SelectedIndex > -1 && lbPlaceables.SelectedIndex < lbPlaceables.Items.Count)
-			//{
-			//addOrEditPlaceable(true);
-			//}
 			if (lbPlaceables.SelectedIndex > -1)
 			{
 				if (Manager.Room != null)
 				{
 					Manager.Project.Instance = Manager.Project.PlaceableList[lbPlaceables.SelectedIndex];
+					CurrentBrush = BrushMode.Paint;
 				}
 			}
 		}
@@ -266,7 +276,28 @@ namespace MapEditor
 				}
 				roomEditor1.Invalidate();
 				ensureButtonsDisabled();
+				CurrentBrush = BrushMode.Select;
 			}
+		}
+
+		private void tbSelectMap_Click(object sender, EventArgs e)
+		{
+			CurrentBrush = BrushMode.Select;
+		}
+
+		private void tbPaintMap_Click(object sender, EventArgs e)
+		{
+			CurrentBrush = BrushMode.Paint;
+		}
+
+		private void tbMoveMap_Click(object sender, EventArgs e)
+		{
+			CurrentBrush = BrushMode.Move;
+		}
+
+		private void tbRotateMap_Click(object sender, EventArgs e)
+		{
+			CurrentBrush = BrushMode.Rotate;
 		}
 
 

@@ -262,7 +262,7 @@ namespace MapEditor.Common
 
 					nodeElementsName = nodeName;//root.Attributes["name"].InnerText;
 
-					//TreeNode main = treeViewGMX.Nodes.Add(fup(nodeElementsName), fup(nodeElementsName));
+					//TreeNode main = treeViewGMX.Nodes.Paint(fup(nodeElementsName), fup(nodeElementsName));
 
 					GMItem main = new GMItem(nodeElementsName);
 					allItems.add(main);
@@ -283,14 +283,14 @@ namespace MapEditor.Common
 				if (n.Attributes["name"] != null)
 				{
 					// group
-					//TreeNode sub = main.Nodes.Add(n.Attributes["name"].InnerText);
+					//TreeNode sub = main.Nodes.Paint(n.Attributes["name"].InnerText);
 					GMItem sub = new GMItem(n.Attributes["name"].InnerText);
 					_readSubNode(n, nodeName, nodeElementsName, sub);
 					main.add(sub);
 				}
 				else
 				{
-					//TreeNode sub = main.Nodes.Add(n.InnerText, Path.GetFileName(n.InnerText));
+					//TreeNode sub = main.Nodes.Paint(n.InnerText, Path.GetFileName(n.InnerText));
 					//sub.ImageIndex = sub.SelectedImageIndex = 1;
 					//sub.ContextMenuStrip = contextMenuStrip2;
 					string name = (nodeName == "scripts") ? /*n.InnerText*/ Path.GetFileName(n.InnerText) /*+ ".gml"*/ : Path.GetFileName(n.InnerText)/*n.InnerText + "." + n.Name + ".gmx"*/;
@@ -315,7 +315,7 @@ namespace MapEditor.Common
 				Tree.Nodes.Add("NodeInternal", "Internal Files");
 			}
 
-			//TreeNode t = treeViewGMX.Nodes["NodeGM"].Nodes.Add(Manager.Project.allItems.Name);
+			//TreeNode t = treeViewGMX.Nodes["NodeGM"].Nodes.Paint(Manager.Project.allItems.Name);
 			Tree.ExpandAll();
 
 			_treeAddGMItemGroup(NodeGM, Manager.Project.allItems.getSubitems());

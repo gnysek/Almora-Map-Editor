@@ -94,7 +94,7 @@ namespace MapEditor.Components
 					e.Graphics.FillRectangle(new SolidBrush(this.BackColor), e.Bounds);
 
 				// Draw the text.
-				e.Graphics.DrawString(text + ((e.Index == SelectedIndex) ? "*" : ""), this.Font, new SolidBrush(this.ForeColor), 0, e.Bounds.Y);
+				e.Graphics.DrawString(text /*+ ((e.Index == SelectedIndex) ? "*" : "")*/, this.Font, new SolidBrush(this.ForeColor), 0, e.Bounds.Y);
 			}
 		}
 
@@ -180,6 +180,7 @@ namespace MapEditor.Components
 					case ListType.EventInstances: text = "- No Instances -"; break;
 					case ListType.Events: text = "- No Event Definitions -"; break;
 					case ListType.Placeables: text = "- No Placeable Definitions -"; break;
+					case ListType.Rooms: text = "- No Room Definitions -"; break;
 					default: text = "- No Definitions -"; break;
 				}
 

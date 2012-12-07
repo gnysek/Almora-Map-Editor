@@ -18,7 +18,7 @@ namespace MapEditor.Components
 			SetupScrollbars();
 
 			// Set the backcolor for mock visual styled border.
-			// BackColor = System.Windows.Forms.VisualStyles.VisualStyleInformation.TextControlBorder;
+			BackColor = System.Windows.Forms.VisualStyles.VisualStyleInformation.TextControlBorder;
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -29,8 +29,8 @@ namespace MapEditor.Components
 
 		private void SetupScrollbars()
 		{
-			horizontalScroll.Minimum = 0;
-			verticalScroll.Minimum = 0;
+			horizontalScb.Minimum = 0;
+			verticalScb.Minimum = 0;
 
 			tableLayoutPanel1.RowStyles[1].Height = 0;
 			tableLayoutPanel1.ColumnStyles[1].Width = 0;
@@ -40,23 +40,23 @@ namespace MapEditor.Components
 			if (Manager.Room.Width - _rPanel/*.ClientSize*/.Width > 0)
 			{
 				tableLayoutPanel1.RowStyles[1].Height = 17;
-				horizontalScroll.Maximum = Manager.Room.Width - _rPanel.ClientSize.Width - 1;
+				horizontalScb.Maximum = Manager.Room.Width - _rPanel.ClientSize.Width - 1;
 			}
 			if (Manager.Room.Height - _rPanel.ClientSize.Height > 0)
 			{
 				tableLayoutPanel1.ColumnStyles[1].Width = 17;
-				verticalScroll.Maximum = Manager.Room.Height - _rPanel.ClientSize.Height - 1;
+				verticalScb.Maximum = Manager.Room.Height - _rPanel.ClientSize.Height - 1;
 			}
 		}
 
 		private void horizontalScroll_ValueChanged(object sender, EventArgs e)
 		{
-			_rPanel.Offset = new Point(horizontalScroll.Value, _rPanel.Offset.Y);
+			_rPanel.Offset = new Point(horizontalScb.Value, _rPanel.Offset.Y);
 		}
 
 		private void verticalScroll_ValueChanged(object sender, EventArgs e)
 		{
-			_rPanel.Offset = new Point(_rPanel.Offset.X, verticalScroll.Value);
+			_rPanel.Offset = new Point(_rPanel.Offset.X, verticalScb.Value);
 		}
 	}
 }

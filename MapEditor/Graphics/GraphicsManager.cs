@@ -297,7 +297,7 @@ namespace MapEditor.Graphics
             // Create a new vector array.
             Line line = new Line(new Point(x1, y1), new Point(x2, y2), color);
 
-            // Add a new line.
+            // Paint a new line.
             _lines.Push(line);
         }
 
@@ -473,7 +473,7 @@ namespace MapEditor.Graphics
             if (texture == null)
                 return;
 
-            // Add a textured quad.
+            // Paint a textured quad.
             _quads.Add(new Quad(texture, new PointF(x, y), new PointF(1, 1), angle, color));
         }
 
@@ -484,7 +484,7 @@ namespace MapEditor.Graphics
         /// <param name="y">The y coordinate.</param>
         public static void DrawTile(ResTexture texture, int x, int y, float scaleX, float scaleY, float rotation, Color color)
         {
-            // Add a textured quad.
+            // Paint a textured quad.
             _quads.Add(new Quad(texture, new PointF(x, y), new PointF(scaleX, scaleY), 0, color));
         }
 
@@ -567,7 +567,7 @@ namespace MapEditor.Graphics
                 // Create a new texture.
                 _sprites[id] = new ResTexture(image);
             }
-            else  // Add a texture to the list.
+            else  // Paint a texture to the list.
                 _sprites.Add(id, new ResTexture(image));
         }
 
@@ -642,7 +642,7 @@ namespace MapEditor.Graphics
                 }
             }
             
-            // Add tile map.
+            // Paint tile map.
             _tileMaps.Add(map);
         }
 
