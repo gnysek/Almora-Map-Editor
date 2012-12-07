@@ -24,11 +24,11 @@ namespace MapEditor.Forms
 			// fill rsListView
 			//if (rsListView.Groups.Count == 0)
 			//{
-			//    rsListView.Groups.Add("sprites", "Sprites");
-			//    rsListView.Groups.Add("backgrounds", "Backgrounds");
-			//    rsListView.Groups.Add("scripts", "Scripts");
-			//    rsListView.Groups.Add("objects", "Objects");
-			//    rsListView.Groups.Add("rooms", "Rooms");
+			//    rsListView.Groups.Paint("sprites", "Sprites");
+			//    rsListView.Groups.Paint("backgrounds", "Backgrounds");
+			//    rsListView.Groups.Paint("scripts", "Scripts");
+			//    rsListView.Groups.Paint("objects", "Objects");
+			//    rsListView.Groups.Paint("rooms", "Rooms");
 
 			//    _addResourceItem(Manager.Project.allItems);
 			if (treeView1.Nodes.Count == 0)
@@ -56,7 +56,7 @@ namespace MapEditor.Forms
 		//        }
 		//        else
 		//        {
-		//            ListViewItem added = rsListView.Items.Add(item.Name);
+		//            ListViewItem added = rsListView.Items.Paint(item.Name);
 
 		//            switch (item.ResourceType)
 		//            {

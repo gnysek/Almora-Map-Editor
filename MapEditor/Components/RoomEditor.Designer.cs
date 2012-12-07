@@ -30,8 +30,8 @@
 		{
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.horizontalScroll = new System.Windows.Forms.HScrollBar();
-			this.verticalScroll = new System.Windows.Forms.VScrollBar();
+			this.horizontalScb = new System.Windows.Forms.HScrollBar();
+			this.verticalScb = new System.Windows.Forms.VScrollBar();
 			this._rPanel = new MapEditor.Components.RoomPanel();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -48,15 +48,15 @@
 			// 
 			// tableLayoutPanel1
 			// 
-			this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
 			this.tableLayoutPanel1.ColumnCount = 2;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 17F));
-			this.tableLayoutPanel1.Controls.Add(this.horizontalScroll, 0, 1);
-			this.tableLayoutPanel1.Controls.Add(this.verticalScroll, 1, 0);
+			this.tableLayoutPanel1.Controls.Add(this.horizontalScb, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.verticalScb, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this._rPanel, 0, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -64,36 +64,34 @@
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(150, 150);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
-			// horizontalScroll
+			// horizontalScb
 			// 
-			this.horizontalScroll.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.horizontalScroll.Location = new System.Drawing.Point(1, 132);
-			this.horizontalScroll.Maximum = 10;
-			this.horizontalScroll.Name = "horizontalScroll";
-			this.horizontalScroll.Size = new System.Drawing.Size(130, 17);
-			this.horizontalScroll.SmallChange = 5;
-			this.horizontalScroll.TabIndex = 0;
-			this.horizontalScroll.ValueChanged += new System.EventHandler(this.horizontalScroll_ValueChanged);
+			this.horizontalScb.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.horizontalScb.Location = new System.Drawing.Point(0, 133);
+			this.horizontalScb.Name = "horizontalScb";
+			this.horizontalScb.Size = new System.Drawing.Size(133, 17);
+			this.horizontalScb.TabIndex = 0;
+			this.horizontalScb.ValueChanged += new System.EventHandler(this.horizontalScroll_ValueChanged);
 			// 
-			// verticalScroll
+			// verticalScb
 			// 
-			this.verticalScroll.Dock = System.Windows.Forms.DockStyle.Right;
-			this.verticalScroll.Location = new System.Drawing.Point(132, 1);
-			this.verticalScroll.Maximum = 10;
-			this.verticalScroll.Name = "verticalScroll";
-			this.verticalScroll.Size = new System.Drawing.Size(17, 130);
-			this.verticalScroll.TabIndex = 1;
-			this.verticalScroll.ValueChanged += new System.EventHandler(this.verticalScroll_ValueChanged);
+			this.verticalScb.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.verticalScb.Location = new System.Drawing.Point(133, 0);
+			this.verticalScb.Name = "verticalScb";
+			this.verticalScb.Size = new System.Drawing.Size(17, 133);
+			this.verticalScb.TabIndex = 1;
+			this.verticalScb.ValueChanged += new System.EventHandler(this.verticalScroll_ValueChanged);
 			// 
 			// _rPanel
 			// 
 			this._rPanel.BackColor = System.Drawing.Color.White;
 			this._rPanel.Cursor = System.Windows.Forms.Cursors.Arrow;
 			this._rPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._rPanel.Location = new System.Drawing.Point(4, 4);
+			this._rPanel.Location = new System.Drawing.Point(0, 0);
+			this._rPanel.Margin = new System.Windows.Forms.Padding(0);
 			this._rPanel.Name = "_rPanel";
 			this._rPanel.Offset = new System.Drawing.Point(0, 0);
-			this._rPanel.Size = new System.Drawing.Size(124, 124);
+			this._rPanel.Size = new System.Drawing.Size(133, 133);
 			this._rPanel.TabIndex = 2;
 			// 
 			// RoomEditor
@@ -111,8 +109,8 @@
 
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private RoomPanel _rPanel;
-		private System.Windows.Forms.HScrollBar horizontalScroll;
-		private System.Windows.Forms.VScrollBar verticalScroll;
+		private System.Windows.Forms.HScrollBar horizontalScb;
+		private System.Windows.Forms.VScrollBar verticalScb;
+		public RoomPanel _rPanel;
 	}
 }

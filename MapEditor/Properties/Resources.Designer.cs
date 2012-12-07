@@ -179,6 +179,13 @@ namespace MapEditor.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap paint_can {
+            get {
+                object obj = ResourceManager.GetObject("paint-can", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap pencil_button {
             get {
                 object obj = ResourceManager.GetObject("pencil-button", resourceCulture);

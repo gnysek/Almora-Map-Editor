@@ -12,11 +12,18 @@ namespace MapEditor.Common
 		public string Name;
 		public int Width;
 		public int Height;
-		private int _instanceCount;
+		private int _instanceCount = 0;
+		public List<PlaceableElement> Instances = new List<PlaceableElement>();
 
 		public int InstanceCount
 		{
 			get { return _instanceCount; }
+		}
+
+		public void addInstance(PlaceableElement instance)
+		{
+			Instances.Add(instance);
+			_instanceCount++;
 		}
 
 		public XmlElement toXml(XmlDocument doc)

@@ -262,6 +262,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="1353775151_Maps.ico" />
+    <EmbeddedResource Include="Resources\cur_bucket.cur" />
+    <None Include="Resources\paint-can.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

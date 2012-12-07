@@ -7,9 +7,17 @@ using System.Windows.Forms;
 using MapEditor.Graphics;
 using System.Drawing;
 using MapEditor.Common;
+using System.Reflection;
 
 namespace MapEditor.Components
 {
+	public enum BrushMode {
+		Select = 1,
+		Paint,
+		Move,
+		Rotate
+	}
+
 	public partial class RoomPanel : Panel
 	{
 		private int _layerNumber = -1;
@@ -20,6 +28,9 @@ namespace MapEditor.Components
 		private int _mouseX = 0;
 		private int _mouseY = 0;
 		private bool _drawMousePosition = false;
+		private Cursor _bucketCursor;
+
+		public BrushMode CurrentBrush = BrushMode.Select;
 
 		public RoomPanel()
 		{
@@ -32,6 +43,8 @@ namespace MapEditor.Components
 			this.SetStyle(ControlStyles.UserPaint, true);
 			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 			this.SetStyle(ControlStyles.Opaque, true);
+
+			_bucketCursor = new Cursor(GetType().Assembly.GetManifestResourceStream("MapEditor.Resources.cur_bucket.cur"));
 		}
 
 		#region drawGrid
@@ -114,7 +127,7 @@ namespace MapEditor.Components
 					}
 				}
 
-				if (Manager.MainWindow.lbPlaceables.SelectedIndex > -1)
+				if (_drawMousePosition && Manager.MainWindow.lbPlaceables.SelectedIndex > -1)
 				{
 					try
 					{
@@ -340,6 +353,20 @@ namespace MapEditor.Components
 		{
 			base.OnMouseEnter(e);
 			_drawMousePosition = true;
+
+			if (Manager.Room == null)
+			{
+				Cursor = Cursors.Default;
+			}
+			else
+			{
+				switch (CurrentBrush)
+				{
+					case BrushMode.Paint: Cursor = _bucketCursor; break;
+					default: Cursor = Cursors.Default; break;
+				}
+			}
+
 			Invalidate();
 		}
 	}
