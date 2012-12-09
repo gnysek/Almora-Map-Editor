@@ -277,6 +277,7 @@ namespace MapEditor
 				roomEditor1.Invalidate();
 				ensureButtonsDisabled();
 				CurrentBrush = BrushMode.Select;
+				Manager.Project.regenerateInstanceList();
 			}
 		}
 

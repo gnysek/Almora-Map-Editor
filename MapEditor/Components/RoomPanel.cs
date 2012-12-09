@@ -11,7 +11,8 @@ using System.Reflection;
 
 namespace MapEditor.Components
 {
-	public enum BrushMode {
+	public enum BrushMode
+	{
 		Select = 1,
 		Paint,
 		Move,
@@ -119,7 +120,7 @@ namespace MapEditor.Components
 		{
 			if (Manager.Room != null)
 			{
-				foreach (PlaceableInstance instance in Manager.Project.PlacedInstances)
+				foreach (PlaceableInstance instance in Manager.Room.Instances)
 				{
 					if (instance.Element != null)
 					{
@@ -127,21 +128,11 @@ namespace MapEditor.Components
 					}
 				}
 
-				if (_drawMousePosition && Manager.MainWindow.lbPlaceables.SelectedIndex > -1)
+				if (CurrentBrush == BrushMode.Paint && Manager.Project.Instance != null)
 				{
 					try
 					{
-						//string spr = Manager.Project.PlaceableList[Manager.MainWindow.lbPlaceables.SelectedIndex].Sprite;
-						//int iof = Manager.Project.RegisteredResources.IndexOf(spr);
-						//if (iof > -1)
-						//{
-						//    GraphicsManager.DrawSprite(iof, _mouseX, _mouseY, 0, Color.Orange);
-						//}
-
-						if (Manager.Project.Instance != null)
-						{
-							GraphicsManager.DrawSprite(Manager.Project.Instance.textureId, _mouseX, _mouseY, 0, Color.Yellow);
-						}
+						GraphicsManager.DrawSprite(Manager.Project.Instance.textureId, _mouseX, _mouseY, 0, Color.Yellow);
 					}
 					catch { }
 				}
@@ -308,15 +299,22 @@ namespace MapEditor.Components
 		{
 			base.OnMouseUp(e);
 
-			if (Manager.Room == null) return;
-			if (Manager.Project.Instance == null) return;
+			switch (e.Button)
+			{
+				case System.Windows.Forms.MouseButtons.Left:
+					if (Manager.Room == null) return;
+					if (Manager.Project.Instance == null) return;
+					if (CurrentBrush != BrushMode.Paint) return;
 
-			PlaceableInstance instance = new PlaceableInstance();
-			instance.X = _mouseX;
-			instance.Y = _mouseY;
-			instance.Element = Manager.Project.Instance;
+					PlaceableInstance instance = new PlaceableInstance();
+					instance.X = _mouseX;
+					instance.Y = _mouseY;
+					instance.Element = Manager.Project.Instance;
 
-			Manager.Project.PlacedInstances.Add(instance);
+					Manager.Room.addInstance(instance);
+					Manager.Project.regenerateInstanceList();
+					break;
+			}
 
 			// Force redraw
 			Invalidate();
