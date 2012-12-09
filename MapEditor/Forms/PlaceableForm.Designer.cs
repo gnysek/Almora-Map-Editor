@@ -52,6 +52,7 @@
 			// 
 			// pfSprite
 			// 
+			this.pfSprite.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.pfSprite.FormattingEnabled = true;
 			this.pfSprite.Location = new System.Drawing.Point(140, 38);
 			this.pfSprite.Name = "pfSprite";
@@ -110,6 +111,7 @@
 			// 
 			// pfMask
 			// 
+			this.pfMask.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.pfMask.FormattingEnabled = true;
 			this.pfMask.Location = new System.Drawing.Point(140, 116);
 			this.pfMask.Name = "pfMask";

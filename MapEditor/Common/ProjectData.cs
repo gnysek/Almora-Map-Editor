@@ -24,7 +24,7 @@ namespace MapEditor.Common
 		private EventElement _Event = null;
 
 		public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
-		public List<PlaceableInstance> PlacedInstances = new List<PlaceableInstance>();
+		//public List<PlaceableInstance> PlacedInstances = new List<PlaceableInstance>();
 		public List<EventElement> EventList = new List<EventElement>();
 		public List<EventInstance> PlacedEvents = new List<EventInstance>();
 		public List<MapRoom> RoomList = new List<MapRoom>();
@@ -116,7 +116,7 @@ namespace MapEditor.Common
 			foreach (MapRoom elem in RoomList)
 			{
 				rooms.AppendChild(elem.toXml(file));
-				elem.saveRoomToXml();
+				elem.saveRoomInstancesToXml();
 			}
 
 			assets.AppendChild(options);
@@ -184,6 +184,7 @@ namespace MapEditor.Common
 
 			}
 
+			// read rooms
 			try
 			{
 				root = XMLfile.SelectSingleNode("assets/rooms");
@@ -193,11 +194,12 @@ namespace MapEditor.Common
 					{
 						Name = n.Attributes["name"].Value,
 						Width = int.Parse(n.Attributes["width"].Value),
-						Height = int.Parse(n.Attributes["height"].Value)
+						Height = int.Parse(n.Attributes["height"].Value),
+						LinkedWith = n.Attributes["linked"].Value
 					};
 
 					RoomList.Add(e);
-					_readAMERoom(ProjectSource + "\\amedata\\" + e.Name + ".room.ame");
+					_readAMERoom(e, ProjectSource + "\\amedata\\" + e.Name + ".room.ame");
 				}
 			}
 			catch (Exception e)
@@ -210,7 +212,7 @@ namespace MapEditor.Common
 			regenerateTextureList();
 		}
 
-		private void _readAMERoom(string path)
+		private void _readAMERoom(MapRoom room, string path)
 		{
 			XmlDocument XMLfile = new XmlDocument();
 			XMLfile.Load(path);
@@ -229,7 +231,7 @@ namespace MapEditor.Common
 							Y = int.Parse(n.Attributes["y"].Value),
 							Element = pl,
 						};
-						PlacedInstances.Add(inst);
+						room.addInstance(inst);
 						break;
 					}
 				}
@@ -410,26 +412,34 @@ namespace MapEditor.Common
 		public void regenerateEnvDefList()
 		{
 			ListBoxEx list = Manager.MainWindow.lbPlaceables;
+			list.Items.Clear();
+			foreach (PlaceableElement elem in PlaceableList)
 			{
-				list.Items.Clear();
-				foreach (PlaceableElement elem in PlaceableList)
-				{
-					list.Items.Add(elem.Name);
-				}
+				list.Items.Add(elem.Name);
 			}
 
+
 			Manager.MainWindow.statusLabelPlaceables.Text = PlaceableList.Count.ToString();
+		}
+
+		public void regenerateInstanceList()
+		{
+			if (Room == null) return;
+			ListBoxEx list = Manager.MainWindow.lbInstances;
+			list.Items.Clear();
+			foreach (PlaceableInstance instance in Room.Instances)
+			{
+				list.Items.Add(instance.Element.Name);
+			}
 		}
 
 		public void regenerateRoomList()
 		{
 			ListBoxEx list = Manager.MainWindow.lbRooms;
+			list.Items.Clear();
+			foreach (MapRoom elem in RoomList)
 			{
-				list.Items.Clear();
-				foreach (MapRoom elem in RoomList)
-				{
-					list.Items.Add(elem.Name);
-				}
+				list.Items.Add(elem.Name);
 			}
 		}
 

@@ -36,6 +36,8 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
+			this.rfMapped = new System.Windows.Forms.ComboBox();
+			this.label4 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// rfName
@@ -66,7 +68,7 @@
 			// 
 			this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.button1.Image = global::MapEditor.Properties.Resources.tick;
-			this.button1.Location = new System.Drawing.Point(133, 90);
+			this.button1.Location = new System.Drawing.Point(135, 120);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(23, 23);
 			this.button1.TabIndex = 3;
@@ -77,7 +79,7 @@
 			// 
 			this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.button2.Image = global::MapEditor.Properties.Resources.cross;
-			this.button2.Location = new System.Drawing.Point(162, 90);
+			this.button2.Location = new System.Drawing.Point(164, 120);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(23, 23);
 			this.button2.TabIndex = 4;
@@ -110,11 +112,31 @@
 			this.label3.TabIndex = 7;
 			this.label3.Text = "Height:";
 			// 
+			// rfMapped
+			// 
+			this.rfMapped.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.rfMapped.FormattingEnabled = true;
+			this.rfMapped.Location = new System.Drawing.Point(85, 93);
+			this.rfMapped.Name = "rfMapped";
+			this.rfMapped.Size = new System.Drawing.Size(100, 21);
+			this.rfMapped.TabIndex = 8;
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(12, 96);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(50, 26);
+			this.label4.TabIndex = 9;
+			this.label4.Text = "Room\r\nmapping:";
+			// 
 			// RoomForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(199, 125);
+			this.ClientSize = new System.Drawing.Size(199, 151);
+			this.Controls.Add(this.label4);
+			this.Controls.Add(this.rfMapped);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
@@ -143,5 +165,7 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.ComboBox rfMapped;
+		private System.Windows.Forms.Label label4;
 	}
 }

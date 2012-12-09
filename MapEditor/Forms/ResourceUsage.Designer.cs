@@ -37,9 +37,9 @@
 			this.comboBox4 = new System.Windows.Forms.ComboBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.treeView1 = new System.Windows.Forms.TreeView();
 			this.button1 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
-			this.treeView1 = new System.Windows.Forms.TreeView();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -54,6 +54,7 @@
 			// 
 			// comboBox1
 			// 
+			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox1.FormattingEnabled = true;
 			this.comboBox1.Location = new System.Drawing.Point(109, 6);
 			this.comboBox1.Name = "comboBox1";
@@ -71,6 +72,7 @@
 			// 
 			// comboBox2
 			// 
+			this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox2.FormattingEnabled = true;
 			this.comboBox2.Location = new System.Drawing.Point(109, 33);
 			this.comboBox2.Name = "comboBox2";
@@ -79,6 +81,7 @@
 			// 
 			// comboBox3
 			// 
+			this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox3.FormattingEnabled = true;
 			this.comboBox3.Location = new System.Drawing.Point(317, 33);
 			this.comboBox3.Name = "comboBox3";
@@ -96,6 +99,7 @@
 			// 
 			// comboBox4
 			// 
+			this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox4.FormattingEnabled = true;
 			this.comboBox4.Location = new System.Drawing.Point(317, 6);
 			this.comboBox4.Name = "comboBox4";
@@ -121,6 +125,16 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Select which objects can be used to define Placeables, Spawns, Events and NPCs:";
 			// 
+			// treeView1
+			// 
+			this.treeView1.CheckBoxes = true;
+			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.treeView1.Location = new System.Drawing.Point(3, 16);
+			this.treeView1.Name = "treeView1";
+			this.treeView1.Size = new System.Drawing.Size(420, 307);
+			this.treeView1.TabIndex = 13;
+			this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
+			// 
 			// button1
 			// 
 			this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -141,16 +155,6 @@
 			this.button2.Size = new System.Drawing.Size(23, 23);
 			this.button2.TabIndex = 12;
 			this.button2.UseVisualStyleBackColor = true;
-			// 
-			// treeView1
-			// 
-			this.treeView1.CheckBoxes = true;
-			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.treeView1.Location = new System.Drawing.Point(3, 16);
-			this.treeView1.Name = "treeView1";
-			this.treeView1.Size = new System.Drawing.Size(420, 307);
-			this.treeView1.TabIndex = 13;
-			this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
 			// 
 			// ResourceUsage
 			// 

@@ -24,6 +24,7 @@ namespace MapEditor.Forms
 			Element.Name = rfName.Text;
 			Element.Width = int.Parse(rfWidth.Text);
 			Element.Height = int.Parse(rfHeight.Text);
+			Element.LinkedWith = rfMapped.SelectedText;
 		}
 
 		private void RoomForm_Load(object sender, EventArgs e)
@@ -31,6 +32,28 @@ namespace MapEditor.Forms
 			rfName.Text = Element.Name;
 			rfWidth.Text = Element.Width.ToString();
 			rfHeight.Text = Element.Height.ToString();
+			rfMapped.Items.Clear();
+
+			rfMappedRender(Manager.Project.allItems.subitems);
+		}
+
+		private void rfMappedRender(List<GMItem> items)
+		{
+			foreach (GMItem item in items)
+			{
+				if (item.isGroup)
+				{
+					rfMappedRender(item.subitems);
+				}
+				else if (item.ResourceType == GMItemType.Room)
+				{
+					rfMapped.Items.Add(item.Name);
+					if (item.Name == Element.LinkedWith)
+					{
+						rfMapped.SelectedItem = rfMapped.Items.Count - 1;
+					}
+				}
+			}
 		}
 	}
 }

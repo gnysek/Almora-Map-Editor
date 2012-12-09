@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using MapEditor.Common;
 
 namespace MapEditor.Components
 {
@@ -84,17 +85,7 @@ namespace MapEditor.Components
 				//base.OnDrawItem(e);
 				string text = this.Items[e.Index].ToString();
 
-				if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
-				{
-					e.Graphics.FillRectangle(new SolidBrush((this.Focused) ? Color.Blue : Color.SlateBlue), e.Bounds);
-				}
-				else if (e.Index % 2 == 0)
-					e.Graphics.FillRectangle(SystemBrushes.Control, e.Bounds);
-				else
-					e.Graphics.FillRectangle(new SolidBrush(this.BackColor), e.Bounds);
-
-				// Draw the text.
-				e.Graphics.DrawString(text /*+ ((e.Index == SelectedIndex) ? "*" : "")*/, this.Font, new SolidBrush(this.ForeColor), 0, e.Bounds.Y);
+				_paintItem(e.Index, e, e.Bounds.Y / this.ItemHeight);
 			}
 		}
 
@@ -152,17 +143,8 @@ namespace MapEditor.Components
 					//    _lastSelectedIndex = e.Index;
 					//}
 
-					// Do some fancy background painting.
-					if ((args.State & DrawItemState.Selected) == DrawItemState.Selected)
-					{
-						args.Graphics.FillRectangle(new SolidBrush((this.Focused) ? Color.Blue : Color.SlateBlue), args.Bounds);
-					}
-					else if (args.Index % 2 == 0)
-						args.Graphics.FillRectangle(SystemBrushes.Control, args.Bounds);
-					else
-						args.Graphics.FillRectangle(new SolidBrush(this.BackColor), args.Bounds);
-
-					e.Graphics.DrawString(this.Items[i].ToString(), this.Font, Brushes.Black, 0, item * this.ItemHeight);
+					// Do some fancy background painting
+					_paintItem(i, args, item);
 
 					// Increment item draw index.
 					item++;
@@ -192,6 +174,37 @@ namespace MapEditor.Components
 				// Draw the text.
 				e.Graphics.DrawString(text, Font, Brushes.Gray, x, y);
 			}
+		}
+
+		private void _paintItem(int itemNumber, DrawItemEventArgs args, int item)
+		{
+			string text = this.Items[itemNumber].ToString();
+
+			if (_listBoxType == ListType.PlaceableInstances && Manager.Room != null)
+			{
+				text += " [X: " + Manager.Room.Instances[itemNumber].X.ToString();
+				text += " Y: " + Manager.Room.Instances[itemNumber].X.ToString() + "]";
+			}
+
+			_paintItem(text, args, item);
+		}
+
+		private void _paintItem(string text, DrawItemEventArgs args, int item)
+		{
+			if ((args.State & DrawItemState.Selected) == DrawItemState.Selected)
+			{
+				args.Graphics.FillRectangle(new SolidBrush((this.Focused) ? SystemColors.Highlight : SystemColors.InactiveCaption), args.Bounds);
+			}
+			else if (args.Index % 2 == 0)
+			{
+				args.Graphics.FillRectangle(SystemBrushes.Control, args.Bounds);
+			}
+			else
+			{
+				args.Graphics.FillRectangle(new SolidBrush(this.BackColor), args.Bounds);
+			}
+
+			args.Graphics.DrawString(text, this.Font, Brushes.Black, 0, item * this.ItemHeight);
 		}
 	}
 }
