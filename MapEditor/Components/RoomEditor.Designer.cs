@@ -84,7 +84,7 @@
 			// 
 			// _rPanel
 			// 
-			this._rPanel.BackColor = System.Drawing.Color.White;
+			this._rPanel.BackColor = System.Drawing.SystemColors.Control;
 			this._rPanel.Cursor = System.Windows.Forms.Cursors.Arrow;
 			this._rPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._rPanel.Location = new System.Drawing.Point(0, 0);

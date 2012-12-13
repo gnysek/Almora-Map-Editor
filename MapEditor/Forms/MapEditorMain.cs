@@ -161,7 +161,7 @@ namespace MapEditor
 				}
 				else
 				{
-					elem = new MapRoom() { Name = defName, Width = 1024, Height = 768 };
+					elem = new MapRoom() { Width = 1024, Height = 768 };
 					form.Element = elem;
 					form.Text = "Paint new Room Definition: " + defName;
 				}
