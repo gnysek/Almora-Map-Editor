@@ -45,7 +45,7 @@ namespace MapEditor.Common
 				return false;
 			}
 
-			Project = new ProjectData(filename, load);
+			/*Project =*/ new ProjectData(filename, load);
 			return true;
 		}
 

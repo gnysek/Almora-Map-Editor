@@ -22,6 +22,7 @@ namespace MapEditor.Common
 		private MapRoom _Room = null;
 		private PlaceableElement _Instance = null;
 		private EventElement _Event = null;
+		private PlaceableInstance _HighlightedInstance = null;
 
 		public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
 		//public List<PlaceableInstance> PlacedInstances = new List<PlaceableInstance>();
@@ -29,6 +30,7 @@ namespace MapEditor.Common
 		public List<EventInstance> PlacedEvents = new List<EventInstance>();
 		public List<MapRoom> RoomList = new List<MapRoom>();
 		public List<string> RegisteredResources = new List<string>();
+		public List<GMSpriteData> GMXSprites = new List<GMSpriteData>();
 		public GMItem allItems = null;
 
 		#region Magical Properties
@@ -51,6 +53,12 @@ namespace MapEditor.Common
 			set { _Event = (_Room == null) ? null : value; }
 		}
 
+		public PlaceableInstance HighlightedInstance
+		{
+			get { return (_Room == null) ? null : _HighlightedInstance; }
+			set { _HighlightedInstance = value; }
+		}
+
 		#endregion
 
 		public ProjectData(string srcPath)
@@ -68,12 +76,14 @@ namespace MapEditor.Common
 			resetUsedRes();
 			ProjectSource = Path.GetDirectoryName(sourcePath);
 
+			Manager.Project = this;
+
 			if (load)
 			{
 				ProjectFilename = Path.GetFileName(sourcePath);
 				GmxFilename = Path.GetFileNameWithoutExtension(ProjectFilename) + ".gmx";
-				_readAME();
 				_readGMX();
+				_readAME();
 				_checkForRegisteredRes(allItems.getSubitems());
 			}
 			else
@@ -192,14 +202,13 @@ namespace MapEditor.Common
 				{
 					MapRoom e = new MapRoom()
 					{
-						Name = n.Attributes["name"].Value,
 						Width = int.Parse(n.Attributes["width"].Value),
 						Height = int.Parse(n.Attributes["height"].Value),
 						LinkedWith = n.Attributes["linked"].Value
 					};
 
 					RoomList.Add(e);
-					_readAMERoom(e, ProjectSource + "\\amedata\\" + e.Name + ".room.ame");
+					_readAMERoom(e, ProjectSource + "\\amedata\\" + e.LinkedWith + ".room.ame");
 				}
 			}
 			catch (Exception e)
@@ -249,7 +258,6 @@ namespace MapEditor.Common
 			XmlNode root;
 			allItems = new GMItem(Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(GmxFilename)));
 			string[] resTree = new string[] { "sprites", "backgrounds", "scripts", "objects", "rooms" };
-
 
 			foreach (string nodeName in resTree)
 			{
@@ -439,7 +447,7 @@ namespace MapEditor.Common
 			list.Items.Clear();
 			foreach (MapRoom elem in RoomList)
 			{
-				list.Items.Add(elem.Name);
+				list.Items.Add(elem.LinkedWith);
 			}
 		}
 
@@ -452,10 +460,14 @@ namespace MapEditor.Common
 			Manager.MainWindow.tsProgress.Visible = true;
 			foreach (string file in RegisteredResources)
 			{
-				string spritePath = ProjectSource + "\\sprites\\images\\" + file + "_0.png";
-				if (File.Exists(spritePath))
+				GMSpriteData itm = this.GMXSprites.Find(item => item.Name == file);
+
+				if (itm != null)
 				{
-					GraphicsManager.LoadTexture(new Bitmap(spritePath), i++);
+					if (File.Exists(itm.firstFramePath))
+					{
+						GraphicsManager.LoadTexture(new Bitmap(itm.firstFramePath), i++);
+					}
 				}
 				Manager.MainWindow.tsProgress.Value++;
 			}

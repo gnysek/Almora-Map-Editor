@@ -28,6 +28,8 @@ namespace MapEditor.Components
 		private bool _enabled = true;
 		private int _mouseX = 0;
 		private int _mouseY = 0;
+		private int _mx = 0;
+		private int _my = 0;
 		private bool _drawMousePosition = false;
 		private Cursor _bucketCursor;
 
@@ -96,6 +98,15 @@ namespace MapEditor.Components
 			}
 
 			GraphicsManager.DrawLineBatch();
+
+			if (Manager.Project.HighlightedInstance != null)
+			{
+				PlaceableInstance instance = Manager.Project.HighlightedInstance;
+				GraphicsManager.DrawRectangle(new Rectangle(instance.X, instance.Y, instance.Width, instance.Height), Color.FromArgb(20, Color.Red), false);
+				GraphicsManager.DrawRectangle(new Rectangle(instance.X - 1, instance.Y - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
+				GraphicsManager.DrawRectangle(new Rectangle(instance.X, instance.Y, instance.Width, instance.Height), Color.Yellow, true);
+				GraphicsManager.DrawRectangle(new Rectangle(instance.X + 1, instance.Y + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
+			}
 		}
 
 		private Size getCurrentCanvas()
@@ -124,7 +135,7 @@ namespace MapEditor.Components
 				{
 					if (instance.Element != null)
 					{
-						GraphicsManager.DrawSprite(instance.Element.textureId, instance.X, instance.Y, 0, Color.White);
+						GraphicsManager.DrawSprite(instance.Element.textureId, instance.X, instance.Y, 0, (Manager.Project.HighlightedInstance == instance) ? Color.Red : Color.White);
 					}
 				}
 
@@ -132,7 +143,10 @@ namespace MapEditor.Components
 				{
 					try
 					{
-						GraphicsManager.DrawSprite(Manager.Project.Instance.textureId, _mouseX, _mouseY, 0, Color.Yellow);
+						GraphicsManager.DrawSprite(
+							Manager.Project.Instance.textureId,
+							_mouseX - Manager.Project.Instance.offsetX,
+							_mouseY - Manager.Project.Instance.offsetY, 0, Color.Yellow);
 					}
 					catch { }
 				}
@@ -295,30 +309,64 @@ namespace MapEditor.Components
 			}
 		}
 
+		private double pointDistance(int x1, int y1, int x2, int y2)
+		{
+			return Math.Sqrt(Math.Pow(Math.Abs(x1 - x2), 2) + Math.Pow(Math.Abs(y1 - y2), 2));
+		}
+
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			base.OnMouseUp(e);
 
+			if (Manager.Room == null) return;
+			if (Manager.Project.Instance == null) return;
+
 			switch (e.Button)
 			{
 				case System.Windows.Forms.MouseButtons.Left:
-					if (Manager.Room == null) return;
-					if (Manager.Project.Instance == null) return;
-					if (CurrentBrush != BrushMode.Paint) return;
+					switch (CurrentBrush)
+					{
+						case BrushMode.Select:
 
-					PlaceableInstance instance = new PlaceableInstance();
-					instance.X = _mouseX;
-					instance.Y = _mouseY;
-					instance.Element = Manager.Project.Instance;
+							if (Manager.Project.HighlightedInstance != null)
+							{
+								MessageBox.Show(Manager.Project.HighlightedInstance.Element.Name + Manager.Room.Instances.IndexOf(Manager.Project.HighlightedInstance).ToString());
+							}
 
-					Manager.Room.addInstance(instance);
-					Manager.Project.regenerateInstanceList();
+							/*int counter = 0;
+							int foundId = 0;
+							double distance = 1000000;
+							PlaceableInstance found = null;
+							foreach (PlaceableInstance pinstance in Manager.Room.Instances)
+							{
+								double dist = pointDistance(pinstance.X, pinstance.Y, _mx, _my);
+								if (dist < distance)
+								{
+									distance = dist;
+									found = pinstance;
+									foundId = counter;
+								}
+								counter++;
+							}
+							MessageBox.Show(found.Element.Name + "[" + foundId.ToString() + "]");*/
+
+							break;
+						case BrushMode.Paint:
+							PlaceableInstance instance = new PlaceableInstance();
+							instance.X = _mouseX;
+							instance.Y = _mouseY;
+							instance.Element = Manager.Project.Instance;
+
+							Manager.Room.addInstance(instance);
+							Manager.Project.regenerateInstanceList();
+							break;
+
+					}
 					break;
 			}
 
 			// Force redraw
 			Invalidate();
-
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
@@ -329,6 +377,38 @@ namespace MapEditor.Components
 
 			Point snap = GetSnappedPoint(e.Location, new Size(_gridX, _gridY));
 			_drawMousePosition = true;
+
+			_mx = e.Location.X;
+			_my = e.Location.Y;
+
+			if (CurrentBrush == BrushMode.Select)
+			{
+				//int counter = 0;
+				//int foundId = 0;
+				double distance = 1000000;
+				PlaceableInstance found = null;
+				foreach (PlaceableInstance pinstance in Manager.Room.Instances)
+				{
+					double dist = pointDistance(pinstance.offsetX, pinstance.offsetY, _mx, _my);
+					if (dist < distance)
+					{
+						if (pinstance.X <= _mx)
+							if (pinstance.Y <= _mx)
+								if (pinstance.XEnd >= _mx)
+									if (pinstance.YEnd >= _my)
+									{
+										distance = dist;
+										found = pinstance;
+									}
+						//foundId = counter;
+					}
+					//counter++;
+				}
+				//if (found != null)
+				//{
+					Manager.Project.HighlightedInstance = found;
+				//}
+			}
 
 			if (snap.X != _mouseX || snap.Y != _mouseY)
 			{
@@ -343,6 +423,10 @@ namespace MapEditor.Components
 		protected override void OnMouseLeave(EventArgs e)
 		{
 			//base.OnMouseLeave(e);
+			if (Manager.Project != null)
+			{
+				Manager.Project.HighlightedInstance = null;
+			}
 			_drawMousePosition = false;
 			Invalidate();
 		}

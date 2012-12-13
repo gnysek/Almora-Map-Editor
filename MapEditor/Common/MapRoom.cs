@@ -9,7 +9,6 @@ namespace MapEditor.Common
 {
 	public class MapRoom
 	{
-		public string Name;
 		public int Width;
 		public int Height;
 		public List<PlaceableInstance> Instances = new List<PlaceableInstance>();
@@ -28,7 +27,6 @@ namespace MapEditor.Common
 		public XmlElement toXml(XmlDocument doc)
 		{
 			XmlElement self = doc.CreateElement("room");
-			self.SetAttribute("name", Name);
 			self.SetAttribute("width", Width.ToString());
 			self.SetAttribute("height", Height.ToString());
 			self.SetAttribute("linked", LinkedWith);
@@ -68,7 +66,7 @@ namespace MapEditor.Common
 				file.AppendChild(comment);
 				file.AppendChild(assets);
 
-				file.Save(path + "\\" + this.Name + ".room.ame");
+				file.Save(path + "\\" + this.LinkedWith + ".room.ame");
 
 			}
 		}

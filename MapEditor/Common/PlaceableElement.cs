@@ -11,7 +11,8 @@ namespace MapEditor.Common
 		public const string SprDefName = "<no sprite>";
 		public const string MaskDefName = "<same as sprite>";
 		private string _name = "undefied";
-		private string _sprite = "";
+		//private string _sprite = "";
+		private GMSpriteData _spriteData = null;
 		private string _mask = "";
 		private int _depth = 0;
 		private int _shadowSize = 0;
@@ -29,8 +30,18 @@ namespace MapEditor.Common
 
 		public string Sprite
 		{
-			get { return this._sprite; }
-			set { this._sprite = value; }
+			get { return this._spriteData.Name; }
+			set { _spriteData = Manager.Project.GMXSprites.Find(item => item.Name == value); }
+		}
+
+		public int offsetX
+		{
+			get { return (_spriteData == null) ? 0 : this._spriteData.offsetX; }
+		}
+
+		public int offsetY
+		{
+			get { return (_spriteData == null) ? 0 : this._spriteData.offsetY; }
 		}
 
 		public string Mask

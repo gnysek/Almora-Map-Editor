@@ -21,15 +21,13 @@ namespace MapEditor.Forms
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			Element.Name = rfName.Text;
 			Element.Width = int.Parse(rfWidth.Text);
 			Element.Height = int.Parse(rfHeight.Text);
-			Element.LinkedWith = rfMapped.SelectedText;
+			Element.LinkedWith = rfMapped.Text;
 		}
 
 		private void RoomForm_Load(object sender, EventArgs e)
 		{
-			rfName.Text = Element.Name;
 			rfWidth.Text = Element.Width.ToString();
 			rfHeight.Text = Element.Height.ToString();
 			rfMapped.Items.Clear();
@@ -53,6 +51,15 @@ namespace MapEditor.Forms
 						rfMapped.SelectedItem = rfMapped.Items.Count - 1;
 					}
 				}
+			}
+		}
+
+		private void RoomForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (rfMapped.SelectedIndex == -1)
+			{
+				e.Cancel = true;
+				return;
 			}
 		}
 	}
