@@ -30,7 +30,8 @@ namespace MapEditor.Common
 
 		public string Sprite
 		{
-			get { return this._spriteData.Name; }
+			// TODO: remove ""
+			get { return (this._spriteData == null) ? "" : this._spriteData.Name; }
 			set { _spriteData = Manager.Project.GMXSprites.Find(item => item.Name == value); }
 		}
 

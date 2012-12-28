@@ -48,6 +48,8 @@
 			this.label9 = new System.Windows.Forms.Label();
 			this.pfCancel = new System.Windows.Forms.Button();
 			this.pfOK = new System.Windows.Forms.Button();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.label10 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// pfSprite
@@ -211,7 +213,7 @@
 			// 
 			this.pfCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.pfCancel.Image = global::MapEditor.Properties.Resources.cross;
-			this.pfCancel.Location = new System.Drawing.Point(277, 229);
+			this.pfCancel.Location = new System.Drawing.Point(277, 411);
 			this.pfCancel.Name = "pfCancel";
 			this.pfCancel.Size = new System.Drawing.Size(23, 23);
 			this.pfCancel.TabIndex = 19;
@@ -221,18 +223,38 @@
 			// 
 			this.pfOK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.pfOK.Image = global::MapEditor.Properties.Resources.tick;
-			this.pfOK.Location = new System.Drawing.Point(248, 229);
+			this.pfOK.Location = new System.Drawing.Point(248, 411);
 			this.pfOK.Name = "pfOK";
 			this.pfOK.Size = new System.Drawing.Size(23, 23);
 			this.pfOK.TabIndex = 20;
 			this.pfOK.UseVisualStyleBackColor = true;
 			this.pfOK.Click += new System.EventHandler(this.button2_Click);
 			// 
+			// textBox1
+			// 
+			this.textBox1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.textBox1.Location = new System.Drawing.Point(15, 248);
+			this.textBox1.Multiline = true;
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(285, 157);
+			this.textBox1.TabIndex = 21;
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(12, 232);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(106, 13);
+			this.label10.TabIndex = 22;
+			this.label10.Text = "Custom code (if any):";
+			// 
 			// PlaceableForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(315, 263);
+			this.ClientSize = new System.Drawing.Size(315, 446);
+			this.Controls.Add(this.label10);
+			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.pfOK);
 			this.Controls.Add(this.pfCancel);
 			this.Controls.Add(this.label9);
@@ -285,5 +307,7 @@
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Button pfOK;
 		private System.Windows.Forms.Button pfCancel;
+		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.Label label10;
 	}
 }

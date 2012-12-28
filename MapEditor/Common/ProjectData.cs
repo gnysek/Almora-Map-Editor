@@ -23,6 +23,7 @@ namespace MapEditor.Common
 		private PlaceableElement _Instance = null;
 		private EventElement _Event = null;
 		private PlaceableInstance _HighlightedInstance = null;
+		private PlaceableInstance _SelectedInstance = null;
 
 		public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
 		//public List<PlaceableInstance> PlacedInstances = new List<PlaceableInstance>();
@@ -38,7 +39,7 @@ namespace MapEditor.Common
 		public MapRoom Room
 		{
 			get { return _Room; }
-			set { _Room = value; Instance = PlaceableList[1]; }
+			set { _Room = value; Instance = PlaceableList[1]; regenerateLayerList(); }
 		}
 
 		public PlaceableElement Instance
@@ -57,6 +58,12 @@ namespace MapEditor.Common
 		{
 			get { return (_Room == null) ? null : _HighlightedInstance; }
 			set { _HighlightedInstance = value; }
+		}
+
+		public PlaceableInstance SelectedInstance
+		{
+			get { return (_Room == null) ? null : _SelectedInstance; }
+			set { _SelectedInstance = value; }
 		}
 
 		#endregion
@@ -137,6 +144,21 @@ namespace MapEditor.Common
 			file.AppendChild(comment);
 			file.AppendChild(assets);
 
+			// now save script
+			//List<string> lines = new List<string>(){ 
+			//    "\n\n",
+			//    "\t//env init",
+			//    "\tglobal.envMap = ds_map_create();",
+			//    "\n\t//id, nazwa, depth, solid, mask, wind, multidraw, shadow, shadowsize",
+			//};
+			//int counter = 1;
+			//foreach (PlaceableElement elem in PlaceableList)
+			//{
+			//    lines.Add("\tscEnvMapAdd(" + counter.ToString() + ", " + elem.Sprite + ", " + elem.Depth.ToString() + ", 1, sprMask1, 0, 1, 0, 0);");
+			//    counter++;
+			//}
+			//System.IO.File.WriteAllLines(ProjectSource + "\\amedata\\scEnvMapAdd.gml", lines);
+
 			try
 			{
 				file.Save(ProjectSource + "\\" + ProjectFilename);
@@ -204,7 +226,8 @@ namespace MapEditor.Common
 					{
 						Width = int.Parse(n.Attributes["width"].Value),
 						Height = int.Parse(n.Attributes["height"].Value),
-						LinkedWith = n.Attributes["linked"].Value
+						LinkedWith = n.Attributes["linked"].Value,
+						LastUsedLayer = (n.Attributes["lastLayer"] == null) ? -1 : int.Parse(n.Attributes["lastLayer"].Value)
 					};
 
 					RoomList.Add(e);
@@ -219,6 +242,7 @@ namespace MapEditor.Common
 			regenerateEnvDefList();
 			regenerateRoomList();
 			regenerateTextureList();
+			regenerateLayerList();
 		}
 
 		private void _readAMERoom(MapRoom room, string path)
@@ -226,6 +250,7 @@ namespace MapEditor.Common
 			XmlDocument XMLfile = new XmlDocument();
 			XMLfile.Load(path);
 
+			// instances
 			XmlNode root = XMLfile.SelectSingleNode("assets/instances");
 
 			foreach (XmlNode n in root)
@@ -236,17 +261,29 @@ namespace MapEditor.Common
 					{
 						PlaceableInstance inst = new PlaceableInstance()
 						{
-							X = int.Parse(n.Attributes["x"].Value),
-							Y = int.Parse(n.Attributes["y"].Value),
+							X = int.Parse(n.Attributes["x"].Value)/* - pl.offsetX*/,
+							Y = int.Parse(n.Attributes["y"].Value)/* - pl.offsetY*/,
+							Layer = int.Parse(n.Attributes["layer"].Value),
 							Element = pl,
 						};
 						room.addInstance(inst);
 						break;
 					}
 				}
-
-
 			}
+
+			// layers
+			root = XMLfile.SelectSingleNode("assets/layers");
+			foreach (XmlNode n in root)
+			{
+				room.Layers.Add(new MapLayers()
+				{
+					LayerDepth = int.Parse(n.Attributes["depth"].Value),
+					LayerName = n.Attributes["name"].Value
+				});
+			}
+
+			//room.Layers.Sort(MapLayers.SortByLayerDepth);
 		}
 
 		private void _readGMX()
@@ -477,6 +514,29 @@ namespace MapEditor.Common
 			{
 				elem.textureId = RegisteredResources.IndexOf(elem.Sprite);
 			}
+		}
+
+		public void regenerateLayerList()
+		{
+			if (Room == null) return;
+
+			Room.Layers.Sort(MapLayers.SortByLayerDepth);
+
+			ToolStripComboBox tb = Manager.MainWindow.tbLayerDropDown;
+			ListBoxEx lb = Manager.MainWindow.lbLayers;
+
+			tb.Items.Clear();
+			lb.Items.Clear();
+
+			foreach (MapLayers layer in Room.Layers)
+			{
+				tb.Items.Add(layer.LayerName + " / " + layer.LayerDepth.ToString());
+				lb.Items.Add(layer.LayerName);
+			}
+
+			tb.SelectedIndex = 0;
+
+
 		}
 		#endregion
 

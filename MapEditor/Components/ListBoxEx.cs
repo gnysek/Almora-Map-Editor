@@ -163,6 +163,7 @@ namespace MapEditor.Components
 					case ListType.Events: text = "- No Event Definitions -"; break;
 					case ListType.Placeables: text = "- No Placeable Definitions -"; break;
 					case ListType.Rooms: text = "- No Room Definitions -"; break;
+					case ListType.Layers: text = "- No Layer Definitions -"; break;
 					default: text = "- No Definitions -"; break;
 				}
 
@@ -179,14 +180,26 @@ namespace MapEditor.Components
 		private void _paintItem(int itemNumber, DrawItemEventArgs args, int item)
 		{
 			string text = this.Items[itemNumber].ToString();
+			string addText = "";
 
 			if (_listBoxType == ListType.PlaceableInstances && Manager.Room != null)
 			{
-				text += " [X: " + Manager.Room.Instances[itemNumber].X.ToString();
-				text += " Y: " + Manager.Room.Instances[itemNumber].X.ToString() + "]";
+				addText += "X: " + Manager.Room.Instances[itemNumber].X.ToString();
+				addText += ", Y: " + Manager.Room.Instances[itemNumber].X.ToString();
+			}
+			if (_listBoxType == ListType.Layers)
+			{
+				addText += "Depth: " + Manager.Room.Layers[itemNumber].LayerDepth.ToString();
 			}
 
 			_paintItem(text, args, item);
+			
+			if (addText != "")
+			{
+				int after = (int)args.Graphics.MeasureString(text, this.Font).Width + 5;
+				args.Graphics.DrawString(addText, this.Font, Brushes.Gray, after, item * this.ItemHeight);
+			}
+			
 		}
 
 		private void _paintItem(string text, DrawItemEventArgs args, int item)
