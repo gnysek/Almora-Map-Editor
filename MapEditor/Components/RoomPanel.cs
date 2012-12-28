@@ -32,6 +32,7 @@ namespace MapEditor.Components
 		private int _my = 0;
 		private bool _drawMousePosition = false;
 		private Cursor _bucketCursor;
+		private bool _drag = false;
 
 		public BrushMode CurrentBrush = BrushMode.Select;
 
@@ -99,13 +100,25 @@ namespace MapEditor.Components
 
 			GraphicsManager.DrawLineBatch();
 
-			if (Manager.Project.HighlightedInstance != null)
+			// draw selected instance
+			if (Manager.Project.SelectedInstance != null)
 			{
-				PlaceableInstance instance = Manager.Project.HighlightedInstance;
-				GraphicsManager.DrawRectangle(new Rectangle(instance.X, instance.Y, instance.Width, instance.Height), Color.FromArgb(20, Color.Red), false);
-				GraphicsManager.DrawRectangle(new Rectangle(instance.X - 1, instance.Y - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
-				GraphicsManager.DrawRectangle(new Rectangle(instance.X, instance.Y, instance.Width, instance.Height), Color.Yellow, true);
-				GraphicsManager.DrawRectangle(new Rectangle(instance.X + 1, instance.Y + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
+				PlaceableInstance instance = Manager.Project.SelectedInstance;
+				GraphicsManager.DrawRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
+				GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Red, true);
+				GraphicsManager.DrawRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
+			}
+
+			if (_drawMousePosition)
+			{
+				if (Manager.Project.HighlightedInstance != null && Manager.Project.HighlightedInstance != Manager.Project.SelectedInstance)
+				{
+					PlaceableInstance instance = Manager.Project.HighlightedInstance;
+					GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.FromArgb(30, Color.Yellow), false);
+					GraphicsManager.DrawRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
+					GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Yellow, true);
+					GraphicsManager.DrawRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
+				}
 			}
 		}
 
@@ -131,12 +144,29 @@ namespace MapEditor.Components
 		{
 			if (Manager.Room != null)
 			{
-				foreach (PlaceableInstance instance in Manager.Room.Instances)
+				int selectedLayerDepth = Manager.Room.Layers[Manager.MainWindow.tbLayerDropDown.SelectedIndex].LayerDepth;
+
+				int layerCounter = 0;
+				foreach (MapLayers layer in Manager.Room.Layers)
 				{
-					if (instance.Element != null)
+					Color defaultLayerColor = Color.Gray;
+					if (layer.LayerDepth == selectedLayerDepth) defaultLayerColor = Color.White;
+
+					foreach (PlaceableInstance instance in Manager.Room.Instances)
 					{
-						GraphicsManager.DrawSprite(instance.Element.textureId, instance.X, instance.Y, 0, (Manager.Project.HighlightedInstance == instance) ? Color.Red : Color.White);
+						if (instance.Layer != layer.LayerDepth) continue;
+
+						Color color = defaultLayerColor;
+						if (Manager.Project.HighlightedInstance == instance) color = Color.Yellow;
+						if (Manager.Project.SelectedInstance == instance) color = Color.Red;
+
+						if (instance.Element != null)
+						{
+							GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, 0, color);
+							//GraphicsManager.draw
+						}
 					}
+					layerCounter++;
 				}
 
 				if (CurrentBrush == BrushMode.Paint && Manager.Project.Instance != null)
@@ -146,9 +176,22 @@ namespace MapEditor.Components
 						GraphicsManager.DrawSprite(
 							Manager.Project.Instance.textureId,
 							_mouseX - Manager.Project.Instance.offsetX,
-							_mouseY - Manager.Project.Instance.offsetY, 0, Color.Yellow);
+							_mouseY - Manager.Project.Instance.offsetY,
+							0, Color.Yellow);
 					}
 					catch { }
+				}
+
+				if (_drag)
+				{
+					if (CurrentBrush == BrushMode.Move && Manager.Project.SelectedInstance != null)
+					{
+						GraphicsManager.DrawSprite(
+							Manager.Project.SelectedInstance.Element.textureId,
+							/*Manager.Project.SelectedInstance.X +*/ (_mouseX - Manager.Project.SelectedInstance.Element.offsetX),
+							/*Manager.Project.SelectedInstance.Y +*/ (_mouseY - Manager.Project.SelectedInstance.Element.offsetY),
+							0, Color.Red);
+					}
 				}
 
 				GraphicsManager.DrawSpriteBatch(false);
@@ -175,6 +218,7 @@ namespace MapEditor.Components
 		#region Paint
 		protected override void OnPaint(PaintEventArgs e)
 		{
+			//e.Graphics.Clear(this.BackColor);
 			if (Manager.Room != null)
 			{
 				// Clear the screen.
@@ -207,7 +251,10 @@ namespace MapEditor.Components
 				//GraphicsManager.DrawRectangle(new Rectangle(Offset.X, Offset.Y, Math.Min(Manager.Room.Width, this.Width) + 1, Math.Min(Manager.Room.Height, this.Height) + 1), Color.Orange, false);
 				GraphicsManager.Scissor = new Rectangle(0, 0, this.Width, this.Height);
 
+				// draw instances
 				DrawInstances();
+
+				// draw grid and higlights
 				DrawGrid();
 
 				OpenGL.glTexParameteri(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MAG_FILTER, OpenGL.GL_LINEAR);
@@ -222,6 +269,12 @@ namespace MapEditor.Components
 
 				// End drawing the scene.
 				GraphicsManager.EndScene();
+
+				//e.Graphics.Clear(this.BackColor);
+				//foreach (PlaceableInstance instance in Manager.Room.Instances)
+				//{
+				//    e.Graphics.DrawString( pointDistance(instance.XCenter, instance.YCenter, _mx, _my).ToString(), Manager.MainWindow.Font, Brushes.Black, instance.X, instance.Y);
+				//}
 			}
 			else
 			{
@@ -306,6 +359,11 @@ namespace MapEditor.Components
 				//Invalidate();
 				_mouseX = snap.X;
 				_mouseY = snap.Y;
+
+				if (CurrentBrush == BrushMode.Move)
+				{
+					_drag = true;
+				}
 			}
 		}
 
@@ -330,7 +388,8 @@ namespace MapEditor.Components
 
 							if (Manager.Project.HighlightedInstance != null)
 							{
-								MessageBox.Show(Manager.Project.HighlightedInstance.Element.Name + Manager.Room.Instances.IndexOf(Manager.Project.HighlightedInstance).ToString());
+								Manager.Project.SelectedInstance = Manager.Project.HighlightedInstance;
+								//MessageBox.Show(Manager.Project.HighlightedInstance.Element.Name + Manager.Room.Instances.IndexOf(Manager.Project.HighlightedInstance).ToString());
 							}
 
 							/*int counter = 0;
@@ -352,13 +411,27 @@ namespace MapEditor.Components
 
 							break;
 						case BrushMode.Paint:
-							PlaceableInstance instance = new PlaceableInstance();
-							instance.X = _mouseX;
-							instance.Y = _mouseY;
-							instance.Element = Manager.Project.Instance;
+							PlaceableInstance instance = new PlaceableInstance()
+							{
+								X = _mouseX /*- Manager.Project.Instance.offsetX*/,
+								Y = _mouseY /*- Manager.Project.Instance.offsetY*/,
+								Element = Manager.Project.Instance,
+								Layer = Manager.Room.Layers[Manager.Room.LastUsedLayer].LayerDepth
+							};
 
 							Manager.Room.addInstance(instance);
 							Manager.Project.regenerateInstanceList();
+							break;
+						case BrushMode.Move:
+							if (_drag)
+							{
+								if (Manager.Project.SelectedInstance != null)
+								{
+									Manager.Project.SelectedInstance.X = _mouseX;
+									Manager.Project.SelectedInstance.Y = _mouseY;
+								}
+							}
+							_drag = false;
 							break;
 
 					}
@@ -375,11 +448,22 @@ namespace MapEditor.Components
 
 			if (Manager.Room == null) return;
 
+			bool redraw = false;
+
 			Point snap = GetSnappedPoint(e.Location, new Size(_gridX, _gridY));
 			_drawMousePosition = true;
 
-			_mx = e.Location.X;
-			_my = e.Location.Y;
+			int __mx, __my;
+
+			__mx = Offset.X + e.Location.X;
+			__my = Offset.Y + e.Location.Y;
+
+			if (__mx != _mx || __my != _my)
+			{
+				_mx = __mx;
+				_my = __my;
+				redraw = true;
+			}
 
 			if (CurrentBrush == BrushMode.Select)
 			{
@@ -389,11 +473,15 @@ namespace MapEditor.Components
 				PlaceableInstance found = null;
 				foreach (PlaceableInstance pinstance in Manager.Room.Instances)
 				{
-					double dist = pointDistance(pinstance.offsetX, pinstance.offsetY, _mx, _my);
+					if (Manager.Room.Layers[Manager.MainWindow.tbLayerDropDown.SelectedIndex].LayerDepth != pinstance.Layer)
+						continue;
+
+					double dist = pointDistance(pinstance.X, pinstance.Y, _mx, _my);
+
 					if (dist < distance)
 					{
-						if (pinstance.X <= _mx)
-							if (pinstance.Y <= _mx)
+						if (pinstance.XStart <= _mx)
+							if (pinstance.YStart <= _mx)
 								if (pinstance.XEnd >= _mx)
 									if (pinstance.YEnd >= _my)
 									{
@@ -406,8 +494,23 @@ namespace MapEditor.Components
 				}
 				//if (found != null)
 				//{
+				if (Manager.Project.HighlightedInstance != found)
+				{
+					redraw = true;
 					Manager.Project.HighlightedInstance = found;
+				}
 				//}
+			}
+
+			if (_drag)
+			{
+				redraw = true;
+
+			}
+
+			if (redraw)
+			{
+				Invalidate();
 			}
 
 			if (snap.X != _mouseX || snap.Y != _mouseY)
@@ -428,6 +531,7 @@ namespace MapEditor.Components
 				Manager.Project.HighlightedInstance = null;
 			}
 			_drawMousePosition = false;
+			_drag = false;
 			Invalidate();
 		}
 
@@ -435,6 +539,7 @@ namespace MapEditor.Components
 		{
 			base.OnMouseEnter(e);
 			_drawMousePosition = true;
+			this.Focus();
 
 			if (Manager.Room == null)
 			{
@@ -445,6 +550,7 @@ namespace MapEditor.Components
 				switch (CurrentBrush)
 				{
 					case BrushMode.Paint: Cursor = _bucketCursor; break;
+					case BrushMode.Move: Cursor = Cursors.SizeAll; break;
 					default: Cursor = Cursors.Default; break;
 				}
 			}

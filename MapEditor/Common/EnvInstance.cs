@@ -23,24 +23,43 @@ namespace MapEditor.Common
 			get { return (Element == null) ? 0 : GraphicsManager.Sprites[Element.textureId].Height; }
 		}
 
+		public int XStart
+		{
+			get { return X - Element.offsetX; }
+		}
+
+		public int YStart
+		{
+			get { return Y - Element.offsetY; }
+		}
+
+		public int XCenter
+		{
+			get { return X; }
+		}
+		public int YCenter
+		{
+			get { return Y; }
+		}
+
 		public int XEnd
 		{
-			get { return X + Width; }
+			get { return XStart + Width; }
 		}
 
 		public int YEnd
 		{
-			get { return Y + Height; }
+			get { return YStart + Height; }
 		}
 
-		public int offsetX
-		{
-			get { return X + Element.offsetX; }
-		}
+		//public int offsetX
+		//{
+		//    get { return X - Element.offsetX; }
+		//}
 
-		public int offsetY
-		{
-			get { return Y + Element.offsetY; }
-		}
+		//public int offsetY
+		//{
+		//    get { return Y - Element.offsetY; }
+		//}
 	}
 }

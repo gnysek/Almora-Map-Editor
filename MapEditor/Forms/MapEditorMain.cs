@@ -128,6 +128,20 @@ namespace MapEditor
 			}
 		}
 
+		private void tbLayerList_Click(object sender, EventArgs e)
+		{
+			if (Manager.Room != null)
+			{
+				using (LayerForm form = new LayerForm())
+				{
+					if (form.ShowDialog() == DialogResult.OK)
+					{
+						Manager.Room.Layers.Add(new MapLayers() { LayerDepth = -Manager.Room.Layers.Count });
+					}
+				}
+			}
+		}
+
 		private void tbSaveProject_Click(object sender, EventArgs e)
 		{
 			Manager.Project.saveProject();
@@ -198,13 +212,13 @@ namespace MapEditor
 				{
 					elem = Manager.Project.PlaceableList[lbPlaceables.SelectedIndex];
 					form.Element = elem;
-					form.Text = "Edit Placeable Definition: " + defName;
+					form.Text = "Edit Placeable Definition: " + elem.Name;
 				}
 				else
 				{
 					elem = new PlaceableElement() { Name = defName };
 					form.Element = elem;
-					form.Text = "Paint new Placeable Definition: " + defName;
+					form.Text = "Create new Placeable Definition: " + defName;
 				}
 
 				if (form.ShowDialog() == DialogResult.OK)
@@ -224,15 +238,68 @@ namespace MapEditor
 			statusLabelPlaceables.Text = Manager.Project.PlaceableList.Count.ToString();
 		}
 
+		private void addOrEditLayer(bool edit)
+		{
+			string defName = "Undefined Layer " + lbLayers.Items.Count.ToString();
+
+			if (edit)
+			{
+				if (lbLayers.Items.Count < 1 || lbLayers.SelectedIndex < 0) return;
+			}
+
+			using (LayerForm form = new LayerForm())
+			{
+				MapLayers elem;
+				if (edit)
+				{
+					elem = Manager.Project.Room.Layers[lbLayers.SelectedIndex];
+					form.Element = elem;
+					form.Text = "Edit Layer Definition: " + elem.LayerName;
+				}
+				else
+				{
+					int depth = 0;
+					if (lbLayers.Items.Count > 0)
+					{
+						depth = Manager.Project.Room.Layers[lbLayers.Items.Count - 1].LayerDepth + 1;
+					}
+					elem = new MapLayers() { LayerName = defName, LayerDepth = 1 };
+					form.Text = "Create new Layer Definition: " + defName;
+				}
+
+				form.Element = elem;
+
+				if (form.ShowDialog() == DialogResult.OK)
+				{
+					if (edit)
+					{
+						elem = form.Element;
+					}
+					else
+					{
+						Manager.Project.Room.Layers.Add(form.Element);
+					}
+					Manager.Project.regenerateLayerList();
+				}
+			}
+		}
+
 		private void tbAddItem_Click(object sender, EventArgs e)
 		{
 			if (tabControlMain.SelectedTab == tabRooms)
 			{
 				addOrEditRoom(false);
 			}
-			else if (tabControlMain.SelectedTab == tabPlaceables && tabControlEnv.SelectedIndex == 0)
+			else if (tabControlMain.SelectedTab == tabPlaceables)
 			{
-				addOrEditPlaceable(false);
+				if (tabControlEnv.SelectedIndex == 0)
+				{
+					addOrEditPlaceable(false);
+				}
+				else if (tabControlEnv.SelectedTab == tpRoomDataLayers)
+				{
+					addOrEditLayer(false);
+				}
 			}
 		}
 
@@ -250,10 +317,22 @@ namespace MapEditor
 
 		private void tbEditItem_Click(object sender, EventArgs e)
 		{
-			switch (tabControlMain.SelectedTab.Text)
+
+			switch (tabControlMain.SelectedIndex)
 			{
-				case "Placeables": addOrEditPlaceable(true); break;
-				case "Rooms": addOrEditRoom(true); break;
+				case 1:
+					switch (tabControlRooms.SelectedIndex)
+					{
+						case 1: addOrEditPlaceable(true); break;
+					}
+					break;
+				case 2:
+					switch (tabControlMain.SelectedIndex)
+					{
+						case 0: addOrEditRoom(true); break;
+						case 1: addOrEditLayer(true); break;
+					}
+					break;
 			}
 		}
 
@@ -263,6 +342,7 @@ namespace MapEditor
 			{
 				if (Manager.Room != null)
 				{
+					if (Manager.Project.RoomList[lbRooms.SelectedIndex] == Manager.Project.Room) return;
 					if (MessageBox.Show("Do you want to close current room?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.OK)
 					{
 						return;
@@ -270,6 +350,10 @@ namespace MapEditor
 				}
 
 				Manager.Project.Room = Manager.Project.RoomList[lbRooms.SelectedIndex];
+				if (Manager.Project.Room.LastUsedLayer > -1 && Manager.Project.Room.LastUsedLayer <= tbLayerDropDown.Items.Count)
+				{
+					tbLayerDropDown.SelectedIndex = Manager.Project.Room.LastUsedLayer;
+				}
 				if (Manager.Project.PlaceableList.Count > 0)
 				{
 					Manager.Project.Instance = Manager.Project.PlaceableList[0];
@@ -301,6 +385,13 @@ namespace MapEditor
 			CurrentBrush = BrushMode.Rotate;
 		}
 
+		private void tbLayerDropDown_DropDownClosed(object sender, EventArgs e)
+		{
+			if (Manager.Room != null)
+			{
+				Manager.Room.LastUsedLayer = tbLayerDropDown.SelectedIndex;
+			}
+		}
 
 	}
 }
