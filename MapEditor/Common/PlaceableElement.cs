@@ -21,6 +21,8 @@ namespace MapEditor.Common
 		private bool _multi = false;
 		private bool _shadow = false;
 		public int textureId = -1;
+		public string addCode = "";
+		private bool _visible = true;
 
 		public string Name
 		{
@@ -84,6 +86,12 @@ namespace MapEditor.Common
 			set { this._shadow = value; }
 		}
 
+		public bool Visible
+		{
+			get { return this._visible; }
+			set { this._visible = value; }
+		}
+
 		public XmlElement toXml(XmlDocument doc)
 		{
 			XmlElement self = doc.CreateElement("placeable");
@@ -112,6 +120,9 @@ namespace MapEditor.Common
 			XmlElement shadow = doc.CreateElement("shadow");
 			shadow.InnerText = (Shadow) ? "1" : "0";
 
+			XmlElement visible = doc.CreateElement("visible");
+			visible.InnerText = (Visible) ? "1" : "0";
+
 			self.AppendChild(sprite);
 			self.AppendChild(mask);
 			self.AppendChild(depth);
@@ -120,6 +131,7 @@ namespace MapEditor.Common
 			self.AppendChild(wind);
 			self.AppendChild(multidraw);
 			self.AppendChild(shadow);
+			self.AppendChild(visible);
 			self.SetAttribute("name", Name);
 
 			return self;

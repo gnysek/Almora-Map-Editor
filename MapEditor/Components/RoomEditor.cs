@@ -19,6 +19,8 @@ namespace MapEditor.Components
 
 			// Set the backcolor for mock visual styled border.
 			BackColor = System.Windows.Forms.VisualStyles.VisualStyleInformation.TextControlBorder;
+
+			this.MouseWheel += new MouseEventHandler(MouseWheelEvent);
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -57,6 +59,55 @@ namespace MapEditor.Components
 		private void verticalScroll_ValueChanged(object sender, EventArgs e)
 		{
 			_rPanel.Offset = new Point(_rPanel.Offset.X, verticalScb.Value);
+		}
+
+		private void MouseWheelEvent(object sender, MouseEventArgs e)
+		{
+			MouseHorizontalWheelEvent(e, ModifierKeys == Keys.Shift);
+		}
+
+		private void MouseHorizontalWheelEvent(MouseEventArgs e, bool horizontal)
+		{
+			if (Manager.Room != null)
+			{
+				//MessageBox.Show(e.Delta.ToString() + ((horizontal) ? "H" : "V"));
+				if (horizontal)
+				{
+					horizontalScb.Value = Math.Max(0, Math.Min(horizontalScb.Maximum,
+						horizontalScb.Value + ((int)(_rPanel.Width * 0.1) * Math.Sign(e.Delta))
+					));
+				}
+				else
+				{
+					verticalScb.Value = Math.Max(0, Math.Min(verticalScb.Maximum,
+						verticalScb.Value + ((int)(_rPanel.Height * 0.1) * Math.Sign(-e.Delta))
+					));
+				}
+			}
+		}
+
+		protected override void WndProc(ref Message m)
+		{
+			if (m.HWnd == this.Handle)
+			{
+				switch (m.Msg)
+				{
+					case 0x020e:
+						int delta = (Int16)HIWORD(m.WParam);
+						MouseHorizontalWheelEvent(new MouseEventArgs(MouseButtons.None, 0, MousePosition.X, MousePosition.Y, delta), true);
+						m.Result = (IntPtr)0;
+						return;
+					default:
+						break;
+				}
+			}
+			base.WndProc(ref m);
+		}
+
+		private static Int32 HIWORD(IntPtr ptr)
+		{
+			Int32 val32 = ptr.ToInt32();
+			return ((val32 >> 16) & 0xFFFF);
 		}
 	}
 }

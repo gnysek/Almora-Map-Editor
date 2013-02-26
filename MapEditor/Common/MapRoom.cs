@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.IO;
+using System.Windows.Forms;
 
 namespace MapEditor.Common
 {
@@ -49,6 +50,7 @@ namespace MapEditor.Common
 		public string LinkedWith = null;
 		public List<MapLayers> Layers = new List<MapLayers>();
 		public int LastUsedLayer = -1;
+		public int InternalCounter = 0;
 
 		public MapLayers ActiveLayer
 		{
@@ -63,6 +65,15 @@ namespace MapEditor.Common
 		public void addInstance(PlaceableInstance instance)
 		{
 			Instances.Add(instance);
+			if (instance.ID == -1)
+			{
+				InternalCounter++;
+				instance.ID = InternalCounter;
+			}
+			else if (InternalCounter < instance.ID)
+			{
+				InternalCounter = instance.ID;
+			}
 		}
 
 		public XmlElement toXml(XmlDocument doc)
@@ -73,6 +84,7 @@ namespace MapEditor.Common
 			self.SetAttribute("linked", LinkedWith);
 			self.SetAttribute("layers", Layers.Count.ToString());
 			self.SetAttribute("lastLayer", LastUsedLayer.ToString());
+			self.SetAttribute("internalCounter", InternalCounter.ToString());
 			return self;
 		}
 
@@ -83,22 +95,22 @@ namespace MapEditor.Common
 			XmlDocument file = new XmlDocument();
 			file.Load(path);
 
-			XmlNode node = file.SelectSingleNode("room/instances");
+			// remove old items
 
-			//int i = 0;
-			//for(i=0; i<node.ChildNodes.Count; i++)
-			foreach (XmlNode child in node.ChildNodes)
+			XmlNodeList nodes = file.GetElementsByTagName("instance");
+
+			for (int i = 0; i < nodes.Count; i++)
 			{
-				//if (node.ChildNodes[i].Attributes["name"].Value.Contains("inst_AME"))
-				//{
-				//    node.RemoveChild(node.ChildNodes[i]);
-				//}
-				if (child.Attributes["name"].Value.Contains("inst_AME"))
+				if (nodes[i].Attributes["name"].Value.Contains("inst_AME"))
 				{
-					node.RemoveChild(child);
+					nodes[i].ParentNode.RemoveChild(nodes[i]);
+					i--; // to prevent skipping items (next one iteration becames current one)
 				}
 			}
-			//node.RemoveAll();
+
+			// now add new things
+
+			XmlNode node = file.SelectSingleNode("room/instances");
 
 			int counter = 0;
 			foreach (PlaceableInstance place in Instances)
@@ -107,8 +119,10 @@ namespace MapEditor.Common
 				code = "sprite_index = " + place.Element.Sprite + ";";
 				code += " depth = " + place.Element.Depth.ToString() + ";";
 				if (place.Element.Solid) code += " solid = true;";
-				if (place.Element.Shadow) code += " shadow = true; shadowsize = " + place.Element.ShadowSize.ToString() + ";";
+				if (place.Element.Shadow) code += " drop_shadow = true; shadow = " + place.Element.ShadowSize.ToString() + ";";
 				if (place.Element.MultiDraw) code += " multidraw = true;";
+				if (place.Element.Wind) code += " wind = true; scEnvWindSet();";
+				if (place.Element.Visible == false) code += " visible = false;";
 
 				XmlElement elem = file.CreateElement("instance");
 				elem.SetAttribute("objName", "oEnvMain");
@@ -119,7 +133,7 @@ namespace MapEditor.Common
 				elem.SetAttribute("scaleX", "1");
 				elem.SetAttribute("scaleY", "1");
 				elem.SetAttribute("colour", "4294967295");
-				elem.SetAttribute("rotate", "0");
+				elem.SetAttribute("image_angle", place.Rotation.ToString());
 
 				node.AppendChild(elem);
 
@@ -147,6 +161,7 @@ namespace MapEditor.Common
 			XmlElement assets = file.CreateElement("assets");
 
 			XmlElement instances = file.CreateElement("instances");
+			//int counter = 0;
 			foreach (PlaceableInstance place in /*room.*/Instances)
 			{
 				XmlElement elem = file.CreateElement("instance");
@@ -154,6 +169,8 @@ namespace MapEditor.Common
 				elem.SetAttribute("x", place.X.ToString());
 				elem.SetAttribute("y", place.Y.ToString());
 				elem.SetAttribute("sprite", place.Element.Sprite);
+				elem.SetAttribute("id", place.ID.ToString());
+				elem.SetAttribute("rotate", place.Rotation.ToString());
 				try
 				{
 					elem.SetAttribute("layer", place.Layer.ToString());

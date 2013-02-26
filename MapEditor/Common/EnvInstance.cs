@@ -12,6 +12,8 @@ namespace MapEditor.Common
 		public int Y = 0;
 		public int Layer = -1;
 		public PlaceableElement Element = null;
+		public int ID = -1;
+		public int Rotation = 0;
 
 		public int Width
 		{

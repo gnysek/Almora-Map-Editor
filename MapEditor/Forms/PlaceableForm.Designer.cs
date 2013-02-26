@@ -48,8 +48,10 @@
 			this.label9 = new System.Windows.Forms.Label();
 			this.pfCancel = new System.Windows.Forms.Button();
 			this.pfOK = new System.Windows.Forms.Button();
-			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.pfCode = new System.Windows.Forms.TextBox();
 			this.label10 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
+			this.pfVisible = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// pfSprite
@@ -98,7 +100,7 @@
 			// pfSolid
 			// 
 			this.pfSolid.AutoSize = true;
-			this.pfSolid.Location = new System.Drawing.Point(142, 93);
+			this.pfSolid.Location = new System.Drawing.Point(185, 120);
 			this.pfSolid.Name = "pfSolid";
 			this.pfSolid.Size = new System.Drawing.Size(15, 14);
 			this.pfSolid.TabIndex = 6;
@@ -115,7 +117,7 @@
 			// 
 			this.pfMask.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.pfMask.FormattingEnabled = true;
-			this.pfMask.Location = new System.Drawing.Point(140, 116);
+			this.pfMask.Location = new System.Drawing.Point(142, 91);
 			this.pfMask.Name = "pfMask";
 			this.pfMask.Size = new System.Drawing.Size(158, 21);
 			this.pfMask.TabIndex = 8;
@@ -123,7 +125,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(12, 119);
+			this.label4.Location = new System.Drawing.Point(14, 94);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(36, 13);
 			this.label4.TabIndex = 9;
@@ -132,7 +134,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(12, 93);
+			this.label5.Location = new System.Drawing.Point(139, 120);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(33, 13);
 			this.label5.TabIndex = 10;
@@ -141,7 +143,7 @@
 			// pfWind
 			// 
 			this.pfWind.AutoSize = true;
-			this.pfWind.Location = new System.Drawing.Point(142, 143);
+			this.pfWind.Location = new System.Drawing.Point(75, 119);
 			this.pfWind.Name = "pfWind";
 			this.pfWind.Size = new System.Drawing.Size(15, 14);
 			this.pfWind.TabIndex = 11;
@@ -150,7 +152,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(12, 144);
+			this.label6.Location = new System.Drawing.Point(14, 119);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(35, 13);
 			this.label6.TabIndex = 12;
@@ -159,7 +161,7 @@
 			// pfMultidraw
 			// 
 			this.pfMultidraw.AutoSize = true;
-			this.pfMultidraw.Location = new System.Drawing.Point(142, 163);
+			this.pfMultidraw.Location = new System.Drawing.Point(75, 138);
 			this.pfMultidraw.Name = "pfMultidraw";
 			this.pfMultidraw.Size = new System.Drawing.Size(15, 14);
 			this.pfMultidraw.TabIndex = 13;
@@ -168,7 +170,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(12, 163);
+			this.label7.Location = new System.Drawing.Point(14, 138);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(55, 13);
 			this.label7.TabIndex = 14;
@@ -177,7 +179,7 @@
 			// pfShadow
 			// 
 			this.pfShadow.AutoSize = true;
-			this.pfShadow.Location = new System.Drawing.Point(142, 183);
+			this.pfShadow.Location = new System.Drawing.Point(75, 158);
 			this.pfShadow.Name = "pfShadow";
 			this.pfShadow.Size = new System.Drawing.Size(15, 14);
 			this.pfShadow.TabIndex = 15;
@@ -187,7 +189,7 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(12, 183);
+			this.label8.Location = new System.Drawing.Point(14, 158);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(49, 13);
 			this.label8.TabIndex = 16;
@@ -195,15 +197,15 @@
 			// 
 			// pfShadowSize
 			// 
-			this.pfShadowSize.Location = new System.Drawing.Point(142, 203);
+			this.pfShadowSize.Location = new System.Drawing.Point(215, 155);
 			this.pfShadowSize.Name = "pfShadowSize";
-			this.pfShadowSize.Size = new System.Drawing.Size(158, 20);
+			this.pfShadowSize.Size = new System.Drawing.Size(85, 20);
 			this.pfShadowSize.TabIndex = 17;
 			// 
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(12, 206);
+			this.label9.Location = new System.Drawing.Point(139, 158);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(70, 13);
 			this.label9.TabIndex = 18;
@@ -213,7 +215,7 @@
 			// 
 			this.pfCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.pfCancel.Image = global::MapEditor.Properties.Resources.cross;
-			this.pfCancel.Location = new System.Drawing.Point(277, 411);
+			this.pfCancel.Location = new System.Drawing.Point(277, 357);
 			this.pfCancel.Name = "pfCancel";
 			this.pfCancel.Size = new System.Drawing.Size(23, 23);
 			this.pfCancel.TabIndex = 19;
@@ -223,38 +225,58 @@
 			// 
 			this.pfOK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.pfOK.Image = global::MapEditor.Properties.Resources.tick;
-			this.pfOK.Location = new System.Drawing.Point(248, 411);
+			this.pfOK.Location = new System.Drawing.Point(248, 357);
 			this.pfOK.Name = "pfOK";
 			this.pfOK.Size = new System.Drawing.Size(23, 23);
 			this.pfOK.TabIndex = 20;
 			this.pfOK.UseVisualStyleBackColor = true;
 			this.pfOK.Click += new System.EventHandler(this.button2_Click);
 			// 
-			// textBox1
+			// pfCode
 			// 
-			this.textBox1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.textBox1.Location = new System.Drawing.Point(15, 248);
-			this.textBox1.Multiline = true;
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(285, 157);
-			this.textBox1.TabIndex = 21;
+			this.pfCode.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.pfCode.Location = new System.Drawing.Point(15, 194);
+			this.pfCode.Multiline = true;
+			this.pfCode.Name = "pfCode";
+			this.pfCode.Size = new System.Drawing.Size(285, 157);
+			this.pfCode.TabIndex = 21;
 			// 
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(12, 232);
+			this.label10.Location = new System.Drawing.Point(14, 178);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(106, 13);
 			this.label10.TabIndex = 22;
 			this.label10.Text = "Custom code (if any):";
 			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(139, 138);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(40, 13);
+			this.label11.TabIndex = 23;
+			this.label11.Text = "Visible:";
+			// 
+			// pfVisible
+			// 
+			this.pfVisible.AutoSize = true;
+			this.pfVisible.Location = new System.Drawing.Point(185, 138);
+			this.pfVisible.Name = "pfVisible";
+			this.pfVisible.Size = new System.Drawing.Size(15, 14);
+			this.pfVisible.TabIndex = 24;
+			this.pfVisible.UseVisualStyleBackColor = true;
+			// 
 			// PlaceableForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(315, 446);
+			this.ClientSize = new System.Drawing.Size(315, 386);
+			this.Controls.Add(this.pfVisible);
+			this.Controls.Add(this.label11);
 			this.Controls.Add(this.label10);
-			this.Controls.Add(this.textBox1);
+			this.Controls.Add(this.pfCode);
 			this.Controls.Add(this.pfOK);
 			this.Controls.Add(this.pfCancel);
 			this.Controls.Add(this.label9);
@@ -307,7 +329,9 @@
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Button pfOK;
 		private System.Windows.Forms.Button pfCancel;
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TextBox pfCode;
 		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.CheckBox pfVisible;
 	}
 }

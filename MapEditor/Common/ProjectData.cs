@@ -21,14 +21,11 @@ namespace MapEditor.Common
 		public bool Loaded = false;
 		private MapRoom _Room = null;
 		private PlaceableElement _Instance = null;
-		private EventElement _Event = null;
 		private PlaceableInstance _HighlightedInstance = null;
 		private PlaceableInstance _SelectedInstance = null;
 
 		public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
 		//public List<PlaceableInstance> PlacedInstances = new List<PlaceableInstance>();
-		public List<EventElement> EventList = new List<EventElement>();
-		public List<EventInstance> PlacedEvents = new List<EventInstance>();
 		public List<MapRoom> RoomList = new List<MapRoom>();
 		public List<string> RegisteredResources = new List<string>();
 		public List<GMSpriteData> GMXSprites = new List<GMSpriteData>();
@@ -39,19 +36,21 @@ namespace MapEditor.Common
 		public MapRoom Room
 		{
 			get { return _Room; }
-			set { _Room = value; Instance = PlaceableList[1]; regenerateLayerList(); }
+			set
+			{
+				_Room = value;
+				if (PlaceableList.Count > 0)
+				{
+					Instance = PlaceableList[0];
+				}
+				regenerateLayerList();
+			}
 		}
 
 		public PlaceableElement Instance
 		{
 			get { return (_Room == null) ? null : _Instance; }
 			set { _Instance = (_Room == null) ? null : value; }
-		}
-
-		public EventElement Event
-		{
-			get { return (_Room == null) ? null : _Event; }
-			set { _Event = (_Room == null) ? null : value; }
 		}
 
 		public PlaceableInstance HighlightedInstance
@@ -205,7 +204,8 @@ namespace MapEditor.Common
 						Solid = (n.SelectSingleNode("solid").InnerText == "1"),
 						Wind = (n.SelectSingleNode("wind").InnerText == "1"),
 						MultiDraw = (n.SelectSingleNode("multidraw").InnerText == "1"),
-						Shadow = (n.SelectSingleNode("shadow").InnerText == "1")
+						Shadow = (n.SelectSingleNode("shadow").InnerText == "1"),
+						Visible = (n.SelectSingleNode("visible").InnerText == "1") ? true : false
 					};
 
 					PlaceableList.Add(e);
@@ -227,7 +227,8 @@ namespace MapEditor.Common
 						Width = int.Parse(n.Attributes["width"].Value),
 						Height = int.Parse(n.Attributes["height"].Value),
 						LinkedWith = n.Attributes["linked"].Value,
-						LastUsedLayer = (n.Attributes["lastLayer"] == null) ? -1 : int.Parse(n.Attributes["lastLayer"].Value)
+						LastUsedLayer = (n.Attributes["lastLayer"] == null) ? -1 : int.Parse(n.Attributes["lastLayer"].Value)//,
+						//InternalCounter = (n.Attributes["internalCounter"].Value == null) ? 0 : int.Parse(n.Attributes["internalCounter"].Value)
 					};
 
 					RoomList.Add(e);
@@ -265,6 +266,8 @@ namespace MapEditor.Common
 							Y = int.Parse(n.Attributes["y"].Value)/* - pl.offsetY*/,
 							Layer = int.Parse(n.Attributes["layer"].Value),
 							Element = pl,
+							Rotation = int.Parse(n.Attributes["rotate"].Value),
+							ID = int.Parse(n.Attributes["id"].Value)
 						};
 						room.addInstance(inst);
 						break;
@@ -534,7 +537,10 @@ namespace MapEditor.Common
 				lb.Items.Add(layer.LayerName);
 			}
 
-			tb.SelectedIndex = 0;
+			if (tb.Items.Count > 0)
+			{
+				tb.SelectedIndex = 0;
+			}
 
 
 		}

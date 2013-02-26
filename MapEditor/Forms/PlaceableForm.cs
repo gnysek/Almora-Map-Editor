@@ -44,6 +44,9 @@ namespace MapEditor.Forms
 			pfMultidraw.Checked = Element.MultiDraw;
 			pfSolid.Checked = Element.Solid;
 			pfShadow.Checked = Element.Shadow;
+			pfVisible.Checked = Element.Visible;
+
+			pfCode.Text = Element.addCode;
 
 			pfShadow_CheckedChanged(null, null);
 		}
@@ -55,10 +58,12 @@ namespace MapEditor.Forms
 			Element.Mask = pfMask.Text;
 			Element.Depth = int.Parse(pfDepth.Text);
 			Element.ShadowSize = int.Parse(pfShadowSize.Text);
-			Element.Wind = (pfWind.Checked) ? true : false;
-			Element.MultiDraw = (pfMultidraw.Checked) ? true : false;
-			Element.Solid = (pfSolid.Checked) ? true : false;
-			Element.Shadow = (pfShadow.Checked) ? true : false;
+			Element.Wind = pfWind.Checked;
+			Element.MultiDraw = pfMultidraw.Checked;
+			Element.Solid = pfSolid.Checked;
+			Element.Shadow = pfShadow.Checked;
+			Element.Visible = pfVisible.Checked;
+			Element.addCode = pfCode.Text;
 		}
 
 		private void pfShadow_CheckedChanged(object sender, EventArgs e)
