@@ -40,6 +40,7 @@
 			// 
 			this.richText.BackColor = System.Drawing.Color.White;
 			this.richText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.richText.Cursor = System.Windows.Forms.Cursors.Arrow;
 			this.richText.DetectUrls = false;
 			this.richText.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.richText.Location = new System.Drawing.Point(12, 42);

@@ -186,20 +186,25 @@ namespace MapEditor.Components
 			{
 				addText += "X: " + Manager.Room.Instances[itemNumber].X.ToString();
 				addText += ", Y: " + Manager.Room.Instances[itemNumber].X.ToString();
+				addText += ", ID: " + Manager.Room.Instances[itemNumber].ID.ToString();
 			}
-			if (_listBoxType == ListType.Layers)
+			else if (_listBoxType == ListType.Layers)
 			{
 				addText += "Depth: " + Manager.Room.Layers[itemNumber].LayerDepth.ToString();
 			}
+			else if (_listBoxType == ListType.Rooms)
+			{
+				addText += "Instances: " + Manager.Project.RoomList[itemNumber].InstanceCount.ToString();
+			}
 
 			_paintItem(text, args, item);
-			
+
 			if (addText != "")
 			{
 				int after = (int)args.Graphics.MeasureString(text, this.Font).Width + 5;
 				args.Graphics.DrawString(addText, this.Font, Brushes.Gray, after, item * this.ItemHeight);
 			}
-			
+
 		}
 
 		private void _paintItem(string text, DrawItemEventArgs args, int item)

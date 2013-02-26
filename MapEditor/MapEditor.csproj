@@ -56,8 +56,6 @@
   <ItemGroup>
     <Compile Include="Common\PlaceableElement.cs" />
     <Compile Include="Common\EnvInstance.cs" />
-    <Compile Include="Common\EventElement.cs" />
-    <Compile Include="Common\EventInstance.cs" />
     <Compile Include="Common\GmCommon.cs" />
     <Compile Include="Common\Manager.cs" />
     <Compile Include="Common\ProjectData.cs" />
@@ -67,6 +65,12 @@
     </Compile>
     <Compile Include="Components\ListBoxEx.Designer.cs">
       <DependentUpon>ListBoxEx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InstanceProp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InstanceProp.Designer.cs">
+      <DependentUpon>InstanceProp.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LayerForm.cs">
       <SubType>Form</SubType>
@@ -133,6 +137,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Components\RoomEditor.resx">
       <DependentUpon>RoomEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InstanceProp.resx">
+      <DependentUpon>InstanceProp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LayerForm.resx">
       <DependentUpon>LayerForm.cs</DependentUpon>

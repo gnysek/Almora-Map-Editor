@@ -31,6 +31,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
+using MapEditor.Components;
+using MapEditor.Common;
 
 namespace MapEditor.Graphics
 {
@@ -488,6 +490,11 @@ namespace MapEditor.Graphics
             _quads.Add(new Quad(texture, new PointF(x, y), new PointF(scaleX, scaleY), 0, color));
         }
 
+		public static RoomPanel RPanel
+		{
+			get { return Manager.MainWindow.roomEditor1._rPanel; }
+		}
+
         /// <summary>
         /// Draws a list of image parts in one pass.
         /// </summary>
@@ -519,9 +526,9 @@ namespace MapEditor.Graphics
 					float w, h;
 					w = quad.Width;
 					h = quad.Height;
-					OpenGL.glTranslatef(quad.Vertices[0].X + (w/2), quad.Vertices[0].Y + (h/2), 0);
+					OpenGL.glTranslatef(-RPanel.Offset.X + quad.Vertices[0].X + (w / 2), -RPanel.Offset.Y + quad.Vertices[0].Y + (h / 2), 0);
 					OpenGL.glRotatef(quad.Angle, 0, 0, 1);
-					OpenGL.glTranslatef(-(quad.Vertices[0].X + (w/2)), -(quad.Vertices[0].Y + (h/2)), 0);
+					OpenGL.glTranslatef(-(-RPanel.Offset.X + quad.Vertices[0].X + (w / 2)), -(-RPanel.Offset.Y + quad.Vertices[0].Y + (h / 2)), 0);
 				}
 
                 OpenGL.glBegin(GLPrimative.Quads);

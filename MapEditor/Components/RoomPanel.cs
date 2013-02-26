@@ -162,7 +162,12 @@ namespace MapEditor.Components
 
 						if (instance.Element != null)
 						{
-							GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, 0, color);
+							GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, instance.Rotation, color);
+
+							if (instance.Element.MultiDraw)
+							{
+								GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, instance.Rotation+90, color);
+							}
 							//GraphicsManager.draw
 						}
 					}
@@ -175,8 +180,8 @@ namespace MapEditor.Components
 					{
 						GraphicsManager.DrawSprite(
 							Manager.Project.Instance.textureId,
-							_mouseX - Manager.Project.Instance.offsetX,
-							_mouseY - Manager.Project.Instance.offsetY,
+							_mx - Manager.Project.Instance.offsetX,
+							_my - Manager.Project.Instance.offsetY,
 							0, Color.Yellow);
 					}
 					catch { }
@@ -184,14 +189,28 @@ namespace MapEditor.Components
 
 				if (_drag)
 				{
-					if (CurrentBrush == BrushMode.Move && Manager.Project.SelectedInstance != null)
+					if (Manager.Project.SelectedInstance != null)
 					{
-						GraphicsManager.DrawSprite(
-							Manager.Project.SelectedInstance.Element.textureId,
-							/*Manager.Project.SelectedInstance.X +*/ (_mouseX - Manager.Project.SelectedInstance.Element.offsetX),
-							/*Manager.Project.SelectedInstance.Y +*/ (_mouseY - Manager.Project.SelectedInstance.Element.offsetY),
-							0, Color.Red);
+						if (CurrentBrush == BrushMode.Move)
+						{
+							GraphicsManager.DrawSprite(
+								Manager.Project.SelectedInstance.Element.textureId,
+								/*Manager.Project.SelectedInstance.X +*/ (_mouseX - Manager.Project.SelectedInstance.Element.offsetX),
+								/*Manager.Project.SelectedInstance.Y +*/ (_mouseY - Manager.Project.SelectedInstance.Element.offsetY),
+								Manager.Project.SelectedInstance.Rotation, Color.Red);
+						}
+
+						if (CurrentBrush == BrushMode.Rotate)
+						{
+							GraphicsManager.DrawSprite(
+								Manager.Project.SelectedInstance.Element.textureId,
+								Manager.Project.SelectedInstance.XStart,
+								Manager.Project.SelectedInstance.YStart,
+								(float)((Manager.Project.SelectedInstance.Rotation + pointDistance(Manager.Project.SelectedInstance.X, Manager.Project.SelectedInstance.Y, _mx, _my)) % 360),
+								Color.Green);
+						}
 					}
+
 				}
 
 				GraphicsManager.DrawSpriteBatch(false);
@@ -360,7 +379,7 @@ namespace MapEditor.Components
 				_mouseX = snap.X;
 				_mouseY = snap.Y;
 
-				if (CurrentBrush == BrushMode.Move)
+				if (CurrentBrush == BrushMode.Move || CurrentBrush == BrushMode.Rotate)
 				{
 					_drag = true;
 				}
@@ -433,6 +452,20 @@ namespace MapEditor.Components
 							}
 							_drag = false;
 							break;
+						case BrushMode.Rotate:
+							if (_drag)
+							{
+								if (Manager.Project.SelectedInstance != null)
+								{
+									Manager.Project.SelectedInstance.Rotation =
+										(int)(Manager.Project.SelectedInstance.Rotation + pointDistance(
+											Manager.Project.SelectedInstance.X,
+											Manager.Project.SelectedInstance.Y,
+											_mouseX, _mouseY)) % 360;
+								}
+							}
+							_drag = false;
+							break;
 
 					}
 					break;
@@ -442,11 +475,17 @@ namespace MapEditor.Components
 			Invalidate();
 		}
 
+		/// <summary>
+		/// When there's a mouse move over map canvas
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
 
 			if (Manager.Room == null) return;
+
+			Focus();
 
 			bool redraw = false;
 
@@ -469,7 +508,7 @@ namespace MapEditor.Components
 			{
 				//int counter = 0;
 				//int foundId = 0;
-				double distance = 1000000;
+				double distance = 100000;
 				PlaceableInstance found = null;
 				foreach (PlaceableInstance pinstance in Manager.Room.Instances)
 				{
@@ -481,7 +520,7 @@ namespace MapEditor.Components
 					if (dist < distance)
 					{
 						if (pinstance.XStart <= _mx)
-							if (pinstance.YStart <= _mx)
+							if (pinstance.YStart <= _my)
 								if (pinstance.XEnd >= _mx)
 									if (pinstance.YEnd >= _my)
 									{
@@ -505,19 +544,19 @@ namespace MapEditor.Components
 			if (_drag)
 			{
 				redraw = true;
-
 			}
 
-			if (redraw)
-			{
-				Invalidate();
-			}
+			//if (redraw)
+			//{
+			//    Invalidate();
+			//}
 
-			if (snap.X != _mouseX || snap.Y != _mouseY)
+			if (snap.X != _mouseX || snap.Y != _mouseY || redraw)
 			{
 				_mouseX = snap.X;
 				_mouseY = snap.Y;
 				Manager.MainWindow.statusLabelMousePos.Text = "X: " + _mouseX.ToString() + ", Y: " + _mouseY.ToString();
+				Manager.MainWindow.statusLabelMousePos.Text += " / RX:  " + _mx.ToString() + ", RY: " + _my.ToString();
 				Invalidate();
 			}
 
@@ -551,6 +590,7 @@ namespace MapEditor.Components
 				{
 					case BrushMode.Paint: Cursor = _bucketCursor; break;
 					case BrushMode.Move: Cursor = Cursors.SizeAll; break;
+					case BrushMode.Rotate: Cursor = Cursors.AppStarting; break;
 					default: Cursor = Cursors.Default; break;
 				}
 			}
