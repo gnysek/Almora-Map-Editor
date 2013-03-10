@@ -46,7 +46,9 @@
 			this.Controls.Add(this.loadingBar);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "LoadingForm";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Please wait...";
 			this.ResumeLayout(false);
 
@@ -54,6 +56,7 @@
 
 		#endregion
 
-		private System.Windows.Forms.ProgressBar loadingBar;
+		public System.Windows.Forms.ProgressBar loadingBar;
+
 	}
 }

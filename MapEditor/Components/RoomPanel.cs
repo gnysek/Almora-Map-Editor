@@ -8,6 +8,7 @@ using MapEditor.Graphics;
 using System.Drawing;
 using MapEditor.Common;
 using System.Reflection;
+using MapEditor.Forms;
 
 namespace MapEditor.Components
 {
@@ -33,6 +34,8 @@ namespace MapEditor.Components
 		private bool _drawMousePosition = false;
 		private Cursor _bucketCursor;
 		private bool _drag = false;
+		private int _rotateStart = 0;
+		private int _rotateCurrent = 0;
 
 		public BrushMode CurrentBrush = BrushMode.Select;
 
@@ -104,20 +107,28 @@ namespace MapEditor.Components
 			if (Manager.Project.SelectedInstance != null)
 			{
 				PlaceableInstance instance = Manager.Project.SelectedInstance;
-				GraphicsManager.DrawRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
-				GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Red, true);
-				GraphicsManager.DrawRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
+				//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
+				GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, instance.Rotation, 2);
+				//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Red, true);
+				GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Red, instance.Rotation, 2);
+				//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
+				GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, instance.Rotation, 2);
 			}
 
+			// ???
 			if (_drawMousePosition)
 			{
 				if (Manager.Project.HighlightedInstance != null && Manager.Project.HighlightedInstance != Manager.Project.SelectedInstance)
 				{
 					PlaceableInstance instance = Manager.Project.HighlightedInstance;
-					GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.FromArgb(30, Color.Yellow), false);
-					GraphicsManager.DrawRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
-					GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Yellow, true);
-					GraphicsManager.DrawRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
+					//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.FromArgb(30, Color.Yellow), false);
+					//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
+					//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Yellow, true);
+					//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
+					GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), instance.Rotation, Color.FromArgb(30, Color.Yellow), false);
+					GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), instance.Rotation, Color.Black, true);
+					GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), instance.Rotation, Color.Yellow, true);
+					GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), instance.Rotation, Color.Black, true);
 				}
 			}
 		}
@@ -166,7 +177,7 @@ namespace MapEditor.Components
 
 							if (instance.Element.MultiDraw)
 							{
-								GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, instance.Rotation+90, color);
+								GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, instance.Rotation + 90, color);
 							}
 							//GraphicsManager.draw
 						}
@@ -187,10 +198,14 @@ namespace MapEditor.Components
 					catch { }
 				}
 
+				GraphicsManager.DrawSpriteBatch(false);
+
 				if (_drag)
 				{
 					if (Manager.Project.SelectedInstance != null)
 					{
+						PlaceableInstance p = Manager.Project.SelectedInstance;
+						// drawing when moving
 						if (CurrentBrush == BrushMode.Move)
 						{
 							GraphicsManager.DrawSprite(
@@ -200,23 +215,106 @@ namespace MapEditor.Components
 								Manager.Project.SelectedInstance.Rotation, Color.Red);
 						}
 
+						// drawing when rotating
 						if (CurrentBrush == BrushMode.Rotate)
 						{
+							Color green = Color.FromArgb(100, Color.Green);
+
+							//GraphicsManager.DrawRectangle(
+							//    new Rectangle(p.XStart - 50, p.YStart - 50, p.Width + 100, p.Height + 100),
+							//    Color.FromArgb(100, Color.White),
+							//    false
+							//);
+
+							//GraphicsManager.DrawLineCache(
+							//    p.X - (int)lengthdir_x(p.Width, p.Rotation),
+							//    p.Y - (int)lengthdir_y(p.Height, p.Rotation),
+							//    p.X + (int)lengthdir_x(p.Width, p.Rotation),
+							//    p.Y + (int)lengthdir_y(p.Height, p.Rotation),
+							//    green
+							//);
+							//GraphicsManager.DrawLineCache(
+							//    p.X - (int)lengthdir_x(p.Width, p.Rotation + 90),
+							//    p.Y - (int)lengthdir_y(p.Height, p.Rotation + 90),
+							//    p.X + (int)lengthdir_x(p.Width, p.Rotation + 90),
+							//    p.Y + (int)lengthdir_y(p.Height, p.Rotation + 90),
+							//    green
+							//);
+							//GraphicsManager.DrawLineBatch();
+
+							//GraphicsManager.DrawSprite(
+							//    p.Element.textureId,
+							//    p.XStart, p.YStart,
+							//    p.Rotation, green
+							//);
+
+
+							// draw rotated one
+							//double newRotation = (Manager.Project.SelectedInstance.Rotation + pointDistance(Manager.Project.SelectedInstance.XCenter, Manager.Project.SelectedInstance.YCenter, _mx, _my)) % 360;
+
+							int newRotation = MathMethods.AngleDifference(MathMethods.PointDirection(p.X, p.Y, _mx, _my), _rotateStart);
+							_rotateCurrent = (p.Rotation + newRotation) % 360;
+
+							//Manager.MainWindow.statusLabelMousePos.Text = newRotation.ToString();
+
 							GraphicsManager.DrawSprite(
-								Manager.Project.SelectedInstance.Element.textureId,
-								Manager.Project.SelectedInstance.XStart,
-								Manager.Project.SelectedInstance.YStart,
-								(float)((Manager.Project.SelectedInstance.Rotation + pointDistance(Manager.Project.SelectedInstance.X, Manager.Project.SelectedInstance.Y, _mx, _my)) % 360),
-								Color.Green);
+								p.Element.textureId,
+								p.XStart,
+								p.YStart,
+								(float)_rotateCurrent,
+								Color.Red
+							);
+
+							//GraphicsManager.DrawLineCache(
+							//    p.XCenter - (int)lengthdir_x(p.Width, newRotation),
+							//    p.YCenter - (int)lengthdir_y(p.Height, newRotation),
+							//    p.XCenter + (int)lengthdir_x(p.Width, newRotation),
+							//    p.YCenter + (int)lengthdir_y(p.Height, newRotation),
+							//    Color.Red
+							//);
+							//GraphicsManager.DrawLineCache(
+							//    p.XCenter - (int)lengthdir_x(p.Width, newRotation + 90),
+							//    p.YCenter - (int)lengthdir_y(p.Height, newRotation + 90),
+							//    p.XCenter + (int)lengthdir_x(p.Width, newRotation + 90),
+							//    p.YCenter + (int)lengthdir_y(p.Height, newRotation + 90),
+							//    Color.Red
+							//);
+
+							GraphicsManager.DrawRectangleRotated(
+								new Rectangle(p.XStart, p.YStart, p.Width, p.Height),
+								_rotateCurrent, Color.FromArgb(150, Color.White), false
+							);
+
+							//GraphicsManager.DrawLineBatch();
 						}
 					}
-
+					GraphicsManager.DrawSpriteBatch(false);
 				}
 
-				GraphicsManager.DrawSpriteBatch(false);
+
 			}
 		}
 		#endregion
+
+		public double lengthdir_x(int len, int dir)
+		{
+			return Math.Cos(dir * Math.PI / 180) * len;
+		}
+
+		public double lengthdir_x(int len, double dir)
+		{
+			return lengthdir_x(len, (int)dir);
+		}
+
+		public double lengthdir_y(int len, int dir)
+		{
+			return -Math.Sin(dir * Math.PI / 180) * len;
+		}
+
+		public double lengthdir_y(int len, double dir)
+		{
+			return lengthdir_y(len, (int)dir);
+		}
 
 		/// <summary>
 		/// Override CreateControl event.
@@ -306,21 +404,29 @@ namespace MapEditor.Components
 			GraphicsManager.DrawStippledRectangle(rec, c, offset);
 		}
 
+		private void drawSelectionToolRotated(Rectangle rec, Color c, float angle, int offset)
+		{
+			GraphicsManager.DrawStippledRectangle(rec, c, angle, offset);
+		}
+
 		private void drawMouseGrid(Rectangle rec)
 		{
 			rec.Width++;
 			rec.Height++;
 			GraphicsManager.DrawRectangle(rec, Color.Black, true);
+			//GraphicsManager.DrawStippledRectangle(rec, Color.Black, 4);
 			rec.X += 1;
 			rec.Y += 1;
 			rec.Width -= 2;
 			rec.Height -= 2;
 			GraphicsManager.DrawRectangle(rec, Color.White, true);
+			//GraphicsManager.DrawStippledRectangle(rec, Color.White, 4);
 			rec.X += 1;
 			rec.Y += 1;
 			rec.Width -= 2;
 			rec.Height -= 2;
 			GraphicsManager.DrawRectangle(rec, Color.Black, true);
+			//GraphicsManager.DrawStippledRectangle(rec, Color.Black, 4);
 		}
 
 		protected override void OnPaintBackground(PaintEventArgs e)
@@ -362,6 +468,19 @@ namespace MapEditor.Components
 			_enabled = true;
 		}
 
+		protected override void OnDoubleClick(EventArgs e)
+		{
+			base.OnDoubleClick(e);
+
+			if (Manager.Project.HighlightedInstance != null)
+			{
+				using (InstanceProp form = new InstanceProp())
+				{
+
+				}
+			}
+		}
+
 		/////
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -382,6 +501,17 @@ namespace MapEditor.Components
 				if (CurrentBrush == BrushMode.Move || CurrentBrush == BrushMode.Rotate)
 				{
 					_drag = true;
+					if (CurrentBrush == BrushMode.Rotate)
+					{
+						Invalidate();
+
+						if (Manager.Project.SelectedInstance != null)
+						{
+							PlaceableInstance p = Manager.Project.SelectedInstance;
+							this._rotateStart = MathMethods.PointDirection(p.X, p.Y, _mx, _my);
+							Manager.MainWindow.statusLabelMousePos.Text = _rotateStart.ToString();
+						}
+					}
 				}
 			}
 		}
@@ -457,11 +587,8 @@ namespace MapEditor.Components
 							{
 								if (Manager.Project.SelectedInstance != null)
 								{
-									Manager.Project.SelectedInstance.Rotation =
-										(int)(Manager.Project.SelectedInstance.Rotation + pointDistance(
-											Manager.Project.SelectedInstance.X,
-											Manager.Project.SelectedInstance.Y,
-											_mouseX, _mouseY)) % 360;
+									Manager.Project.SelectedInstance.Rotation = _rotateCurrent;
+									//(int)(Manager.Project.SelectedInstance.Rotation + pointDistance(Manager.Project.SelectedInstance.XCenter, Manager.Project.SelectedInstance.YCenter, _mx, _my)) % 360;
 								}
 							}
 							_drag = false;
