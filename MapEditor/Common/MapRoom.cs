@@ -129,11 +129,12 @@ namespace MapEditor.Common
 				elem.SetAttribute("x", place.X.ToString());
 				elem.SetAttribute("y", place.Y.ToString());
 				elem.SetAttribute("name", "inst_AME" + counter.ToString("X"));
+				elem.SetAttribute("locked", "1");
 				elem.SetAttribute("code", code);
 				elem.SetAttribute("scaleX", "1");
 				elem.SetAttribute("scaleY", "1");
 				elem.SetAttribute("colour", "4294967295");
-				elem.SetAttribute("image_angle", place.Rotation.ToString());
+				elem.SetAttribute("rotation", place.Rotation.ToString());
 
 				node.AppendChild(elem);
 

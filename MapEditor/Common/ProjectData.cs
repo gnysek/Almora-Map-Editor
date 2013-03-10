@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using MapEditor.Components;
 using MapEditor.Graphics;
 using System.Drawing;
+using MapEditor.Forms;
 
 namespace MapEditor.Common
 {
@@ -222,7 +223,7 @@ namespace MapEditor.Common
 				root = XMLfile.SelectSingleNode("assets/rooms");
 				foreach (XmlNode n in root)
 				{
-					MapRoom e = new MapRoom()
+					MapRoom map = new MapRoom()
 					{
 						Width = int.Parse(n.Attributes["width"].Value),
 						Height = int.Parse(n.Attributes["height"].Value),
@@ -231,13 +232,13 @@ namespace MapEditor.Common
 						//InternalCounter = (n.Attributes["internalCounter"].Value == null) ? 0 : int.Parse(n.Attributes["internalCounter"].Value)
 					};
 
-					RoomList.Add(e);
-					_readAMERoom(e, ProjectSource + "\\amedata\\" + e.LinkedWith + ".room.ame");
+					RoomList.Add(map);
+					_readAMERoom(map, ProjectSource + "\\amedata\\" + map.LinkedWith + ".room.ame");
 				}
 			}
 			catch (Exception e)
 			{
-				MessageBox.Show(e.Message);
+				MessageBox.Show("reading room node from AME file failed: " + e.Message);
 			}
 
 			regenerateEnvDefList();
@@ -493,29 +494,42 @@ namespace MapEditor.Common
 
 		public void regenerateTextureList()
 		{
-			GraphicsManager.DeleteTextures();
-			int i = 0;
-			Manager.MainWindow.tsProgress.Maximum = RegisteredResources.Count;
-			Manager.MainWindow.tsProgress.Value = 0;
-			Manager.MainWindow.tsProgress.Visible = true;
-			foreach (string file in RegisteredResources)
+			using (LoadingForm form = new LoadingForm())
 			{
-				GMSpriteData itm = this.GMXSprites.Find(item => item.Name == file);
+				form.Show();
 
-				if (itm != null)
+				GraphicsManager.DeleteTextures();
+				int i = 0;
+				/*Manager.MainWindow.tsProgress.Maximum = RegisteredResources.Count;
+				Manager.MainWindow.tsProgress.Value = 0;
+				Manager.MainWindow.tsProgress.Visible = true;*/
+
+				form.loadingBar.Maximum = RegisteredResources.Count;
+				form.loadingBar.Value = 0;
+
+				foreach (string file in RegisteredResources)
 				{
-					if (File.Exists(itm.firstFramePath))
-					{
-						GraphicsManager.LoadTexture(new Bitmap(itm.firstFramePath), i++);
-					}
-				}
-				Manager.MainWindow.tsProgress.Value++;
-			}
-			Manager.MainWindow.tsProgress.Visible = false;
+					GMSpriteData itm = this.GMXSprites.Find(item => item.Name == file);
 
-			foreach (PlaceableElement elem in PlaceableList)
-			{
-				elem.textureId = RegisteredResources.IndexOf(elem.Sprite);
+					if (itm != null)
+					{
+						if (File.Exists(itm.firstFramePath))
+						{
+							GraphicsManager.LoadTexture(new Bitmap(itm.firstFramePath), i++);
+						}
+					}
+					//Manager.MainWindow.tsProgress.Value++;
+					form.loadingBar.Value++;
+					form.Refresh();
+				}
+				//Manager.MainWindow.tsProgress.Visible = false;
+
+				foreach (PlaceableElement elem in PlaceableList)
+				{
+					elem.textureId = RegisteredResources.IndexOf(elem.Sprite);
+				}
+
+				form.Close();
 			}
 		}
 

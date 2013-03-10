@@ -336,7 +336,7 @@ namespace MapEditor.Graphics
         /// <summary>
         /// Draws a standard stippled rectangle. (Not very flexible at this point)
         /// </summary>
-        public static void DrawStippledRectangle(Rectangle rectangle, Color color, int offset)
+        public static void DrawStippledRectangle(Rectangle rectangle, Color color, float angle, int offset)
         {
             // 4 dashed bit pattern that supports bit wrapping on offset.
             ushort pattern = (ushort)(0xF0F << offset | 0xF0F >> (8 - offset));
@@ -348,11 +348,17 @@ namespace MapEditor.Graphics
             OpenGL.glLineStipple(1, pattern);
 
             // Draw the rectangle.
-            DrawRectangle(rectangle, color, true);
+            //DrawRectangle(rectangle, color, true);
+			DrawRectangleRotated(rectangle, angle, color, true);
 
             // Disable line stipple.
             OpenGL.glDisable(GLOption.LineStipple);
         }
+
+		public static void DrawStippledRectangle(Rectangle rectangle, Color color, int offset)
+		{
+			DrawStippledRectangle(rectangle, color, 0, offset);
+		}
 
         /// <summary>
         /// Draws a rectangle.
@@ -401,6 +407,38 @@ namespace MapEditor.Graphics
 
             OpenGL.glEnd();
         }
+
+		public static void DrawRectangleRotated(Rectangle rectangle, float angle, Color color, bool outline)
+		{
+			// Calculate positions.
+			float x0 = rectangle.X - _offsetX;
+			float y0 = rectangle.Y - _offsetY;
+			float x1 = (rectangle.Width + x0) - 1;  // Inclusive offset.
+			float y1 = (rectangle.Height + y0) - 1; // Inclusive offset.
+
+			// Draw rectangle.
+			OpenGL.glBindTexture(GLTexture.Texture2D, 0);
+			OpenGL.glDisable(GLOption.Texture2D);
+			OpenGL.glPolygonMode(GLPolygonFaces.FrontAndBack, outline == false ? GLPolygonMode.Fill : GLPolygonMode.Line);
+			OpenGL.glColor4(color);
+
+			OpenGL.glPushMatrix();
+
+			OpenGL.glTranslatef(/*-RPanel.Offset.X + */x0 + (rectangle.Width / 2), /*-RPanel.Offset.Y + */y0 + (rectangle.Height / 2), 0);
+			OpenGL.glRotatef(-angle, 0, 0, 1);
+			OpenGL.glTranslatef(-(/*-RPanel.Offset.X + */x0 + (rectangle.Width / 2)), -(/*-RPanel.Offset.Y + */y0 + (rectangle.Height / 2)), 0);
+
+			OpenGL.glBegin(GLPrimative.Quads);
+
+			OpenGL.glVertex2f(x0, y0);
+			OpenGL.glVertex2f(x1, y0);
+			OpenGL.glVertex2f(x1, y1);
+			OpenGL.glVertex2f(x0, y1);
+
+			OpenGL.glEnd();
+
+			OpenGL.glPopMatrix();
+		}
 
         /// <summary>
         /// Draws an array of rectangles.
@@ -527,7 +565,7 @@ namespace MapEditor.Graphics
 					w = quad.Width;
 					h = quad.Height;
 					OpenGL.glTranslatef(-RPanel.Offset.X + quad.Vertices[0].X + (w / 2), -RPanel.Offset.Y + quad.Vertices[0].Y + (h / 2), 0);
-					OpenGL.glRotatef(quad.Angle, 0, 0, 1);
+					OpenGL.glRotatef(-quad.Angle, 0, 0, 1);
 					OpenGL.glTranslatef(-(-RPanel.Offset.X + quad.Vertices[0].X + (w / 2)), -(-RPanel.Offset.Y + quad.Vertices[0].Y + (h / 2)), 0);
 				}
 
