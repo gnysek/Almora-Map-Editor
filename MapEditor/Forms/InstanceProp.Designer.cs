@@ -146,6 +146,7 @@
 			this.instOK.TabIndex = 11;
 			this.instOK.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.instOK.UseVisualStyleBackColor = true;
+			this.instOK.Click += new System.EventHandler(this.instOK_Click);
 			// 
 			// instCancel
 			// 
@@ -180,6 +181,7 @@
 			this.Name = "InstanceProp";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "InstanceProp";
+			this.Shown += new System.EventHandler(this.InstanceProp_Shown);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
