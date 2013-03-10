@@ -184,7 +184,8 @@ namespace MapEditor
 				{
 					if (edit)
 					{
-						elem = form.Element;
+						//TODO: since elem is referenced, it shouldn't be changed that way
+						//elem = form.Element;
 					}
 					else
 					{
@@ -225,7 +226,8 @@ namespace MapEditor
 				{
 					if (edit)
 					{
-						elem = form.Element;
+						//TODO: since elem is referenced, it shouldn't be changed that way
+						//elem = form.Element;
 					}
 					else
 					{
@@ -273,7 +275,8 @@ namespace MapEditor
 				{
 					if (edit)
 					{
-						elem = form.Element;
+						//TODO: since elem is referenced, it shouldn't be changed that way
+						//elem = form.Element;
 					}
 					else
 					{

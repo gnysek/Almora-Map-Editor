@@ -472,11 +472,12 @@ namespace MapEditor.Components
 		{
 			base.OnDoubleClick(e);
 
-			if (Manager.Project.HighlightedInstance != null)
+			if (Manager.Project.SelectedInstance != null)
 			{
 				using (InstanceProp form = new InstanceProp())
 				{
-
+					form.Element = Manager.Project.SelectedInstance;
+					form.ShowDialog();
 				}
 			}
 		}
