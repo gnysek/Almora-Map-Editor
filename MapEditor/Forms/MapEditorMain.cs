@@ -25,11 +25,16 @@ namespace MapEditor
 			get { return roomEditor1._rPanel.CurrentBrush; }
 			set
 			{
-				roomEditor1._rPanel.CurrentBrush = value;
-				tbSelectMap.Checked = (value == BrushMode.Select);
-				tbPaintMap.Checked = (value == BrushMode.Paint);
-				tbRotateMap.Checked = (value == BrushMode.Rotate);
-				tbMoveMap.Checked = (value == BrushMode.Move);
+				if (Manager.Room != null)
+				{
+					roomEditor1._rPanel.CurrentBrush = value;
+					tbSelectMap.Checked = (value == BrushMode.Select);
+					tbPaintMap.Checked = (value == BrushMode.Paint);
+					tbRotateMap.Checked = (value == BrushMode.Rotate);
+					tbMoveMap.Checked = (value == BrushMode.Move);
+					roomEditor1._rPanel.RefreshCursor();
+					roomEditor1._rPanel.Invalidate();
+				}
 			}
 		}
 
@@ -393,6 +398,25 @@ namespace MapEditor
 			if (Manager.Room != null)
 			{
 				Manager.Room.LastUsedLayer = tbLayerDropDown.SelectedIndex;
+			}
+		}
+
+		private void MapEditorMain_KeyDown(object sender, KeyEventArgs e)
+		{
+			switch (e.KeyCode)
+			{
+				case Keys.S:
+					CurrentBrush = BrushMode.Select;
+					break;
+				case Keys.R:
+					CurrentBrush = BrushMode.Rotate;
+					break;
+				case Keys.A:
+					CurrentBrush = BrushMode.Paint;
+					break;
+				case Keys.M:
+					CurrentBrush = BrushMode.Move;
+					break;
 			}
 		}
 

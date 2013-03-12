@@ -196,6 +196,10 @@ namespace MapEditor.Components
 			{
 				addText += "Instances: " + Manager.Project.RoomList[itemNumber].InstanceCount.ToString();
 			}
+			else if (_listBoxType == ListType.Placeables)
+			{
+				addText += (Manager.Project.PlaceableList[itemNumber].Mask == "") ? "-" : ("Mask: " + Manager.Project.PlaceableList[itemNumber].Mask);
+			}
 
 			_paintItem(text, args, item);
 
