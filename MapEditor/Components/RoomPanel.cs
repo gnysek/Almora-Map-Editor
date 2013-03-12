@@ -708,6 +708,13 @@ namespace MapEditor.Components
 			_drawMousePosition = true;
 			this.Focus();
 
+			RefreshCursor();
+
+			Invalidate();
+		}
+
+		public void RefreshCursor()
+		{
 			if (Manager.Room == null)
 			{
 				Cursor = Cursors.Default;
@@ -722,8 +729,6 @@ namespace MapEditor.Components
 					default: Cursor = Cursors.Default; break;
 				}
 			}
-
-			Invalidate();
 		}
 	}
 }

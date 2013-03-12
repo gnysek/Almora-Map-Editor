@@ -26,8 +26,8 @@ namespace MapEditor.Forms
 			pfSprite.Items.Clear();
 			pfMask.Items.Clear();
 
-			pfSprite.Items.Add("<none>");
-			pfMask.Items.Add("<same as sprite>");
+			pfSprite.Items.Add(PlaceableElement.SprDefName);
+			pfMask.Items.Add(PlaceableElement.MaskDefName);
 
 			foreach (string res in Manager.Project.RegisteredResources)
 			{
@@ -35,7 +35,14 @@ namespace MapEditor.Forms
 				pfMask.Items.Add(res);
 			}
 			pfSprite.SelectedIndex = pfSprite.FindStringExact(Element.Sprite);
-			pfMask.SelectedIndex = pfMask.FindStringExact(Element.Mask);
+			if (Element.Mask == "")
+			{
+				pfMask.SelectedIndex = 0;
+			}
+			else
+			{
+				pfMask.SelectedIndex = pfMask.FindStringExact(Element.Mask);
+			}
 
 			pfDepth.Text = Element.Depth.ToString();
 			pfShadowSize.Text = Element.ShadowSize.ToString();

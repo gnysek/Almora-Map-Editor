@@ -10,7 +10,7 @@ namespace MapEditor.Common
 	{
 		public const string SprDefName = "<no sprite>";
 		public const string MaskDefName = "<same as sprite>";
-		private string _name = "undefied";
+		private string _name = "undefined";
 		//private string _sprite = "";
 		private GMSpriteData _spriteData = null;
 		private string _mask = "";
@@ -49,8 +49,8 @@ namespace MapEditor.Common
 
 		public string Mask
 		{
-			get { return this._mask; }
-			set { this._mask = value; }
+			get { return (this._mask == PlaceableElement.MaskDefName) ? "" : this._mask; }
+			set { this._mask = (value == PlaceableElement.MaskDefName) ? "" : value; }
 		}
 
 		public int Depth

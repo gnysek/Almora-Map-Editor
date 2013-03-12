@@ -123,6 +123,7 @@ namespace MapEditor.Common
 				if (place.Element.MultiDraw) code += " multidraw = true;";
 				if (place.Element.Wind) code += " wind = true; scEnvWindSet();";
 				if (place.Element.Visible == false) code += " visible = false;";
+				code += " mask_index = " + ((place.Element.Mask == "") ? place.Element.Sprite : place.Element.Mask) + ";";
 
 				XmlElement elem = file.CreateElement("instance");
 				elem.SetAttribute("objName", "oEnvMain");
