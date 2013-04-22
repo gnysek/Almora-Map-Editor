@@ -126,7 +126,7 @@ namespace MapEditor.Common
 				code += " mask_index = " + ((place.Element.Mask == "") ? place.Element.Sprite : place.Element.Mask) + ";";
 
 				XmlElement elem = file.CreateElement("instance");
-				elem.SetAttribute("objName", "oEnvMain");
+				elem.SetAttribute("objName", Manager.Project.defaultPlaceable);
 				elem.SetAttribute("x", place.X.ToString());
 				elem.SetAttribute("y", place.Y.ToString());
 				elem.SetAttribute("name", "inst_AME" + counter.ToString("X"));

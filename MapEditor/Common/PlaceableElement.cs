@@ -23,6 +23,14 @@ namespace MapEditor.Common
 		public int textureId = -1;
 		public string addCode = "";
 		private bool _visible = true;
+		private string _parent = "";
+
+		public string Parent
+		{
+			get { return this._parent; }
+			// TODO: when defPlac changed, set again
+			set { this._parent = (value == Manager.Project.defaultPlaceable) ? "" : value; }
+		}
 
 		public string Name
 		{
@@ -123,6 +131,9 @@ namespace MapEditor.Common
 			XmlElement visible = doc.CreateElement("visible");
 			visible.InnerText = (Visible) ? "1" : "0";
 
+			XmlElement parent = doc.CreateElement("parent");
+			parent.InnerText = Parent;
+
 			self.AppendChild(sprite);
 			self.AppendChild(mask);
 			self.AppendChild(depth);
@@ -132,6 +143,7 @@ namespace MapEditor.Common
 			self.AppendChild(multidraw);
 			self.AppendChild(shadow);
 			self.AppendChild(visible);
+			self.AppendChild(parent);
 			self.SetAttribute("name", Name);
 
 			return self;
