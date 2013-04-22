@@ -30,15 +30,9 @@
         {
 			this.label1 = new System.Windows.Forms.Label();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.comboBox2 = new System.Windows.Forms.ComboBox();
-			this.comboBox3 = new System.Windows.Forms.ComboBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.comboBox4 = new System.Windows.Forms.ComboBox();
-			this.label4 = new System.Windows.Forms.Label();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.treeView1 = new System.Windows.Forms.TreeView();
-			this.button1 = new System.Windows.Forms.Button();
+			this.buttonOK = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
@@ -61,66 +55,12 @@
 			this.comboBox1.Size = new System.Drawing.Size(121, 21);
 			this.comboBox1.TabIndex = 3;
 			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 36);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(80, 13);
-			this.label2.TabIndex = 4;
-			this.label2.Text = "Default Spawn:";
-			// 
-			// comboBox2
-			// 
-			this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox2.FormattingEnabled = true;
-			this.comboBox2.Location = new System.Drawing.Point(109, 33);
-			this.comboBox2.Name = "comboBox2";
-			this.comboBox2.Size = new System.Drawing.Size(121, 21);
-			this.comboBox2.TabIndex = 5;
-			// 
-			// comboBox3
-			// 
-			this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox3.FormattingEnabled = true;
-			this.comboBox3.Location = new System.Drawing.Point(317, 33);
-			this.comboBox3.Name = "comboBox3";
-			this.comboBox3.Size = new System.Drawing.Size(121, 21);
-			this.comboBox3.TabIndex = 6;
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(236, 9);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(75, 13);
-			this.label3.TabIndex = 7;
-			this.label3.Text = "Default Event:";
-			// 
-			// comboBox4
-			// 
-			this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox4.FormattingEnabled = true;
-			this.comboBox4.Location = new System.Drawing.Point(317, 6);
-			this.comboBox4.Name = "comboBox4";
-			this.comboBox4.Size = new System.Drawing.Size(121, 21);
-			this.comboBox4.TabIndex = 8;
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(236, 36);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(69, 13);
-			this.label4.TabIndex = 9;
-			this.label4.Text = "Default NPC:";
-			// 
 			// groupBox1
 			// 
 			this.groupBox1.Controls.Add(this.treeView1);
-			this.groupBox1.Location = new System.Drawing.Point(12, 60);
+			this.groupBox1.Location = new System.Drawing.Point(12, 33);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(426, 326);
+			this.groupBox1.Size = new System.Drawing.Size(426, 353);
 			this.groupBox1.TabIndex = 10;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Select which objects can be used to define Placeables, Spawns, Events and NPCs:";
@@ -131,20 +71,20 @@
 			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.treeView1.Location = new System.Drawing.Point(3, 16);
 			this.treeView1.Name = "treeView1";
-			this.treeView1.Size = new System.Drawing.Size(420, 307);
+			this.treeView1.Size = new System.Drawing.Size(420, 334);
 			this.treeView1.TabIndex = 13;
 			this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
 			// 
-			// button1
+			// buttonOK
 			// 
-			this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.button1.Image = global::MapEditor.Properties.Resources.tick;
-			this.button1.Location = new System.Drawing.Point(444, 331);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(23, 23);
-			this.button1.TabIndex = 11;
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.buttonOK.Image = global::MapEditor.Properties.Resources.tick;
+			this.buttonOK.Location = new System.Drawing.Point(444, 331);
+			this.buttonOK.Name = "buttonOK";
+			this.buttonOK.Size = new System.Drawing.Size(23, 23);
+			this.buttonOK.TabIndex = 11;
+			this.buttonOK.UseVisualStyleBackColor = true;
+			this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
 			// 
 			// button2
 			// 
@@ -160,18 +100,14 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(476, 387);
+			this.ClientSize = new System.Drawing.Size(474, 393);
 			this.Controls.Add(this.button2);
-			this.Controls.Add(this.button1);
+			this.Controls.Add(this.buttonOK);
 			this.Controls.Add(this.groupBox1);
-			this.Controls.Add(this.label4);
-			this.Controls.Add(this.comboBox4);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.comboBox3);
-			this.Controls.Add(this.comboBox2);
-			this.Controls.Add(this.label2);
 			this.Controls.Add(this.comboBox1);
 			this.Controls.Add(this.label1);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.MaximizeBox = false;
 			this.Name = "ResourceUsage";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Select Resources to use with";
@@ -185,15 +121,9 @@
         #endregion
 
 		private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonOK;
 		private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TreeView treeView1;
     }

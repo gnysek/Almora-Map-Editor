@@ -55,6 +55,21 @@ namespace MapEditor.Forms
 
 			pfCode.Text = Element.addCode;
 
+			if (pfParent.Items.Count == 0)
+			{
+				Manager.Project.renderObjectsTree(pfParent);
+			}
+
+			if (Element.Parent != "")
+			{
+				pfDefaultParent.Checked = false;
+				pfParent.SelectedIndex = pfParent.Items.IndexOf(Element.Parent);
+			}
+			else
+			{
+				pfDefaultParent.Checked = true;
+			}
+
 			pfShadow_CheckedChanged(null, null);
 		}
 
@@ -71,11 +86,22 @@ namespace MapEditor.Forms
 			Element.Shadow = pfShadow.Checked;
 			Element.Visible = pfVisible.Checked;
 			Element.addCode = pfCode.Text;
+			Element.Parent = pfParent.SelectedItem.ToString();
 		}
 
 		private void pfShadow_CheckedChanged(object sender, EventArgs e)
 		{
 			pfShadowSize.Enabled = pfShadow.Checked;
+		}
+
+		private void pfDefaultParent_CheckedChanged(object sender, EventArgs e)
+		{
+			pfParent.Enabled = !pfDefaultParent.Checked;
+
+			if (pfDefaultParent.Checked)
+			{
+				pfParent.SelectedIndex = pfParent.Items.IndexOf(Manager.Project.defaultPlaceable);
+			}
 		}
 	}
 }

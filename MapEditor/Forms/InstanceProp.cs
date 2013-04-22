@@ -12,7 +12,7 @@ namespace MapEditor.Forms
 {
 	public partial class InstanceProp : Form
 	{
-		public PlaceableInstance Element;
+		public PlaceableInstance Instance;
 		public InstanceProp()
 		{
 			InitializeComponent();
@@ -20,17 +20,18 @@ namespace MapEditor.Forms
 
 		private void InstanceProp_Shown(object sender, EventArgs e)
 		{
-			instX.Text = Element.X.ToString();
-			instY.Text = Element.Y.ToString();
-			instRotate.Text = Element.Rotation.ToString();
-			instLabel.Text = "Element: AME_" + Element.ID.ToString();
+			instElement.Text = Instance.Element.Name;
+			instX.Text = Instance.X.ToString();
+			instY.Text = Instance.Y.ToString();
+			instRotate.Text = Instance.Rotation.ToString();
+			instLabel.Text = "Instance: AME_" + Instance.ID.ToString();
 		}
 
 		private void instOK_Click(object sender, EventArgs e)
 		{
-			Element.X = int.Parse(instX.Text);
-			Element.Y = int.Parse(instY.Text);
-			Element.Rotation = int.Parse(instRotate.Text);
+			Instance.X = int.Parse(instX.Text);
+			Instance.Y = int.Parse(instY.Text);
+			Instance.Rotation = int.Parse(instRotate.Text);
 		}
 	}
 }

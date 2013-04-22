@@ -52,6 +52,9 @@
 			this.label10 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
 			this.pfVisible = new System.Windows.Forms.CheckBox();
+			this.pfParent = new System.Windows.Forms.ComboBox();
+			this.label12 = new System.Windows.Forms.Label();
+			this.pfDefaultParent = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// pfSprite
@@ -117,7 +120,7 @@
 			// 
 			this.pfMask.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.pfMask.FormattingEnabled = true;
-			this.pfMask.Location = new System.Drawing.Point(142, 91);
+			this.pfMask.Location = new System.Drawing.Point(140, 91);
 			this.pfMask.Name = "pfMask";
 			this.pfMask.Size = new System.Drawing.Size(158, 21);
 			this.pfMask.TabIndex = 8;
@@ -189,7 +192,7 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(14, 158);
+			this.label8.Location = new System.Drawing.Point(12, 158);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(49, 13);
 			this.label8.TabIndex = 16;
@@ -199,7 +202,7 @@
 			// 
 			this.pfShadowSize.Location = new System.Drawing.Point(215, 155);
 			this.pfShadowSize.Name = "pfShadowSize";
-			this.pfShadowSize.Size = new System.Drawing.Size(85, 20);
+			this.pfShadowSize.Size = new System.Drawing.Size(83, 20);
 			this.pfShadowSize.TabIndex = 17;
 			// 
 			// label9
@@ -215,7 +218,7 @@
 			// 
 			this.pfCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.pfCancel.Image = global::MapEditor.Properties.Resources.cross;
-			this.pfCancel.Location = new System.Drawing.Point(277, 357);
+			this.pfCancel.Location = new System.Drawing.Point(280, 469);
 			this.pfCancel.Name = "pfCancel";
 			this.pfCancel.Size = new System.Drawing.Size(23, 23);
 			this.pfCancel.TabIndex = 19;
@@ -225,7 +228,7 @@
 			// 
 			this.pfOK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.pfOK.Image = global::MapEditor.Properties.Resources.tick;
-			this.pfOK.Location = new System.Drawing.Point(248, 357);
+			this.pfOK.Location = new System.Drawing.Point(251, 469);
 			this.pfOK.Name = "pfOK";
 			this.pfOK.Size = new System.Drawing.Size(23, 23);
 			this.pfOK.TabIndex = 20;
@@ -235,16 +238,16 @@
 			// pfCode
 			// 
 			this.pfCode.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.pfCode.Location = new System.Drawing.Point(15, 194);
+			this.pfCode.Location = new System.Drawing.Point(15, 306);
 			this.pfCode.Multiline = true;
 			this.pfCode.Name = "pfCode";
-			this.pfCode.Size = new System.Drawing.Size(285, 157);
+			this.pfCode.Size = new System.Drawing.Size(288, 157);
 			this.pfCode.TabIndex = 21;
 			// 
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(14, 178);
+			this.label10.Location = new System.Drawing.Point(14, 290);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(106, 13);
 			this.label10.TabIndex = 22;
@@ -268,11 +271,42 @@
 			this.pfVisible.TabIndex = 24;
 			this.pfVisible.UseVisualStyleBackColor = true;
 			// 
+			// pfParent
+			// 
+			this.pfParent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.pfParent.FormattingEnabled = true;
+			this.pfParent.Location = new System.Drawing.Point(140, 181);
+			this.pfParent.Name = "pfParent";
+			this.pfParent.Size = new System.Drawing.Size(158, 21);
+			this.pfParent.TabIndex = 25;
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(14, 184);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(73, 13);
+			this.label12.TabIndex = 26;
+			this.label12.Text = "Parent object:";
+			// 
+			// pfDefaultParent
+			// 
+			this.pfDefaultParent.AutoSize = true;
+			this.pfDefaultParent.Location = new System.Drawing.Point(120, 184);
+			this.pfDefaultParent.Name = "pfDefaultParent";
+			this.pfDefaultParent.Size = new System.Drawing.Size(15, 14);
+			this.pfDefaultParent.TabIndex = 27;
+			this.pfDefaultParent.UseVisualStyleBackColor = true;
+			this.pfDefaultParent.CheckedChanged += new System.EventHandler(this.pfDefaultParent_CheckedChanged);
+			// 
 			// PlaceableForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(315, 386);
+			this.ClientSize = new System.Drawing.Size(315, 504);
+			this.Controls.Add(this.pfDefaultParent);
+			this.Controls.Add(this.label12);
+			this.Controls.Add(this.pfParent);
 			this.Controls.Add(this.pfVisible);
 			this.Controls.Add(this.label11);
 			this.Controls.Add(this.label10);
@@ -333,5 +367,8 @@
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.CheckBox pfVisible;
+		private System.Windows.Forms.ComboBox pfParent;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.CheckBox pfDefaultParent;
 	}
 }

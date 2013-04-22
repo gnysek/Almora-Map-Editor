@@ -35,6 +35,11 @@ namespace MapEditor.Forms
 			{
 				Manager.Project.renderItemsTree(treeView1, true);
 			}
+
+			if (comboBox1.Items.Count == 0)
+			{
+				Manager.Project.renderObjectsTree(comboBox1);
+			}
 			//    treeView1.Nodes[0].Expand();
 
 			//    rsListView.Refresh();
@@ -106,11 +111,11 @@ namespace MapEditor.Forms
 			}
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void buttonOK_Click(object sender, EventArgs e)
 		{
 			Manager.Project.resetUsedRes();
 
-			string[] nodes = { "sprites", "backgrounds", "scripts", "objects", "rooms" };
+			string[] nodes = { "sprites", "backgrounds", /*"scripts", "objects", "rooms"*/ };
 			foreach (string node in nodes)
 			{
 				if (treeView1.Nodes[0].Nodes[node].Nodes != null)
@@ -118,6 +123,8 @@ namespace MapEditor.Forms
 					_checkForChecked(treeView1.Nodes[0].Nodes[node]);
 				}
 			}
+
+			Manager.Project.defaultPlaceable = comboBox1.SelectedItem.ToString();
 		}
 
 		private void _checkForChecked(TreeNode MainNode)

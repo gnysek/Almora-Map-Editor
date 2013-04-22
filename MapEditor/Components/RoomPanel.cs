@@ -476,7 +476,7 @@ namespace MapEditor.Components
 			{
 				using (InstanceProp form = new InstanceProp())
 				{
-					form.Element = Manager.Project.SelectedInstance;
+					form.Instance = Manager.Project.SelectedInstance;
 					form.ShowDialog();
 				}
 			}

@@ -24,13 +24,14 @@ namespace MapEditor.Common
 		private PlaceableElement _Instance = null;
 		private PlaceableInstance _HighlightedInstance = null;
 		private PlaceableInstance _SelectedInstance = null;
-
 		public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
 		//public List<PlaceableInstance> PlacedInstances = new List<PlaceableInstance>();
 		public List<MapRoom> RoomList = new List<MapRoom>();
 		public List<string> RegisteredResources = new List<string>();
 		public List<GMSpriteData> GMXSprites = new List<GMSpriteData>();
+		public List<string> GMObjects = new List<string>();
 		public GMItem allItems = null;
+		public string defaultPlaceable = "oEnvMain";
 
 		#region Magical Properties
 
@@ -178,6 +179,33 @@ namespace MapEditor.Common
 			return elem;
 		}
 
+		private string tryReadingNode(XmlNode n, string nodeName, string defaultValue)
+		{
+			try
+			{
+				return n.SelectSingleNode(nodeName).InnerText;
+			}
+			catch (Exception e)
+			{
+				return defaultValue;
+			}
+		}
+
+		private int tryReadingNode(XmlNode n, string nodeName, int defaultValue)
+		{
+			try
+			{
+				int.TryParse(n.SelectSingleNode(nodeName).InnerText, out defaultValue);
+			}
+			catch (Exception e)
+			{
+
+			}
+
+
+			return defaultValue;
+		}
+
 		private void _readAME()
 		{
 			XmlDocument XMLfile = new XmlDocument();
@@ -206,7 +234,8 @@ namespace MapEditor.Common
 						Wind = (n.SelectSingleNode("wind").InnerText == "1"),
 						MultiDraw = (n.SelectSingleNode("multidraw").InnerText == "1"),
 						Shadow = (n.SelectSingleNode("shadow").InnerText == "1"),
-						Visible = (n.SelectSingleNode("visible").InnerText == "1") ? true : false
+						Visible = (n.SelectSingleNode("visible").InnerText == "1") ? true : false,
+						Parent = tryReadingNode(n, "parent", "")
 					};
 
 					PlaceableList.Add(e);
@@ -356,6 +385,32 @@ namespace MapEditor.Common
 			renderItemsTree(Tree, false);
 		}
 
+		public void renderObjectsTree(ComboBox Dropdown)
+		{
+			Dropdown.Items.Clear();
+
+			_renderObjectsForNode(Dropdown, Manager.Project.allItems.Find("objects"));
+
+			Dropdown.SelectedIndex = Dropdown.Items.IndexOf(this.defaultPlaceable);
+		}
+
+		private void _renderObjectsForNode(ComboBox Dropdown, GMItem _node)
+		{
+			if (_node == null) return;
+
+			foreach (GMItem _object in _node.getSubitems())
+			{
+				if (_object.isGroup)
+				{
+					_renderObjectsForNode(Dropdown, _object);
+				}
+				else
+				{
+					Dropdown.Items.Add(_object.Name);
+				}
+			}
+		}
+
 		public void renderItemsTree(TreeView Tree, bool skipNonProjectNodes)
 		{
 			Tree.Nodes.Clear();
@@ -369,7 +424,15 @@ namespace MapEditor.Common
 			//TreeNode t = treeViewGMX.Nodes["NodeGM"].Nodes.Paint(Manager.Project.allItems.Name);
 			Tree.ExpandAll();
 
-			_treeAddGMItemGroup(NodeGM, Manager.Project.allItems.getSubitems());
+			if (skipNonProjectNodes == false)
+			{
+				_treeAddGMItemGroup(NodeGM, Manager.Project.allItems.getSubitems());
+			}
+			else
+			{
+				_treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find("sprites") });
+				_treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find("backgrounds") });
+			}
 		}
 
 		private void _treeAddGMItemGroup(TreeNode t, List<GMItem> items)
@@ -520,7 +583,10 @@ namespace MapEditor.Common
 					}
 					//Manager.MainWindow.tsProgress.Value++;
 					form.loadingBar.Value++;
-					form.Refresh();
+					if (i % 5 == 0 || i == RegisteredResources.Count - 1)
+					{
+						form.Refresh();
+					}
 				}
 				//Manager.MainWindow.tsProgress.Visible = false;
 
