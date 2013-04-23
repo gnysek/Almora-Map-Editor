@@ -103,7 +103,7 @@ namespace MapEditor.Common
 			return true;
 		}
 
-		public bool saveProject()
+		public bool saveProjectToXML()
 		{
 			string path;
 			path = Path.GetDirectoryName(ProjectSource);
@@ -202,8 +202,19 @@ namespace MapEditor.Common
 
 			}
 
-
 			return defaultValue;
+		}
+
+		private bool tryReadingNode(XmlNode n, string nodeName, bool defaultValue)
+		{
+			try
+			{
+				return (n.SelectSingleNode(nodeName).InnerText == "1") ? true : false;
+			}
+			catch (Exception e)
+			{
+				return defaultValue;
+			}
 		}
 
 		private void _readAME()
@@ -235,7 +246,12 @@ namespace MapEditor.Common
 						MultiDraw = (n.SelectSingleNode("multidraw").InnerText == "1"),
 						Shadow = (n.SelectSingleNode("shadow").InnerText == "1"),
 						Visible = (n.SelectSingleNode("visible").InnerText == "1") ? true : false,
-						Parent = tryReadingNode(n, "parent", "")
+						Parent = tryReadingNode(n, "parent", ""),
+						useDefaultObjectDepth = tryReadingNode(n, "defdepth", false),
+						useDefaultObjectMask = tryReadingNode(n, "defmask", false),
+						useDefaultObjectSolid = tryReadingNode(n, "defsolid", false),
+						useDefaultObjectSprite = tryReadingNode(n, "defsprite", false),
+						useDefaultObjectVisible = tryReadingNode(n, "defvisible", false)
 					};
 
 					PlaceableList.Add(e);

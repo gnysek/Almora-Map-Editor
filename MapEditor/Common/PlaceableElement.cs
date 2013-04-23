@@ -10,32 +10,40 @@ namespace MapEditor.Common
 	{
 		public const string SprDefName = "<no sprite>";
 		public const string MaskDefName = "<same as sprite>";
-		private string _name = "undefined";
-		//private string _sprite = "";
+
+		
 		private GMSpriteData _spriteData = null;
+		public bool useDefaultObjectSprite = true;
 		private string _mask = "";
-		private int _depth = 0;
-		private int _shadowSize = 0;
-		private bool _solid = false;
-		private bool _wind = false;
-		private bool _multi = false;
-		private bool _shadow = false;
+		public bool useDefaultObjectMask = true;
+		private string _parent = "";
+
+		public string Name = "undefined";
+		public bool Visible = true;
+		public bool useDefaultObjectVisible = true;
+		public bool Solid = false;
+		public bool useDefaultObjectSolid = true;
+		public int Depth = 0;
+		public bool useDefaultObjectDepth = true;
+
+		public bool Wind = false;
+		public bool MultiDraw = false;
+		public bool Shadow = false;
+		public int ShadowSize = 0;
+		
 		public int textureId = -1;
 		public string addCode = "";
-		private bool _visible = true;
-		private string _parent = "";
 
 		public string Parent
 		{
-			get { return this._parent; }
+			get { return (this._parent == "") ? Manager.Project.defaultPlaceable : this._parent; }
 			// TODO: when defPlac changed, set again
 			set { this._parent = (value == Manager.Project.defaultPlaceable) ? "" : value; }
 		}
 
-		public string Name
+		public bool hasDefaultParent()
 		{
-			get { return this._name; }
-			set { this._name = value; }
+			return (this._parent == "");
 		}
 
 		public string Sprite
@@ -61,43 +69,15 @@ namespace MapEditor.Common
 			set { this._mask = (value == PlaceableElement.MaskDefName) ? "" : value; }
 		}
 
-		public int Depth
-		{
-			get { return this._depth; }
-			set { this._depth = value; }
+		private XmlElement createChild(XmlDocument doc, string name, string value) {
+			XmlElement e = doc.CreateElement(name);
+			e.InnerText = value;
+			return e;
 		}
 
-		public int ShadowSize
+		private XmlElement createChild(XmlDocument doc, string name, bool value)
 		{
-			get { return this._shadowSize; }
-			set { this._shadowSize = value; }
-		}
-
-		public bool Solid
-		{
-			get { return this._solid; }
-			set { this._solid = value; }
-		}
-		public bool Wind
-		{
-			get { return this._wind; }
-			set { this._wind = value; }
-		}
-		public bool MultiDraw
-		{
-			get { return this._multi; }
-			set { this._multi = value; }
-		}
-		public bool Shadow
-		{
-			get { return this._shadow; }
-			set { this._shadow = value; }
-		}
-
-		public bool Visible
-		{
-			get { return this._visible; }
-			set { this._visible = value; }
+			return createChild(doc, name, (value) ? "1" : "0");
 		}
 
 		public XmlElement toXml(XmlDocument doc)
@@ -107,8 +87,14 @@ namespace MapEditor.Common
 			XmlElement sprite = doc.CreateElement("sprite");
 			sprite.InnerText = Sprite;
 
+			//XmlElement sprDef = doc.CreateElement("defsprite");
+			//sprDef.InnerText = (useDefaultObjectSprite) ? "1" : "0";
+
 			XmlElement mask = doc.CreateElement("mask");
 			mask.InnerText = Mask;
+
+			//XmlElement maskDef = doc.CreateElement("defmask");
+			//maskDef.InnerText = (useDefaultObjectSprite) ? "1" : "0";
 
 			XmlElement depth = doc.CreateElement("depth");
 			depth.InnerText = Depth.ToString();
@@ -132,17 +118,22 @@ namespace MapEditor.Common
 			visible.InnerText = (Visible) ? "1" : "0";
 
 			XmlElement parent = doc.CreateElement("parent");
-			parent.InnerText = Parent;
+			parent.InnerText = (hasDefaultParent()) ? "" : Parent;
 
 			self.AppendChild(sprite);
+			self.AppendChild(createChild(doc, "defsprite", useDefaultObjectSprite));
 			self.AppendChild(mask);
+			self.AppendChild(createChild(doc, "defmask", useDefaultObjectMask));
 			self.AppendChild(depth);
+			self.AppendChild(createChild(doc, "defdepth", useDefaultObjectDepth));
 			self.AppendChild(ss);
 			self.AppendChild(solid);
+			self.AppendChild(createChild(doc, "defsolid", useDefaultObjectSolid));
 			self.AppendChild(wind);
 			self.AppendChild(multidraw);
 			self.AppendChild(shadow);
 			self.AppendChild(visible);
+			self.AppendChild(createChild(doc, "defvisible", useDefaultObjectVisible));
 			self.AppendChild(parent);
 			self.SetAttribute("name", Name);
 

@@ -149,7 +149,7 @@ namespace MapEditor
 
 		private void tbSaveProject_Click(object sender, EventArgs e)
 		{
-			Manager.Project.saveProject();
+			Manager.Project.saveProjectToXML();
 		}
 
 		private void tmCloseProject_Click(object sender, EventArgs e)
