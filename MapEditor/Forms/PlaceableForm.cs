@@ -57,7 +57,7 @@ namespace MapEditor.Forms
 
 			pfWind.Checked = Element.Wind;
 			pfMultidraw.Checked = Element.MultiDraw;
-			
+
 			pfShadow.Checked = Element.Shadow;
 			pfShadowSize.Text = Element.ShadowSize.ToString();
 
@@ -94,6 +94,10 @@ namespace MapEditor.Forms
 			Element.addCode = pfCode.Text;
 			Element.Parent = pfParent.SelectedItem.ToString();
 			Element.useDefaultObjectSprite = pfSpriteDefault.Checked;
+			Element.useDefaultObjectMask = pfMaskDefault.Checked;
+			Element.useDefaultObjectSolid = pfSolidDefault.Checked;
+			Element.useDefaultObjectDepth = pfDepthDefault.Checked;
+			Element.useDefaultObjectVisible = pfVisibleDefault.Checked;
 		}
 
 		private void pfShadow_CheckedChanged(object sender, EventArgs e)
