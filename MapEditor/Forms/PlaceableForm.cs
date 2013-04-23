@@ -44,14 +44,22 @@ namespace MapEditor.Forms
 				pfMask.SelectedIndex = pfMask.FindStringExact(Element.Mask);
 			}
 
+			pfSpriteDefault.Checked = Element.useDefaultObjectSprite;
+			pfMaskDefault.Checked = Element.useDefaultObjectMask;
+
 			pfDepth.Text = Element.Depth.ToString();
-			pfShadowSize.Text = Element.ShadowSize.ToString();
+			pfDepthDefault.Checked = Element.useDefaultObjectDepth;
+
+			pfSolid.Checked = Element.Solid;
+			pfSolidDefault.Checked = Element.useDefaultObjectSolid;
+			pfVisible.Checked = Element.Visible;
+			pfVisibleDefault.Checked = Element.useDefaultObjectVisible;
 
 			pfWind.Checked = Element.Wind;
 			pfMultidraw.Checked = Element.MultiDraw;
-			pfSolid.Checked = Element.Solid;
+			
 			pfShadow.Checked = Element.Shadow;
-			pfVisible.Checked = Element.Visible;
+			pfShadowSize.Text = Element.ShadowSize.ToString();
 
 			pfCode.Text = Element.addCode;
 
@@ -60,20 +68,18 @@ namespace MapEditor.Forms
 				Manager.Project.renderObjectsTree(pfParent);
 			}
 
-			if (Element.Parent != "")
-			{
-				pfDefaultParent.Checked = false;
-				pfParent.SelectedIndex = pfParent.Items.IndexOf(Element.Parent);
-			}
-			else
-			{
-				pfDefaultParent.Checked = true;
-			}
+			pfDefaultParent.Checked = Element.hasDefaultParent();
+			pfParent.SelectedIndex = pfParent.Items.IndexOf(Element.Parent);
 
 			pfShadow_CheckedChanged(null, null);
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		/// <summary>
+		/// Submit form
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void pfOK_Click(object sender, EventArgs e)
 		{
 			Element.Name = pfName.Text;
 			Element.Sprite = pfSprite.Text;
@@ -87,6 +93,7 @@ namespace MapEditor.Forms
 			Element.Visible = pfVisible.Checked;
 			Element.addCode = pfCode.Text;
 			Element.Parent = pfParent.SelectedItem.ToString();
+			Element.useDefaultObjectSprite = pfSpriteDefault.Checked;
 		}
 
 		private void pfShadow_CheckedChanged(object sender, EventArgs e)
@@ -101,6 +108,58 @@ namespace MapEditor.Forms
 			if (pfDefaultParent.Checked)
 			{
 				pfParent.SelectedIndex = pfParent.Items.IndexOf(Manager.Project.defaultPlaceable);
+			}
+		}
+
+		private void pfDefault_CheckedChanged(object sender, EventArgs e)
+		{
+			pfSprite.Visible = !(sender as CheckBox).Checked;
+		}
+
+		private void pfMaskDefault_CheckedChanged(object sender, EventArgs e)
+		{
+			pfMask.Visible = !(sender as CheckBox).Checked;
+		}
+
+		private void pfSolidDefault_CheckedChanged(object sender, EventArgs e)
+		{
+			CheckBox c = sender as CheckBox;
+			if (c.Checked)
+			{
+				pfSolid.Checked = pfSolid.Enabled = false;
+			}
+			else
+			{
+				pfSolid.Checked = Element.Solid;
+				pfSolid.Enabled = true;
+			}
+		}
+
+		private void pfVisibleDefault_CheckedChanged(object sender, EventArgs e)
+		{
+			CheckBox c = sender as CheckBox;
+			if (c.Checked)
+			{
+				pfVisible.Checked = pfVisible.Enabled = false;
+			}
+			else
+			{
+				pfVisible.Checked = Element.Visible;
+				pfVisible.Enabled = true;
+			}
+		}
+
+		private void pfDepthDefault_CheckedChanged(object sender, EventArgs e)
+		{
+			CheckBox c = sender as CheckBox;
+			if (c.Checked)
+			{
+				pfDepth.Enabled = false;
+			}
+			else
+			{
+				pfDepth.Text = Element.Depth.ToString();
+				pfDepth.Enabled = true;
 			}
 		}
 	}

@@ -116,17 +116,17 @@ namespace MapEditor.Common
 			foreach (PlaceableInstance place in Instances)
 			{
 				string code = "";
-				code = "sprite_index = " + place.Element.Sprite + ";";
-				code += " depth = " + place.Element.Depth.ToString() + ";";
-				if (place.Element.Solid) code += " solid = true;";
+				if (place.Element.useDefaultObjectSprite == false) code += "sprite_index = " + place.Element.Sprite + ";";
+				if (place.Element.useDefaultObjectDepth == false) code += " depth = " + place.Element.Depth.ToString() + ";";
+				if (place.Element.Solid && place.Element.useDefaultObjectSolid == false) code += " solid = true;";
 				if (place.Element.Shadow) code += " drop_shadow = true; shadow = " + place.Element.ShadowSize.ToString() + ";";
 				if (place.Element.MultiDraw) code += " multidraw = true;";
 				if (place.Element.Wind) code += " wind = true; scEnvWindSet();";
-				if (place.Element.Visible == false) code += " visible = false;";
-				code += " mask_index = " + ((place.Element.Mask == "") ? place.Element.Sprite : place.Element.Mask) + ";";
+				if (place.Element.Visible == false && place.Element.useDefaultObjectVisible == false) code += " visible = false;";
+				if (place.Element.useDefaultObjectMask == false) code += " mask_index = " + ((place.Element.Mask == "") ? place.Element.Sprite : place.Element.Mask) + ";";
 
 				XmlElement elem = file.CreateElement("instance");
-				elem.SetAttribute("objName", Manager.Project.defaultPlaceable);
+				elem.SetAttribute("objName", place.Element.Parent); // returns default or overriden
 				elem.SetAttribute("x", place.X.ToString());
 				elem.SetAttribute("y", place.Y.ToString());
 				elem.SetAttribute("name", "inst_AME" + counter.ToString("X"));
