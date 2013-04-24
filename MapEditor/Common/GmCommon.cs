@@ -29,10 +29,15 @@ namespace MapEditor.Common
 		}
 	}
 
+	public enum GMItemUsage
+	{
+		unused, used, disposed
+	}
+
 	public class GMItem
 	{
 		public bool isGroup = false;
-		public bool used = false;
+		public GMItemUsage used = GMItemUsage.unused;
 		public string Name = "unknown";
 		public GMItemType ResourceType = GMItemType.Group;
 		public List<GMItem> subitems = null;

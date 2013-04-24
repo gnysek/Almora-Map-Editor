@@ -278,6 +278,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="1353775151_Maps.ico" />
+    <None Include="Resources\gear.png" />
     <EmbeddedResource Include="Resources\cur_bucket.cur" />
     <None Include="Resources\paint-can.png" />
   </ItemGroup>

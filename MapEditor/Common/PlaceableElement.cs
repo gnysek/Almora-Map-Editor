@@ -31,7 +31,7 @@ namespace MapEditor.Common
 		public bool Shadow = false;
 		public int ShadowSize = 0;
 		
-		public int textureId = -1;
+		public string textureId = null;
 		public string addCode = "";
 
 		public string Parent
