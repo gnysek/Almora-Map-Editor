@@ -56,7 +56,7 @@ namespace MapEditor.Forms
 
 		private void RoomForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (rfMapped.SelectedIndex == -1)
+			if (DialogResult == DialogResult.OK && rfMapped.SelectedIndex == -1)
 			{
 				e.Cancel = true;
 				return;

@@ -30,9 +30,9 @@
 		{
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.horizontalScb = new System.Windows.Forms.HScrollBar();
-			this.verticalScb = new System.Windows.Forms.VScrollBar();
 			this._rPanel = new MapEditor.Components.RoomPanel();
+			this.horizontalScb = new MapEditor.Components.customHScrollBar();
+			this.verticalScb = new MapEditor.Components.customVScrollBar();
 			this.panel1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
@@ -64,24 +64,6 @@
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(150, 150);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
-			// horizontalScb
-			// 
-			this.horizontalScb.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.horizontalScb.Location = new System.Drawing.Point(0, 133);
-			this.horizontalScb.Name = "horizontalScb";
-			this.horizontalScb.Size = new System.Drawing.Size(133, 17);
-			this.horizontalScb.TabIndex = 0;
-			this.horizontalScb.ValueChanged += new System.EventHandler(this.horizontalScroll_ValueChanged);
-			// 
-			// verticalScb
-			// 
-			this.verticalScb.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.verticalScb.Location = new System.Drawing.Point(133, 0);
-			this.verticalScb.Name = "verticalScb";
-			this.verticalScb.Size = new System.Drawing.Size(17, 133);
-			this.verticalScb.TabIndex = 1;
-			this.verticalScb.ValueChanged += new System.EventHandler(this.verticalScroll_ValueChanged);
-			// 
 			// _rPanel
 			// 
 			this._rPanel.BackColor = System.Drawing.SystemColors.Control;
@@ -93,6 +75,35 @@
 			this._rPanel.Offset = new System.Drawing.Point(0, 0);
 			this._rPanel.Size = new System.Drawing.Size(133, 133);
 			this._rPanel.TabIndex = 2;
+			this._rPanel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this._rPanel_PreviewKeyDown);
+			// 
+			// horizontalScb
+			// 
+			this.horizontalScb.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+			this.horizontalScb.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.horizontalScb.LargeChange = 0;
+			this.horizontalScb.Location = new System.Drawing.Point(0, 133);
+			this.horizontalScb.Maximum = 200;
+			this.horizontalScb.Name = "horizontalScb";
+			this.horizontalScb.Size = new System.Drawing.Size(133, 17);
+			this.horizontalScb.SmallChange = 0;
+			this.horizontalScb.TabIndex = 0;
+			this.horizontalScb.ValueChanged += new System.EventHandler(this.horizontalScroll_ValueChanged);
+			this.horizontalScb.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.horizontalScb_PreviewKeyDown);
+			// 
+			// verticalScb
+			// 
+			this.verticalScb.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+			this.verticalScb.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.verticalScb.LargeChange = 0;
+			this.verticalScb.Location = new System.Drawing.Point(133, 0);
+			this.verticalScb.Maximum = 200;
+			this.verticalScb.Name = "verticalScb";
+			this.verticalScb.Size = new System.Drawing.Size(17, 133);
+			this.verticalScb.SmallChange = 0;
+			this.verticalScb.TabIndex = 1;
+			this.verticalScb.ValueChanged += new System.EventHandler(this.verticalScroll_ValueChanged);
+			this.verticalScb.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.verticalScb_PreviewKeyDown);
 			// 
 			// RoomEditor
 			// 
@@ -109,8 +120,8 @@
 
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.HScrollBar horizontalScb;
-		private System.Windows.Forms.VScrollBar verticalScb;
+		private customHScrollBar horizontalScb;
+		private customVScrollBar verticalScb;
 		public RoomPanel _rPanel;
 	}
 }
