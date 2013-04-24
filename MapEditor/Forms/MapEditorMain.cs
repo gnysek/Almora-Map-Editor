@@ -296,15 +296,23 @@ namespace MapEditor
 		{
 			if (tabControlMain.SelectedTab == tabRooms)
 			{
-				addOrEditRoom(false);
-			}
-			else if (tabControlMain.SelectedTab == tabPlaceables)
-			{
-				if (tabControlEnv.SelectedIndex == 0)
+				if (tabControlRooms.SelectedTab == tpRoomList)
+				{
+					addOrEditRoom(false);
+				}
+				else if (tabControlRooms.SelectedTab == tpDefinitions)
 				{
 					addOrEditPlaceable(false);
 				}
-				else if (tabControlEnv.SelectedTab == tpRoomDataLayers)
+			}
+			else if (tabControlMain.SelectedTab == tabRooms)
+			{
+				/*if (tabControlEnv.SelectedIndex == 0)
+				{
+					addOrEditPlaceable(false);
+				}
+				else */
+				if (tabControlEnv.SelectedTab == tpRoomDataLayers)
 				{
 					addOrEditLayer(false);
 				}
@@ -325,19 +333,18 @@ namespace MapEditor
 
 		private void tbEditItem_Click(object sender, EventArgs e)
 		{
-
 			switch (tabControlMain.SelectedIndex)
 			{
 				case 1:
 					switch (tabControlRooms.SelectedIndex)
 					{
+						case 0: addOrEditRoom(true); break;
 						case 1: addOrEditPlaceable(true); break;
 					}
 					break;
 				case 2:
-					switch (tabControlMain.SelectedIndex)
+					switch (tabControlEnv.SelectedIndex)
 					{
-						case 0: addOrEditRoom(true); break;
 						case 1: addOrEditLayer(true); break;
 					}
 					break;
@@ -417,6 +424,21 @@ namespace MapEditor
 				case Keys.M:
 					CurrentBrush = BrushMode.Move;
 					break;
+			}
+		}
+
+		private void tbEnvList_Click(object sender, EventArgs e)
+		{
+			Textures form = new Textures();
+			form.ShowDialog();
+		}
+
+		private void tbDeleteMap_Click(object sender, EventArgs e)
+		{
+			if (Manager.Project.SelectedInstance != null)
+			{
+				Manager.Project.Room.Instances.Remove(Manager.Project.SelectedInstance);
+				Manager.Project.SelectedInstance = null;
 			}
 		}
 

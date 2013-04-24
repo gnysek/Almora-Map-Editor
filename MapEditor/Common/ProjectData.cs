@@ -451,17 +451,26 @@ namespace MapEditor.Common
 			}
 		}
 
-		private void _treeAddGMItemGroup(TreeNode t, List<GMItem> items)
+		private bool _treeAddGMItemGroup(TreeNode t, List<GMItem> items)
 		{
+			bool anyChecked = false;
+
 			foreach (GMItem item in items)
 			{
 				TreeNode newT = t.Nodes.Add(item.Name, item.Name);
 
 				if (item.isGroup)
 				{
+					bool anySubChecked = false;
 					newT.ImageIndex = 0;
 					newT.SelectedImageIndex = 1;
-					_treeAddGMItemGroup(newT, item.getSubitems());
+					anySubChecked = _treeAddGMItemGroup(newT, item.getSubitems());
+					// Tree node doesn't support indeterminade :(
+					//if (anySubChecked)
+					//{
+					//    newT.Check
+					//}
+					anyChecked |= anySubChecked;
 				}
 				else
 				{
@@ -478,11 +487,14 @@ namespace MapEditor.Common
 						if (t.TreeView.CheckBoxes)
 						{
 							newT.Checked = true;
+							anyChecked = true;
 						}
 						newT.StateImageIndex = 7;
 					}
 				}
 			}
+
+			return anyChecked;
 		}
 
 		public void resetUsedRes()

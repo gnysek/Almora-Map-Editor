@@ -109,5 +109,55 @@ namespace MapEditor.Components
 			Int32 val32 = ptr.ToInt32();
 			return ((val32 >> 16) & 0xFFFF);
 		}
+
+		private void verticalScb_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			e.IsInputKey = true;
+			//_rPanel.Focus();
+		}
+
+		private void horizontalScb_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			e.IsInputKey = true;
+			//_rPanel.Focus();
+		}
+
+		private void _rPanel_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			if (e.KeyCode == Keys.Right)
+			{
+				horizontalScb.Value = Math.Min(horizontalScb.Maximum, horizontalScb.Value + 200);
+			}
+			else if (e.KeyCode == Keys.Left)
+			{
+				horizontalScb.Value = Math.Max(0, horizontalScb.Value - 200);
+			}
+			else if (e.KeyCode == Keys.Down)
+			{
+				verticalScb.Value = Math.Min(verticalScb.Maximum, verticalScb.Value + 200);
+			}
+			else if (e.KeyCode == Keys.Up)
+			{
+				verticalScb.Value = Math.Max(0, verticalScb.Value - 200);
+			}
+
+			e.IsInputKey = true;
+		}
+	}
+
+	public class customHScrollBar : HScrollBar
+	{
+		protected override bool ProcessDialogKey(Keys keyData)
+		{
+			return false;
+		}
+	}
+
+	public class customVScrollBar : VScrollBar
+	{
+		protected override bool ProcessDialogKey(Keys keyData)
+		{
+			return false;
+		}
 	}
 }
