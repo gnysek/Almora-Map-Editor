@@ -473,7 +473,7 @@ namespace MapEditor.Common
 						case GMItemType.Script: newT.ImageIndex = 5; break;
 					}
 					newT.SelectedImageIndex = newT.ImageIndex;
-					if (item.used)
+					if (item.used == GMItemUsage.used)
 					{
 						if (t.TreeView.CheckBoxes)
 						{
@@ -523,9 +523,9 @@ namespace MapEditor.Common
 				{
 					if (RegisteredResources.IndexOf(item.Name) > -1)
 					{
-						item.used = true;
+						item.used = GMItemUsage.used;
 					}
-					else { item.used = false; }
+					else { item.used = (item.used == GMItemUsage.used) ? GMItemUsage.disposed : GMItemUsage.unused; }
 				}
 			}
 		}
@@ -577,7 +577,13 @@ namespace MapEditor.Common
 			{
 				form.Show();
 
-				GraphicsManager.DeleteTextures();
+				//GraphicsManager.DeleteTextures();
+
+				foreach (GMSpriteData sp in this.GMXSprites)
+				{
+					if (sp.owner.used == GMItemUsage.disposed) GraphicsManager.DeleteTexture(sp.Name);
+				}
+
 				int i = 0;
 				/*Manager.MainWindow.tsProgress.Maximum = RegisteredResources.Count;
 				Manager.MainWindow.tsProgress.Value = 0;
@@ -590,25 +596,32 @@ namespace MapEditor.Common
 				{
 					GMSpriteData itm = this.GMXSprites.Find(item => item.Name == file);
 
+
+
 					if (itm != null)
 					{
-						if (File.Exists(itm.firstFramePath))
+						// prevent adding duplicates
+						if (!GraphicsManager.Sprites.ContainsKey(itm.Name))
 						{
-							GraphicsManager.LoadTexture(new Bitmap(itm.firstFramePath), i++);
+							if (File.Exists(itm.firstFramePath))
+							{
+								GraphicsManager.LoadTexture(itm.Name, new Bitmap(itm.firstFramePath));
+							}
 						}
 					}
 					//Manager.MainWindow.tsProgress.Value++;
 					form.loadingBar.Value++;
-					if (i % 5 == 0 || i == RegisteredResources.Count - 1)
+					if (i % 10 == 0 || i == RegisteredResources.Count - 1)
 					{
 						form.Refresh();
 					}
+					i++;
 				}
 				//Manager.MainWindow.tsProgress.Visible = false;
 
 				foreach (PlaceableElement elem in PlaceableList)
 				{
-					elem.textureId = RegisteredResources.IndexOf(elem.Sprite);
+					elem.textureId = elem.Sprite;
 				}
 
 				form.Close();
