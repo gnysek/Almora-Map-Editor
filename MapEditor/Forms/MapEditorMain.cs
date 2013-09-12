@@ -57,6 +57,7 @@ namespace MapEditor
 					treeViewGMX.Nodes.Clear();
 				}
 				tsMap.Enabled = false;
+				tabControlMain.Visible = tabControlMain.Enabled = false;
 			}
 			else
 			{
@@ -64,6 +65,8 @@ namespace MapEditor
 				tsEditors.Enabled = true;
 				tsOptions.Enabled = true;
 				tsMap.Enabled = (Manager.Room != null);
+				tabControlEnv.Enabled = (Manager.Room != null);
+				tabControlMain.Visible = tabControlMain.Enabled = true;
 			}
 
 			_ensureMenusDisabled();
@@ -321,6 +324,11 @@ namespace MapEditor
 
 		private void lbPlaceables_DoubleClick(object sender, EventArgs e)
 		{
+			tbEditItem_Click(sender, e);
+		}
+
+		private void lbPlaceables_MouseClick(object sender, MouseEventArgs e)
+		{
 			if (lbPlaceables.SelectedIndex > -1)
 			{
 				if (Manager.Room != null)
@@ -441,6 +449,8 @@ namespace MapEditor
 				Manager.Project.SelectedInstance = null;
 			}
 		}
+
+		
 
 	}
 }
