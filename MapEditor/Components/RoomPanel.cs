@@ -54,6 +54,12 @@ namespace MapEditor.Components
 			_bucketCursor = new Cursor(GetType().Assembly.GetManifestResourceStream("MapEditor.Resources.cur_bucket.cur"));
 		}
 
+		public int Zoom
+		{
+			set { this._zoom = Math.Max(1, Math.Min(4, _zoom + value)); }
+			get { return this._zoom; }
+		}
+
 		#region drawGrid
 		private void DrawGrid()
 		{
@@ -63,8 +69,8 @@ namespace MapEditor.Components
 			int y2 = 0;
 			Size canvas = getCurrentCanvas();//new Size(this.Width, this.Height);
 			// Calculate line amounts.
-			int cols = (int)(canvas.Width / _gridX / _zoom) + 2;
-			int rows = (int)(canvas.Height / _gridY / _zoom) + 2;
+			int cols = (int)(canvas.Width / _gridX * _zoom) + 2;
+			int rows = (int)(canvas.Height / _gridY * _zoom) + 2;
 
 			// Grid color.
 			Color color = Color.FromArgb(128, Color.Black);
@@ -79,9 +85,9 @@ namespace MapEditor.Components
 			for (int col = 0; col < cols; col++)
 			{
 				// Calculate coordinates.
-				x1 = col * _gridX + snap.X;
+				x1 = (col * _gridX + snap.X) / _zoom;
 				y1 = snap.Y;
-				x2 = col * _gridX + snap.X;
+				x2 = x1;//col * _gridX + snap.X;
 				y2 = (int)(canvas.Height / _zoom) + snap.Y + _gridY;
 
 				// Draw line.
@@ -93,9 +99,9 @@ namespace MapEditor.Components
 			{
 				// Calculate coordinates.
 				x1 = snap.X;
-				y1 = row * _gridY + snap.Y;
+				y1 = (row * _gridY + snap.Y) / _zoom;
 				x2 = (int)(canvas.Width / _zoom) + snap.X + _gridX;
-				y2 = row * _gridY + snap.Y;
+				y2 = y1;//row * _gridY + snap.Y;
 
 				// Draw line.
 				GraphicsManager.DrawLineCache(x1, y1, x2, y2, color);
@@ -160,6 +166,11 @@ namespace MapEditor.Components
 				int layerCounter = 0;
 				foreach (MapLayers layer in Manager.Room.Layers)
 				{
+					if (layer.LayerDepth != selectedLayerDepth)
+					{
+						if (!layer.Active) continue;
+					}
+
 					Color defaultLayerColor = Color.Gray;
 					if (layer.LayerDepth == selectedLayerDepth) defaultLayerColor = Color.White;
 

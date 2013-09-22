@@ -12,7 +12,7 @@ namespace MapEditor.Common
 	{
 		public string LayerName = "Unknown";
 		public int LayerDepth = -1;
-		public bool Active = false;
+		public bool Active = true;
 
 		public static int SortByLayerDepth(MapLayers a, MapLayers b)
 		{
