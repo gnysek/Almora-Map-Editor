@@ -287,6 +287,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="1353775151_Maps.ico" />
+    <None Include="Resources\magnifier-zoom-out.png" />
+    <None Include="Resources\magnifier-zoom-in.png" />
+    <None Include="Resources\magnifier-zoom-actual.png" />
     <None Include="Resources\gear.png" />
     <EmbeddedResource Include="Resources\cur_bucket.cur" />
     <None Include="Resources\paint-can.png" />

@@ -648,14 +648,25 @@ namespace MapEditor.Common
 
 			ToolStripComboBox tb = Manager.MainWindow.tbLayerDropDown;
 			ListBoxEx lb = Manager.MainWindow.lbLayers;
+			ToolStripDropDownButton td = Manager.MainWindow.tbEnabledLayersDropdown;
 
 			tb.Items.Clear();
 			lb.Items.Clear();
+			td.DropDownItems.Clear();
 
 			foreach (MapLayers layer in Room.Layers)
 			{
-				tb.Items.Add(layer.LayerName + " / " + layer.LayerDepth.ToString());
+				tb.Items.Add(layer.LayerName + " (" + layer.LayerDepth.ToString() + ")");
 				lb.Items.Add(layer.LayerName);
+				ToolStripMenuItem item = new ToolStripMenuItem()
+				{
+					Text = layer.LayerName,
+					Checked = true,
+					CheckOnClick = true//,
+					//OwnerItem = tb
+				};
+				item.Click += new EventHandler(Manager.MainWindow.tbEnabledLayersDropdown_SubItemClick);
+				td.DropDownItems.Add(item);
 			}
 
 			if (tb.Items.Count > 0)

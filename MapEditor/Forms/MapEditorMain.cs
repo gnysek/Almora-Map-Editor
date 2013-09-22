@@ -70,6 +70,7 @@ namespace MapEditor
 			}
 
 			_ensureMenusDisabled();
+			ensureZoomButtons();
 		}
 
 		private void _ensureMenusDisabled()
@@ -329,12 +330,15 @@ namespace MapEditor
 
 		private void lbPlaceables_MouseClick(object sender, MouseEventArgs e)
 		{
-			if (lbPlaceables.SelectedIndex > -1)
+			if (e.Button == MouseButtons.Left)
 			{
-				if (Manager.Room != null)
+				if (lbPlaceables.SelectedIndex > -1)
 				{
-					Manager.Project.Instance = Manager.Project.PlaceableList[lbPlaceables.SelectedIndex];
-					CurrentBrush = BrushMode.Paint;
+					if (Manager.Room != null)
+					{
+						Manager.Project.Instance = Manager.Project.PlaceableList[lbPlaceables.SelectedIndex];
+						CurrentBrush = BrushMode.Paint;
+					}
 				}
 			}
 		}
@@ -413,7 +417,37 @@ namespace MapEditor
 			if (Manager.Room != null)
 			{
 				Manager.Room.LastUsedLayer = tbLayerDropDown.SelectedIndex;
+				ensureCurrentLayerEnabled();
 			}
+		}
+
+		public void tbEnabledLayersDropdown_SubItemClick(object sender, EventArgs e)
+		{
+			if (sender is ToolStripMenuItem)
+			{
+				ToolStripMenuItem item = sender as ToolStripMenuItem;
+
+				if (item != null)
+				{
+					int index = (item.OwnerItem as ToolStripDropDownButton).DropDownItems.IndexOf(item);
+					if (index > -1)
+					{
+						Manager.Project.Room.Layers[index].Active = item.Checked;
+					}
+
+					ensureCurrentLayerEnabled();
+				}
+
+			}
+		}
+
+		private void ensureCurrentLayerEnabled()
+		{
+			//TODO: indeterminate ?
+			//ToolStripMenuItem item;
+			//Manager.Project.Room.Layers[tbLayerDropDown.SelectedIndex].Active = true;
+			//item = (ToolStripMenuItem)tbEnabledLayersDropdown.DropDownItems[tbLayerDropDown.SelectedIndex];
+			//item.Checked = true;
 		}
 
 		private void MapEditorMain_KeyDown(object sender, KeyEventArgs e)
@@ -450,7 +484,37 @@ namespace MapEditor
 			}
 		}
 
-		
+		private void tbLayerRoomEdit_Click(object sender, EventArgs e)
+		{
+			lbLayers.SelectedIndex = tbLayerDropDown.SelectedIndex;
+			addOrEditLayer(true);
+		}
+
+		private void tbZoomOut_Click(object sender, EventArgs e)
+		{
+			roomEditor1._rPanel.Zoom = +1;
+			ensureZoomButtons();
+		}
+
+		private void tbZoomReset_Click(object sender, EventArgs e)
+		{
+			roomEditor1._rPanel.Zoom = -100;
+			ensureZoomButtons();
+		}
+
+		private void tbZoomIn_Click(object sender, EventArgs e)
+		{
+			roomEditor1._rPanel.Zoom = -1;
+			ensureZoomButtons();
+		}
+
+		public void ensureZoomButtons()
+		{
+			tbZoomIn.Enabled = roomEditor1._rPanel.Zoom > 1;
+			tbZoomOut.Enabled = roomEditor1._rPanel.Zoom < 4;
+			tbZoomReset.Enabled = roomEditor1._rPanel.Zoom != 1;
+			roomEditor1.Invalidate();
+		}
 
 	}
 }

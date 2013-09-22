@@ -44,10 +44,16 @@ namespace MapEditor
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
 			this.tbLayerDropDown = new System.Windows.Forms.ToolStripComboBox();
-			this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tbLayerRoomEdit = new System.Windows.Forms.ToolStripButton();
+			this.tbEnabledLayersDropdown = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tESTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+			this.tbZoomOut = new System.Windows.Forms.ToolStripButton();
+			this.tbZoomReset = new System.Windows.Forms.ToolStripButton();
+			this.tbZoomIn = new System.Windows.Forms.ToolStripButton();
+			this.roomEditor1 = new MapEditor.Components.RoomEditor();
 			this.tabControlMain = new System.Windows.Forms.TabControl();
 			this.tabProjectData = new System.Windows.Forms.TabPage();
 			this.treeViewGMX = new System.Windows.Forms.TreeView();
@@ -55,16 +61,20 @@ namespace MapEditor
 			this.tabRooms = new System.Windows.Forms.TabPage();
 			this.tabControlRooms = new System.Windows.Forms.TabControl();
 			this.tpRoomList = new System.Windows.Forms.TabPage();
+			this.lbRooms = new MapEditor.Components.ListBoxEx();
 			this.subMenuForEditables = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.duplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.useToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tpDefinitions = new System.Windows.Forms.TabPage();
+			this.lbPlaceables = new MapEditor.Components.ListBoxEx();
 			this.tabPlaceables = new System.Windows.Forms.TabPage();
 			this.tabControlEnv = new System.Windows.Forms.TabControl();
 			this.tpInstances = new System.Windows.Forms.TabPage();
+			this.lbInstances = new MapEditor.Components.ListBoxEx();
 			this.tpRoomDataLayers = new System.Windows.Forms.TabPage();
+			this.lbLayers = new MapEditor.Components.ListBoxEx();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.tsOptions = new System.Windows.Forms.ToolStrip();
@@ -119,11 +129,6 @@ namespace MapEditor
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-			this.roomEditor1 = new MapEditor.Components.RoomEditor();
-			this.lbRooms = new MapEditor.Components.ListBoxEx();
-			this.lbPlaceables = new MapEditor.Components.ListBoxEx();
-			this.lbInstances = new MapEditor.Components.ListBoxEx();
-			this.lbLayers = new MapEditor.Components.ListBoxEx();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tsMap.SuspendLayout();
 			this.tabControlMain.SuspendLayout();
@@ -179,10 +184,14 @@ namespace MapEditor
             this.toolStripSeparator2,
             this.toolStripLabel1,
             this.tbLayerDropDown,
-            this.toolStripButton7,
-            this.toolStripDropDownButton1,
+            this.tbLayerRoomEdit,
+            this.tbEnabledLayersDropdown,
             this.toolStripSeparator3,
-            this.toolStripButton1});
+            this.toolStripButton1,
+            this.toolStripButton2,
+            this.tbZoomOut,
+            this.tbZoomReset,
+            this.tbZoomIn});
 			this.tsMap.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.tsMap.Location = new System.Drawing.Point(330, 0);
 			this.tsMap.Name = "tsMap";
@@ -273,23 +282,35 @@ namespace MapEditor
 			this.tbLayerDropDown.Size = new System.Drawing.Size(121, 23);
 			this.tbLayerDropDown.DropDownClosed += new System.EventHandler(this.tbLayerDropDown_DropDownClosed);
 			// 
-			// toolStripButton7
+			// tbLayerRoomEdit
 			// 
-			this.toolStripButton7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton7.Image = global::MapEditor.Properties.Resources.layer__pencil;
-			this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton7.Name = "toolStripButton7";
-			this.toolStripButton7.Size = new System.Drawing.Size(23, 20);
-			this.toolStripButton7.Text = "toolStripButton7";
+			this.tbLayerRoomEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.tbLayerRoomEdit.Image = global::MapEditor.Properties.Resources.layer__pencil;
+			this.tbLayerRoomEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tbLayerRoomEdit.Name = "tbLayerRoomEdit";
+			this.tbLayerRoomEdit.Size = new System.Drawing.Size(23, 20);
+			this.tbLayerRoomEdit.Text = "toolStripButton7";
+			this.tbLayerRoomEdit.Click += new System.EventHandler(this.tbLayerRoomEdit_Click);
 			// 
-			// toolStripDropDownButton1
+			// tbEnabledLayersDropdown
 			// 
-			this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripDropDownButton1.Image = global::MapEditor.Properties.Resources.layers_stack_arrange;
-			this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-			this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 20);
-			this.toolStripDropDownButton1.Text = "toolStripDropDownButton1";
+			this.tbEnabledLayersDropdown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.tbEnabledLayersDropdown.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tESTToolStripMenuItem});
+			this.tbEnabledLayersDropdown.Image = global::MapEditor.Properties.Resources.layers_stack_arrange;
+			this.tbEnabledLayersDropdown.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tbEnabledLayersDropdown.Name = "tbEnabledLayersDropdown";
+			this.tbEnabledLayersDropdown.Size = new System.Drawing.Size(29, 20);
+			this.tbEnabledLayersDropdown.Text = "toolStripDropDownButton1";
+			this.tbEnabledLayersDropdown.ToolTipText = "Visible layers";
+			// 
+			// tESTToolStripMenuItem
+			// 
+			this.tESTToolStripMenuItem.Checked = true;
+			this.tESTToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tESTToolStripMenuItem.Name = "tESTToolStripMenuItem";
+			this.tESTToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+			this.tESTToolStripMenuItem.Text = "TEST";
 			// 
 			// toolStripSeparator3
 			// 
@@ -304,6 +325,54 @@ namespace MapEditor
 			this.toolStripButton1.Name = "toolStripButton1";
 			this.toolStripButton1.Size = new System.Drawing.Size(23, 20);
 			this.toolStripButton1.Text = "toolStripButton1";
+			// 
+			// toolStripButton2
+			// 
+			this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton2.Image = global::MapEditor.Properties.Resources.grid;
+			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton2.Name = "toolStripButton2";
+			this.toolStripButton2.Size = new System.Drawing.Size(23, 20);
+			this.toolStripButton2.Text = "toolStripButton2";
+			// 
+			// tbZoomOut
+			// 
+			this.tbZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.tbZoomOut.Image = global::MapEditor.Properties.Resources.magnifier_zoom_out;
+			this.tbZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tbZoomOut.Name = "tbZoomOut";
+			this.tbZoomOut.Size = new System.Drawing.Size(23, 20);
+			this.tbZoomOut.Text = "toolStripButton3";
+			this.tbZoomOut.Click += new System.EventHandler(this.tbZoomOut_Click);
+			// 
+			// tbZoomReset
+			// 
+			this.tbZoomReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.tbZoomReset.Image = global::MapEditor.Properties.Resources.magnifier_zoom_actual;
+			this.tbZoomReset.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tbZoomReset.Name = "tbZoomReset";
+			this.tbZoomReset.Size = new System.Drawing.Size(23, 20);
+			this.tbZoomReset.Text = "toolStripButton4";
+			this.tbZoomReset.Click += new System.EventHandler(this.tbZoomReset_Click);
+			// 
+			// tbZoomIn
+			// 
+			this.tbZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.tbZoomIn.Image = global::MapEditor.Properties.Resources.magnifier_zoom_in;
+			this.tbZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tbZoomIn.Name = "tbZoomIn";
+			this.tbZoomIn.Size = new System.Drawing.Size(23, 20);
+			this.tbZoomIn.Text = "toolStripButton5";
+			this.tbZoomIn.Click += new System.EventHandler(this.tbZoomIn_Click);
+			// 
+			// roomEditor1
+			// 
+			this.roomEditor1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(173)))), ((int)(((byte)(179)))));
+			this.roomEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.roomEditor1.Location = new System.Drawing.Point(333, 28);
+			this.roomEditor1.Name = "roomEditor1";
+			this.roomEditor1.Size = new System.Drawing.Size(598, 403);
+			this.roomEditor1.TabIndex = 6;
 			// 
 			// tabControlMain
 			// 
@@ -388,6 +457,19 @@ namespace MapEditor
 			this.tpRoomList.Text = "Rooms";
 			this.tpRoomList.UseVisualStyleBackColor = true;
 			// 
+			// lbRooms
+			// 
+			this.lbRooms.ContextMenuStrip = this.subMenuForEditables;
+			this.lbRooms.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbRooms.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.lbRooms.FormattingEnabled = true;
+			this.lbRooms.Location = new System.Drawing.Point(0, 0);
+			this.lbRooms.Name = "lbRooms";
+			this.lbRooms.Size = new System.Drawing.Size(308, 350);
+			this.lbRooms.TabIndex = 0;
+			this.lbRooms.Type = MapEditor.Components.ListBoxEx.ListType.Rooms;
+			this.lbRooms.DoubleClick += new System.EventHandler(this.lbRooms_DoubleClick);
+			// 
 			// subMenuForEditables
 			// 
 			this.subMenuForEditables.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -436,6 +518,19 @@ namespace MapEditor
 			this.tpDefinitions.Text = "Env Definitions";
 			this.tpDefinitions.UseVisualStyleBackColor = true;
 			// 
+			// lbPlaceables
+			// 
+			this.lbPlaceables.ContextMenuStrip = this.subMenuForEditables;
+			this.lbPlaceables.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbPlaceables.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.lbPlaceables.FormattingEnabled = true;
+			this.lbPlaceables.Location = new System.Drawing.Point(0, 0);
+			this.lbPlaceables.Name = "lbPlaceables";
+			this.lbPlaceables.Size = new System.Drawing.Size(308, 350);
+			this.lbPlaceables.TabIndex = 0;
+			this.lbPlaceables.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbPlaceables_MouseClick);
+			this.lbPlaceables.DoubleClick += new System.EventHandler(this.lbPlaceables_DoubleClick);
+			// 
 			// tabPlaceables
 			// 
 			this.tabPlaceables.Controls.Add(this.tabControlEnv);
@@ -468,6 +563,18 @@ namespace MapEditor
 			this.tpInstances.Text = "Instances";
 			this.tpInstances.UseVisualStyleBackColor = true;
 			// 
+			// lbInstances
+			// 
+			this.lbInstances.ContextMenuStrip = this.subMenuForEditables;
+			this.lbInstances.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbInstances.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.lbInstances.FormattingEnabled = true;
+			this.lbInstances.Location = new System.Drawing.Point(0, 0);
+			this.lbInstances.Name = "lbInstances";
+			this.lbInstances.Size = new System.Drawing.Size(308, 350);
+			this.lbInstances.TabIndex = 1;
+			this.lbInstances.Type = MapEditor.Components.ListBoxEx.ListType.PlaceableInstances;
+			// 
 			// tpRoomDataLayers
 			// 
 			this.tpRoomDataLayers.Controls.Add(this.lbLayers);
@@ -477,6 +584,16 @@ namespace MapEditor
 			this.tpRoomDataLayers.TabIndex = 2;
 			this.tpRoomDataLayers.Text = "Layers";
 			this.tpRoomDataLayers.UseVisualStyleBackColor = true;
+			// 
+			// lbLayers
+			// 
+			this.lbLayers.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbLayers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.lbLayers.Location = new System.Drawing.Point(0, 0);
+			this.lbLayers.Name = "lbLayers";
+			this.lbLayers.Size = new System.Drawing.Size(308, 350);
+			this.lbLayers.TabIndex = 0;
+			this.lbLayers.Type = MapEditor.Components.ListBoxEx.ListType.Layers;
 			// 
 			// imageList1
 			// 
@@ -974,62 +1091,6 @@ namespace MapEditor
 			this.openFileDialog1.Filter = "GM:S Projects|*.project.gmx";
 			this.openFileDialog1.SupportMultiDottedExtensions = true;
 			// 
-			// roomEditor1
-			// 
-			this.roomEditor1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(173)))), ((int)(((byte)(179)))));
-			this.roomEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.roomEditor1.Location = new System.Drawing.Point(333, 28);
-			this.roomEditor1.Name = "roomEditor1";
-			this.roomEditor1.Size = new System.Drawing.Size(598, 403);
-			this.roomEditor1.TabIndex = 6;
-			// 
-			// lbRooms
-			// 
-			this.lbRooms.ContextMenuStrip = this.subMenuForEditables;
-			this.lbRooms.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lbRooms.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-			this.lbRooms.FormattingEnabled = true;
-			this.lbRooms.Location = new System.Drawing.Point(0, 0);
-			this.lbRooms.Name = "lbRooms";
-			this.lbRooms.Size = new System.Drawing.Size(308, 350);
-			this.lbRooms.TabIndex = 0;
-			this.lbRooms.Type = MapEditor.Components.ListBoxEx.ListType.Rooms;
-			this.lbRooms.DoubleClick += new System.EventHandler(this.lbRooms_DoubleClick);
-			// 
-			// lbPlaceables
-			// 
-			this.lbPlaceables.ContextMenuStrip = this.subMenuForEditables;
-			this.lbPlaceables.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lbPlaceables.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-			this.lbPlaceables.FormattingEnabled = true;
-			this.lbPlaceables.Location = new System.Drawing.Point(0, 0);
-			this.lbPlaceables.Name = "lbPlaceables";
-			this.lbPlaceables.Size = new System.Drawing.Size(308, 350);
-			this.lbPlaceables.TabIndex = 0;
-			this.lbPlaceables.DoubleClick += new System.EventHandler(this.lbPlaceables_DoubleClick);
-			// 
-			// lbInstances
-			// 
-			this.lbInstances.ContextMenuStrip = this.subMenuForEditables;
-			this.lbInstances.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lbInstances.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-			this.lbInstances.FormattingEnabled = true;
-			this.lbInstances.Location = new System.Drawing.Point(0, 0);
-			this.lbInstances.Name = "lbInstances";
-			this.lbInstances.Size = new System.Drawing.Size(308, 350);
-			this.lbInstances.TabIndex = 1;
-			this.lbInstances.Type = MapEditor.Components.ListBoxEx.ListType.PlaceableInstances;
-			// 
-			// lbLayers
-			// 
-			this.lbLayers.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lbLayers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-			this.lbLayers.Location = new System.Drawing.Point(0, 0);
-			this.lbLayers.Name = "lbLayers";
-			this.lbLayers.Size = new System.Drawing.Size(308, 350);
-			this.lbLayers.TabIndex = 0;
-			this.lbLayers.Type = MapEditor.Components.ListBoxEx.ListType.Layers;
-			// 
 			// MapEditorMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1102,10 +1163,9 @@ namespace MapEditor
         private System.Windows.Forms.ToolStripButton tbSelectMap;
         private System.Windows.Forms.ToolStripButton tbMoveMap;
         private System.Windows.Forms.ToolStripButton tbRotateMap;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ToolStripButton toolStripButton7;
+        private System.Windows.Forms.ToolStripButton tbLayerRoomEdit;
         private System.Windows.Forms.TabControl tabControlMain;
 		private System.Windows.Forms.TabPage tabPlaceables;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
@@ -1174,6 +1234,12 @@ namespace MapEditor
 		private System.Windows.Forms.TabPage tpDefinitions;
 		private System.Windows.Forms.ToolStripButton tbDeleteMap;
 		public RoomEditor roomEditor1;
+		public System.Windows.Forms.ToolStripDropDownButton tbEnabledLayersDropdown;
+		private System.Windows.Forms.ToolStripMenuItem tESTToolStripMenuItem;
+		private System.Windows.Forms.ToolStripButton toolStripButton2;
+		private System.Windows.Forms.ToolStripButton tbZoomOut;
+		private System.Windows.Forms.ToolStripButton tbZoomReset;
+		private System.Windows.Forms.ToolStripButton tbZoomIn;
 	}
 }
 
