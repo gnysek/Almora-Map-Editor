@@ -21,8 +21,11 @@ namespace MapEditor.Forms
 
 		private void LayerForm_Shown(object sender, EventArgs e)
 		{
-			lfName.Text = Element.LayerName;
-			lfDepth.Text = Element.LayerDepth.ToString();
+			if (Element != null)
+			{
+				lfName.Text = Element.LayerName;
+				lfDepth.Text = Element.LayerDepth.ToString();
+			}
 		}
 
 		private void button1_Click(object sender, EventArgs e)
