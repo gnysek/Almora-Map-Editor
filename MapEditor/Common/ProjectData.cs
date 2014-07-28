@@ -91,8 +91,11 @@ namespace MapEditor.Common
 				ProjectFilename = Path.GetFileName(sourcePath);
 				GmxFilename = Path.GetFileNameWithoutExtension(ProjectFilename) + ".gmx";
 				_readGMX();
-				_readAME();
-				_checkForRegisteredRes(allItems.getSubitems());
+				if (Manager.Project != null)
+				{
+					_readAME();
+					_checkForRegisteredRes(allItems.getSubitems());
+				}
 			}
 			else
 			{
@@ -338,7 +341,16 @@ namespace MapEditor.Common
 		private void _readGMX()
 		{
 			XmlDocument XMLfile = new XmlDocument();
-			XMLfile.Load(ProjectSource + "\\" + GmxFilename);
+			try
+			{
+				XMLfile.Load(ProjectSource + "\\" + GmxFilename);
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(e.Message);
+				Manager.Project = null;
+				return;
+			}
 
 			string nodeElementsName;
 			XmlNode root;

@@ -17,22 +17,26 @@ namespace MapEditor.Common
 
 		public int Width
 		{
+			//get { return (Element == null) ? 0 : GraphicsManager.Sprites[Element.textureId].Width / Manager.MainWindow.roomEditor1._rPanel.Zoom; }
 			get { return (Element == null) ? 0 : GraphicsManager.Sprites[Element.textureId].Width; }
 		}
 
 		public int Height
 		{
+			//get { return (Element == null) ? 0 : GraphicsManager.Sprites[Element.textureId].Height / Manager.MainWindow.roomEditor1._rPanel.Zoom; }
 			get { return (Element == null) ? 0 : GraphicsManager.Sprites[Element.textureId].Height; }
 		}
 
 		public int XStart
 		{
-			get { return X - Element.offsetX; }
+			//get { return (X / Manager.MainWindow.roomEditor1._rPanel.Zoom) - (Element.offsetX / Manager.MainWindow.roomEditor1._rPanel.Zoom); }
+			get { return (X) - (Element.offsetX); }
 		}
 
 		public int YStart
 		{
-			get { return Y - Element.offsetY; }
+			//get { return (Y / Manager.MainWindow.roomEditor1._rPanel.Zoom) - (Element.offsetY / Manager.MainWindow.roomEditor1._rPanel.Zoom); }
+			get { return (Y) - (Element.offsetY); }
 		}
 
 		public int XCenter

@@ -328,12 +328,16 @@ namespace MapEditor
 			// 
 			// toolStripButton2
 			// 
+			this.toolStripButton2.Checked = true;
+			this.toolStripButton2.CheckOnClick = true;
+			this.toolStripButton2.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButton2.Image = global::MapEditor.Properties.Resources.grid;
 			this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButton2.Name = "toolStripButton2";
 			this.toolStripButton2.Size = new System.Drawing.Size(23, 20);
 			this.toolStripButton2.Text = "toolStripButton2";
+			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
 			// 
 			// tbZoomOut
 			// 
