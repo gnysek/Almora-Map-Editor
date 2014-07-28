@@ -120,7 +120,7 @@ namespace MapEditor.Common
 				if (place.Element.useDefaultObjectDepth == false) code += " depth = " + place.Element.Depth.ToString() + ";";
 				if (place.Element.Solid && place.Element.useDefaultObjectSolid == false) code += " solid = true;";
 				if (place.Element.Shadow) code += " drop_shadow = true; shadow = " + place.Element.ShadowSize.ToString() + ";";
-				if (place.Element.MultiDraw) code += " multidraw = true;";
+				if (place.Element.MultiDraw) code += " multi_draw = true;";
 				if (place.Element.Wind) code += " wind = true; scEnvWindSet();";
 				if (place.Element.Visible == false && place.Element.useDefaultObjectVisible == false) code += " visible = false;";
 				if (place.Element.useDefaultObjectMask == false) code += " mask_index = " + ((place.Element.Mask == "") ? place.Element.Sprite : place.Element.Mask) + ";";

@@ -56,58 +56,71 @@ namespace MapEditor.Components
 
 		public int Zoom
 		{
-			set { this._zoom = Math.Max(1, Math.Min(4, _zoom + value)); }
+			set
+			{
+				switch (value)
+				{
+					case 0: this._zoom = 1; break;
+					case 1: if (this._zoom < 4) this._zoom *= 2; break;
+					case -1: if (this._zoom > 1) this._zoom /= 2; break;
+				}
+			}
 			get { return this._zoom; }
 		}
+
+		public bool GridEnabled = true;
 
 		#region drawGrid
 		private void DrawGrid()
 		{
-			int x1 = 0;
-			int y1 = 0;
-			int x2 = 0;
-			int y2 = 0;
-			Size canvas = getCurrentCanvas();//new Size(this.Width, this.Height);
-			// Calculate line amounts.
-			int cols = (int)(canvas.Width / _gridX * _zoom) + 2;
-			int rows = (int)(canvas.Height / _gridY * _zoom) + 2;
-
-			// Grid color.
-			Color color = Color.FromArgb(128, Color.Black);
-
-			// Calculate offsets.
-			int offsetX = Offset.X % Manager.Room.Width;
-			int offsetY = Offset.Y % Manager.Room.Height;
-
-			Point snap = GetSnappedPoint(new Point(Offset.X - offsetX, Offset.Y - offsetY), new Size(_gridX, _gridY));
-
-			// Draw vertical lines.
-			for (int col = 0; col < cols; col++)
+			if (GridEnabled)
 			{
-				// Calculate coordinates.
-				x1 = (col * _gridX + snap.X) / _zoom;
-				y1 = snap.Y;
-				x2 = x1;//col * _gridX + snap.X;
-				y2 = (int)(canvas.Height / _zoom) + snap.Y + _gridY;
+				int x1 = 0;
+				int y1 = 0;
+				int x2 = 0;
+				int y2 = 0;
+				Size canvas = getCurrentCanvas();//new Size(this.Width, this.Height);
+				// Calculate line amounts.
+				int cols = (int)(canvas.Width / (_gridX / _zoom)) + 2;
+				int rows = (int)(canvas.Height / (_gridY / _zoom)) + 2;
 
-				// Draw line.
-				GraphicsManager.DrawLineCache(x1, y1, x2, y2, color);
+				// Grid color.
+				Color color = Color.FromArgb(128, Color.Black);
+
+				// Calculate offsets.
+				int offsetX = (Offset.X % Manager.Room.Width);// *_zoom;
+				int offsetY = (Offset.Y % Manager.Room.Height);// *_zoom;
+
+				Point snap = GetSnappedPoint(new Point(Offset.X - offsetX, Offset.Y - offsetY), new Size(_gridX, _gridY));
+
+				// Draw vertical lines.
+				for (int col = 0; col < cols; col++)
+				{
+					// Calculate coordinates.
+					x1 = (col * (_gridX / _zoom) + snap.X);
+					y1 = snap.Y;
+					x2 = x1;//col * _gridX + snap.X;
+					y2 = (int)(canvas.Height /*/ _zoom*/) + snap.Y + _gridY;
+
+					// Draw line.
+					GraphicsManager.DrawLineCache(x1, y1, x2, y2, color);
+				}
+
+				// Draw horizontal lines.
+				for (int row = 0; row < rows; row++)
+				{
+					// Calculate coordinates.
+					x1 = snap.X;
+					y1 = (row * (_gridY / _zoom) + snap.Y);
+					x2 = (int)(canvas.Width /*/ _zoom*/) + snap.X + _gridX;
+					y2 = y1;//row * _gridY + snap.Y;
+
+					// Draw line.
+					GraphicsManager.DrawLineCache(x1, y1, x2, y2, color);
+				}
+
+				GraphicsManager.DrawLineBatch();
 			}
-
-			// Draw horizontal lines.
-			for (int row = 0; row < rows; row++)
-			{
-				// Calculate coordinates.
-				x1 = snap.X;
-				y1 = (row * _gridY + snap.Y) / _zoom;
-				x2 = (int)(canvas.Width / _zoom) + snap.X + _gridX;
-				y2 = y1;//row * _gridY + snap.Y;
-
-				// Draw line.
-				GraphicsManager.DrawLineCache(x1, y1, x2, y2, color);
-			}
-
-			GraphicsManager.DrawLineBatch();
 
 			// draw selected instance
 			if (Manager.Project.SelectedInstance != null)
@@ -184,6 +197,7 @@ namespace MapEditor.Components
 
 						if (instance.Element != null)
 						{
+							//GraphicsManager.DrawSprite(instance.Element.textureId, instance.XCenter / _zoom, instance.YCenter / _zoom, instance.Rotation, color);
 							GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, instance.Rotation, color);
 
 							if (instance.Element.MultiDraw)
@@ -389,7 +403,7 @@ namespace MapEditor.Components
 
 				if (_drawMousePosition)
 				{
-					drawMouseGrid(new Rectangle(_mouseX, _mouseY, _gridX, _gridY));
+					drawMouseGrid(new Rectangle(_mouseX, _mouseY, _gridX / _zoom, _gridY / _zoom));
 				}
 
 				// Disable scissor testing.
@@ -464,12 +478,12 @@ namespace MapEditor.Components
 		private Point GetSnappedPoint(Point position, Size snap)
 		{
 			// Calculate snapped position.
-			int width = (int)(snap.Width * _zoom);
-			int height = (int)(snap.Height * _zoom);
-			int offsetX = (int)(Offset.X * _zoom);
-			int offsetY = (int)(Offset.Y * _zoom);
-			int x = (int)((((position.X + offsetX) / width) * width) / _zoom);
-			int y = (int)((((position.Y + offsetY) / height) * height) / _zoom);
+			int width = (int)(snap.Width / _zoom);
+			int height = (int)(snap.Height / _zoom);
+			int offsetX = (int)(Offset.X);// / _zoom);
+			int offsetY = (int)(Offset.Y);// / _zoom);
+			int x = (int)((((position.X + offsetX) / width) * width) /** _zoom*/);
+			int y = (int)((((position.Y + offsetY) / height) * height) /** _zoom*/);
 
 			return new Point(x, y);
 		}
@@ -501,7 +515,7 @@ namespace MapEditor.Components
 
 			if (Manager.Room == null) return;
 
-			Point snap = GetSnappedPoint(e.Location, new Size(_gridX, _gridY));
+			Point snap = GetSnappedPoint(e.Location, new Size(_gridX / _zoom, _gridY / _zoom));
 
 			// If mouse left button clicked.
 			if (e.Button == MouseButtons.Left)
@@ -694,7 +708,7 @@ namespace MapEditor.Components
 			{
 				_mouseX = snap.X;
 				_mouseY = snap.Y;
-				Manager.MainWindow.statusLabelMousePos.Text = "X: " + _mouseX.ToString() + ", Y: " + _mouseY.ToString();
+				Manager.MainWindow.statusLabelMousePos.Text = "X: " + (_mouseX * _zoom).ToString() + ", Y: " + (_mouseY * _zoom).ToString();
 				Manager.MainWindow.statusLabelMousePos.Text += " / RX:  " + _mx.ToString() + ", RY: " + _my.ToString();
 				Invalidate();
 			}

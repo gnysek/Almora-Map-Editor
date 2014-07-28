@@ -110,8 +110,11 @@ namespace MapEditor
 			{
 				if (Manager.loadProject(openFileDialog1.FileName))
 				{
-					Manager.Project.renderItemsTree(treeViewGMX);
-					treeViewGMX.Nodes[0].Expand();
+					if (Manager.Project != null)
+					{
+						Manager.Project.renderItemsTree(treeViewGMX);
+						treeViewGMX.Nodes[0].Expand();
+					}
 					ensureButtonsDisabled();
 
 					//GraphicsManager.LoadTexture(new Bitmap(Manager.Project.ProjectSource + "\\sprites\\images\\sprPlant2_0.png"), 0);
@@ -332,7 +335,7 @@ namespace MapEditor
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				if (lbPlaceables.SelectedIndex > -1)
+				if (CurrentBrush == BrushMode.Paint && lbPlaceables.SelectedIndex > -1)
 				{
 					if (Manager.Room != null)
 					{
@@ -377,10 +380,13 @@ namespace MapEditor
 				}
 
 				Manager.Project.Room = Manager.Project.RoomList[lbRooms.SelectedIndex];
-				if (Manager.Project.Room.LastUsedLayer > -1 && Manager.Project.Room.LastUsedLayer <= tbLayerDropDown.Items.Count)
-				{
+				//if (Manager.Project.Room.LastUsedLayer > -1 && Manager.Project.Room.LastUsedLayer < tbLayerDropDown.Items.Count)
+				//{
+					Manager.Project.Room.LastUsedLayer = Math.Max(0, Math.Min(Manager.Project.Room.LastUsedLayer, tbLayerDropDown.Items.Count - 1));
 					tbLayerDropDown.SelectedIndex = Manager.Project.Room.LastUsedLayer;
-				}
+				
+				//}
+
 				if (Manager.Project.PlaceableList.Count > 0)
 				{
 					Manager.Project.Instance = Manager.Project.PlaceableList[0];
@@ -498,7 +504,7 @@ namespace MapEditor
 
 		private void tbZoomReset_Click(object sender, EventArgs e)
 		{
-			roomEditor1._rPanel.Zoom = -100;
+			roomEditor1._rPanel.Zoom = 0;
 			ensureZoomButtons();
 		}
 
@@ -514,6 +520,11 @@ namespace MapEditor
 			tbZoomOut.Enabled = roomEditor1._rPanel.Zoom < 4;
 			tbZoomReset.Enabled = roomEditor1._rPanel.Zoom != 1;
 			roomEditor1.Invalidate();
+		}
+
+		private void toolStripButton2_Click(object sender, EventArgs e)
+		{
+			roomEditor1._rPanel.GridEnabled = toolStripButton2.Checked;
 		}
 
 	}

@@ -559,19 +559,35 @@ namespace MapEditor.Graphics
 
 				OpenGL.glPushMatrix();
 
-				if (quad.Angle != 0)
-				{
-					float w, h;
-					w = quad.Width;
-					h = quad.Height;
-					OpenGL.glTranslatef(-RPanel.Offset.X + quad.Vertices[0].X + (w / 2), -RPanel.Offset.Y + quad.Vertices[0].Y + (h / 2), 0);
-					OpenGL.glRotatef(-quad.Angle, 0, 0, 1);
-					OpenGL.glTranslatef(-(-RPanel.Offset.X + quad.Vertices[0].X + (w / 2)), -(-RPanel.Offset.Y + quad.Vertices[0].Y + (h / 2)), 0);
-				}
+				//if (quad.Angle != 0 || RPanel.Zoom != 1)
+				//{
+					if (RPanel.Zoom != 1)
+					{
+						OpenGL.glScaled(1.0 / RPanel.Zoom, 1.0 / RPanel.Zoom, 1.0);
+					}
+
+					if (quad.Angle != 0)
+					{
+						float w, h;
+						w = quad.Width / 2;
+						h = quad.Height / 2;
+						float xx, yy;
+						xx = -RPanel.Offset.X + quad.Vertices[0].X + (w);
+						yy = -RPanel.Offset.Y + quad.Vertices[0].Y + (h);
+
+						OpenGL.glTranslatef(xx, yy, 0);
+						OpenGL.glRotatef(-quad.Angle, 0, 0, 1);
+						OpenGL.glTranslatef(-xx, -yy, 0);
+					}
+				//}
+
+				
 
 				OpenGL.glBegin(GLPrimative.Quads);
 
 				OpenGL.glColor4(quad.Color);
+
+				//OpenGL.glScalef(1.0f / RPanel.Zoom, 1.0f / RPanel.Zoom, 1.0f);
 
 				OpenGL.glTexCoord2f(quad.TextureCoordinates[0].X, quad.TextureCoordinates[0].Y);
 				OpenGL.glVertex2f(quad.Vertices[0].X - _offsetX, quad.Vertices[0].Y - _offsetY);
