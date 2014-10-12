@@ -116,6 +116,11 @@ namespace MapEditor
 						treeViewGMX.Nodes[0].Expand();
 					}
 					ensureButtonsDisabled();
+					if (lbRooms.Items.Count > 0)
+					{
+						lbRooms.SelectedIndex = 0;
+						lbRooms_DoubleClick(lbRooms, new EventArgs());
+					}
 
 					//GraphicsManager.LoadTexture(new Bitmap(Manager.Project.ProjectSource + "\\sprites\\images\\sprPlant2_0.png"), 0);
 				}
@@ -129,13 +134,21 @@ namespace MapEditor
 
 		private void tbUsedResList_Click(object sender, EventArgs e)
 		{
-			using (ResourceUsage form = new ResourceUsage())
+			/*using (ResourceUsage form = new ResourceUsage())
 			{
 				if (form.ShowDialog() == DialogResult.OK)
 				{
 					Manager.Project.checkForRegisteredRes();
 					Manager.Project.renderItemsTree(treeViewGMX);
 					Manager.Project.regenerateTextureList();
+				}
+			}*/
+
+			using (BrushGroups form = new BrushGroups())
+			{
+				if (form.ShowDialog() == DialogResult.OK)
+				{
+
 				}
 			}
 		}
@@ -341,6 +354,8 @@ namespace MapEditor
 					{
 						Manager.Project.Instance = Manager.Project.PlaceableList[lbPlaceables.SelectedIndex];
 						CurrentBrush = BrushMode.Paint;
+						brushObjectLabel.Text = Manager.Project.Instance.Name;
+						//brushObjectSprite.Image = GraphicsManager.Sprites[Manager.Project.Instance.textureId];
 					}
 				}
 			}
@@ -382,9 +397,9 @@ namespace MapEditor
 				Manager.Project.Room = Manager.Project.RoomList[lbRooms.SelectedIndex];
 				//if (Manager.Project.Room.LastUsedLayer > -1 && Manager.Project.Room.LastUsedLayer < tbLayerDropDown.Items.Count)
 				//{
-					Manager.Project.Room.LastUsedLayer = Math.Max(0, Math.Min(Manager.Project.Room.LastUsedLayer, tbLayerDropDown.Items.Count - 1));
-					tbLayerDropDown.SelectedIndex = Manager.Project.Room.LastUsedLayer;
-				
+				Manager.Project.Room.LastUsedLayer = Math.Max(0, Math.Min(Manager.Project.Room.LastUsedLayer, tbLayerDropDown.Items.Count - 1));
+				tbLayerDropDown.SelectedIndex = Manager.Project.Room.LastUsedLayer;
+
 				//}
 
 				if (Manager.Project.PlaceableList.Count > 0)
@@ -472,6 +487,9 @@ namespace MapEditor
 				case Keys.M:
 					CurrentBrush = BrushMode.Move;
 					break;
+				case Keys.Escape:
+					Manager.Project.SelectedInstance = null;
+					break;
 			}
 		}
 
@@ -522,10 +540,47 @@ namespace MapEditor
 			roomEditor1.Invalidate();
 		}
 
-		private void toolStripButton2_Click(object sender, EventArgs e)
+		private void tbGridEnabled_Click(object sender, EventArgs e)
 		{
-			roomEditor1._rPanel.GridEnabled = toolStripButton2.Checked;
+			roomEditor1._rPanel.GridEnabled = tbGridEnabled.Checked;
 		}
+
+		public void brushPlaceableUpdatePositionAndRotation()
+		{
+			if (Manager.Project.SelectedInstance != null)
+			{
+				panelPreviewTab.Enabled = true;
+				Manager.MainWindow.brushPlaceableX.Text = Manager.Project.SelectedInstance.X.ToString();
+				Manager.MainWindow.brushPlaceableY.Text = Manager.Project.SelectedInstance.Y.ToString();
+				Manager.MainWindow.brushPlaceableRotation.Text = Manager.Project.SelectedInstance.Rotation.ToString();
+			}
+			else
+			{
+				panelPreviewTab.Enabled = false;
+			}
+		}
+
+		#region Rotation text
+		private void brushPlaceable0dir_Click(object sender, EventArgs e)
+		{
+			brushPlaceableRotation.Text = "0";
+		}
+
+		private void brushPlaceable90dir_Click(object sender, EventArgs e)
+		{
+			brushPlaceableRotation.Text = "90";
+		}
+
+		private void brushPlaceable180dir_Click(object sender, EventArgs e)
+		{
+			brushPlaceableRotation.Text = "180";
+		}
+
+		private void brushPlaceable270dir_Click(object sender, EventArgs e)
+		{
+			brushPlaceableRotation.Text = "270";
+		}
+		#endregion
 
 	}
 }

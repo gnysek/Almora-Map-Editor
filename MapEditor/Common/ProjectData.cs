@@ -10,6 +10,7 @@ using MapEditor.Components;
 using MapEditor.Graphics;
 using System.Drawing;
 using MapEditor.Forms;
+using System.Collections.ObjectModel;
 
 namespace MapEditor.Common
 {
@@ -29,7 +30,9 @@ namespace MapEditor.Common
 		public List<MapRoom> RoomList = new List<MapRoom>();
 		public List<string> RegisteredResources = new List<string>();
 		public List<GMSpriteData> GMXSprites = new List<GMSpriteData>();
-		public List<string> GMObjects = new List<string>();
+		public List<GMObjectData> GMXObjects = new List<GMObjectData>();
+		//public List<string> GMObjects = new List<string>();
+		public ObservableCollection<BrushGroup> BrushGroups = new ObservableCollection<BrushGroup>();
 		public GMItem allItems = null;
 		public string defaultPlaceable = "oEnvMain";
 
@@ -64,7 +67,11 @@ namespace MapEditor.Common
 		public PlaceableInstance SelectedInstance
 		{
 			get { return (_Room == null) ? null : _SelectedInstance; }
-			set { _SelectedInstance = value; }
+			set
+			{
+				_SelectedInstance = value;
+				Manager.MainWindow.brushPlaceableUpdatePositionAndRotation();
+			}
 		}
 
 		#endregion
@@ -103,6 +110,7 @@ namespace MapEditor.Common
 				ProjectFilename = Path.GetFileNameWithoutExtension(GmxFilename) + ".ame";
 				_readGMX();
 			}
+
 			return true;
 		}
 
@@ -140,10 +148,17 @@ namespace MapEditor.Common
 				elem.saveRoomInstancesToXml();
 			}
 
+			XmlElement brushes = file.CreateElement("brushgroups");
+			foreach (BrushGroup elem in BrushGroups)
+			{
+				brushes.AppendChild(elem.toXml(file));
+			}
+
 			assets.AppendChild(options);
 			assets.AppendChild(resources);
 			assets.AppendChild(placeables);
 			assets.AppendChild(rooms);
+			assets.AppendChild(brushes);
 
 			file.AppendChild(comment);
 			file.AppendChild(assets);
@@ -289,6 +304,32 @@ namespace MapEditor.Common
 				MessageBox.Show("reading room node from AME file failed: " + e.Message);
 			}
 
+			// read brushes
+			try
+			{
+				root = XMLfile.SelectSingleNode("assets/brushgroups");
+				foreach (XmlNode n in root)
+				{
+					string name = n.Attributes["name"].Value;
+					BrushGroup brush;
+					brush = BrushGroups.Where(item => item.GroupName == name).FirstOrDefault();
+					if (brush == null)
+					{
+						brush = new BrushGroup() { GroupName = name };
+						BrushGroups.Add(brush);
+					}
+
+					foreach (XmlNode obj in n.SelectSingleNode("objects"))
+					{
+						brush.objects.Add(obj.Attributes["name"].Value);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show("Reading brush node from AME file failed: " + e.Message);
+			}
+
 			regenerateEnvDefList();
 			regenerateRoomList();
 			regenerateTextureList();
@@ -357,6 +398,10 @@ namespace MapEditor.Common
 			allItems = new GMItem(Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(GmxFilename)));
 			string[] resTree = new string[] { "sprites", "backgrounds", "scripts", "objects", "rooms" };
 
+			// none sprite add
+			/*GMItem noneSprite = new GMItem(GMSpriteData.undefinedSprite) { ResourceType = GMItemType.Sprite, isGroup = false };
+			GMXSprites.Add( new GMSpriteData() { offsetX = 0, offsetY = 0, firstFramePath = "", owner = noneSprite });*/
+
 			foreach (string nodeName in resTree)
 			{
 				try
@@ -382,6 +427,10 @@ namespace MapEditor.Common
 					MessageBox.Show(nodeName + ": " + e.Message);
 				}
 			}
+
+			BrushGroups = new ObservableCollection<BrushGroup>();
+			BrushGroup defaultBrushGroup = new BrushGroup() { GroupName = "Default", isDefault = true };
+			BrushGroups.Add(defaultBrushGroup);
 		}
 
 		private void _readSubNode(XmlNode node, string nodeName, string nodeElementsName, GMItem main)
@@ -460,6 +509,38 @@ namespace MapEditor.Common
 			{
 				_treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find("sprites") });
 				_treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find("backgrounds") });
+			}
+		}
+
+		public void renderItemsTree(TreeView Tree, string group)
+		{
+			Tree.Nodes.Clear();
+			TreeNode NodeGM = Tree.Nodes.Add("NodeGM", "Project: " + Manager.Project.GmxFilename);
+
+			_treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find(group) });
+		}
+
+		public List<string> renderItemsList(string group)
+		{
+			List<string> list = new List<string>();
+			_renderItemList(list, Manager.Project.allItems.Find("objects"));
+			return list;
+		}
+
+		protected void _renderItemList(List<string> list, GMItem _node)
+		{
+			if (_node == null) return;
+
+			foreach (GMItem _object in _node.getSubitems())
+			{
+				if (_object.isGroup)
+				{
+					_renderItemList(list, _object);
+				}
+				else
+				{
+					list.Add(_object.Name);
+				}
 			}
 		}
 
@@ -620,8 +701,6 @@ namespace MapEditor.Common
 				{
 					GMSpriteData itm = this.GMXSprites.Find(item => item.Name == file);
 
-
-
 					if (itm != null)
 					{
 						// prevent adding duplicates
@@ -646,6 +725,34 @@ namespace MapEditor.Common
 				foreach (PlaceableElement elem in PlaceableList)
 				{
 					elem.textureId = elem.Sprite;
+				}
+
+				form.Close();
+			}
+
+			using (LoadingForm form = new LoadingForm())
+			{
+				form.Show();
+
+				List<string> objects = renderItemsList("objects");
+
+				foreach (string gmobject in objects)
+				{
+					//GMSpriteData itm = this.GMXSprites.Find(item => item.Name == file);
+					GMSpriteData itm = this.GMXObjects.Find(item => item.Name == gmobject).sprite;
+
+					if (itm != null)
+					{
+						// prevent adding duplicates
+						//if (!GraphicsManager.Sprites.ContainsKey(itm.Name))
+						if (!Manager.MainWindow.imageListObjects.Images.ContainsKey(itm.Name))
+						{
+							if (File.Exists(itm.firstFramePath))
+							{
+								Manager.MainWindow.imageListObjects.Images.Add(itm.Name, new Bitmap(itm.firstFramePath));
+							}
+						}
+					}
 				}
 
 				form.Close();

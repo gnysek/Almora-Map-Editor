@@ -41,11 +41,11 @@ namespace MapEditor.Common
 
 		public int XCenter
 		{
-			get { return X; }
+			get { return (X); }
 		}
 		public int YCenter
 		{
-			get { return Y; }
+			get { return (Y); }
 		}
 
 		public int XEnd

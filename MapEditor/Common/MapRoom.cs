@@ -168,6 +168,7 @@ namespace MapEditor.Common
 			{
 				XmlElement elem = file.CreateElement("instance");
 				elem.SetAttribute("name", place.Element.Name);
+				elem.SetAttribute("object", place.Element.Parent);
 				elem.SetAttribute("x", place.X.ToString());
 				elem.SetAttribute("y", place.Y.ToString());
 				elem.SetAttribute("sprite", place.Element.Sprite);
