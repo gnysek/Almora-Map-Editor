@@ -278,7 +278,7 @@ namespace MapEditor.Components
 							//double newRotation = (Manager.Project.SelectedInstance.Rotation + pointDistance(Manager.Project.SelectedInstance.XCenter, Manager.Project.SelectedInstance.YCenter, _mx, _my)) % 360;
 
 							int newRotation = MathMethods.AngleDifference(MathMethods.PointDirection(p.X, p.Y, _mx, _my), _rotateStart);
-							_rotateCurrent = (p.Rotation + newRotation) % 360;
+							_rotateCurrent = (p.Rotation + newRotation + 360) % 360;
 
 							//Manager.MainWindow.statusLabelMousePos.Text = newRotation.ToString();
 
@@ -538,6 +538,8 @@ namespace MapEditor.Components
 							Manager.MainWindow.statusLabelMousePos.Text = _rotateStart.ToString();
 						}
 					}
+
+					Manager.MainWindow.brushPlaceableUpdatePositionAndRotation();
 				}
 			}
 		}
@@ -623,6 +625,8 @@ namespace MapEditor.Components
 					}
 					break;
 			}
+
+			Manager.MainWindow.brushPlaceableUpdatePositionAndRotation();
 
 			// Force redraw
 			Invalidate();

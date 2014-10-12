@@ -18,10 +18,22 @@ namespace MapEditor.Common
 
 	public class GMSpriteData
 	{
+		public const string undefinedSprite = "<undefined>";
 		public GMItem owner = null;
 		public string firstFramePath = null;
 		public int offsetX = 0;
 		public int offsetY = 0;
+
+		public string Name
+		{
+			get { return owner.Name; }
+		}
+	}
+
+	public class GMObjectData
+	{
+		public GMItem owner = null;
+		public GMSpriteData sprite = null;
 
 		public string Name
 		{
@@ -38,7 +50,7 @@ namespace MapEditor.Common
 	{
 		public bool isGroup = false;
 		public GMItemUsage used = GMItemUsage.unused;
-		public string Name = "unknown";
+		public string Name = GMSpriteData.undefinedSprite;
 		public GMItemType ResourceType = GMItemType.Group;
 		public List<GMItem> subitems = null;
 		//private GMSpriteData _spd = null;
@@ -94,15 +106,36 @@ namespace MapEditor.Common
 				if (node != null)
 				{
 					fnp = Manager.Project.ProjectSource + "\\sprites\\" + node.InnerText;
-				}
 
-				Manager.Project.GMXSprites.Add(new GMSpriteData()
+
+					Manager.Project.GMXSprites.Add(new GMSpriteData()
+					{
+						offsetX = int.Parse(XMLfile.SelectSingleNode("sprite/xorig").InnerText),
+						offsetY = int.Parse(XMLfile.SelectSingleNode("sprite/yorigin").InnerText),
+						firstFramePath = fnp,
+						owner = this
+					});
+				}
+			}
+
+			if (ResourceType == GMItemType.Object)
+			{
+				XmlDocument XMLfile = new XmlDocument();
+				XMLfile.Load(Manager.Project.ProjectSource + "\\objects\\" + Name + ".object.gmx");
+
+				XmlNode node = XMLfile.SelectSingleNode("object/spriteName");
+
+				string spriteName = "";
+				if (node != null)
 				{
-					offsetX = int.Parse(XMLfile.SelectSingleNode("sprite/xorig").InnerText),
-					offsetY = int.Parse(XMLfile.SelectSingleNode("sprite/yorigin").InnerText),
-					firstFramePath = fnp,
-					owner = this
-				});
+					spriteName = node.InnerText;
+
+					Manager.Project.GMXObjects.Add(new GMObjectData()
+					{
+						owner = this,
+						sprite = Manager.Project.GMXSprites.Find(item => item.Name == spriteName)
+					});
+				}
 			}
 		}
 

@@ -14,6 +14,7 @@ namespace MapEditor.Forms
         public AboutWindow()
         {
             InitializeComponent();
+			lblVersion.Text = "version " + Application.ProductVersion.ToString();
         }
     }
 }
