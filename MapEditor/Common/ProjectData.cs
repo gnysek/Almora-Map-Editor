@@ -182,7 +182,7 @@ namespace MapEditor.Common
 			{
 				file.Save(ProjectSource + "\\" + ProjectFilename);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				return false;
 			}
@@ -203,7 +203,7 @@ namespace MapEditor.Common
 			{
 				return n.SelectSingleNode(nodeName).InnerText;
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				return defaultValue;
 			}
@@ -215,7 +215,7 @@ namespace MapEditor.Common
 			{
 				int.TryParse(n.SelectSingleNode(nodeName).InnerText, out defaultValue);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 
 			}
@@ -229,7 +229,7 @@ namespace MapEditor.Common
 			{
 				return (n.SelectSingleNode(nodeName).InnerText == "1") ? true : false;
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				return defaultValue;
 			}
@@ -334,6 +334,7 @@ namespace MapEditor.Common
 			regenerateRoomList();
 			regenerateTextureList();
 			regenerateLayerList();
+			regenerateBrushList();
 		}
 
 		private void _readAMERoom(MapRoom room, string path)
@@ -431,6 +432,32 @@ namespace MapEditor.Common
 			BrushGroups = new ObservableCollection<BrushGroup>();
 			BrushGroup defaultBrushGroup = new BrushGroup() { GroupName = "Default", isDefault = true };
 			BrushGroups.Add(defaultBrushGroup);
+
+			//List<string> objects = Manager.Project.renderItemsList("objects");
+			foreach (GMObjectData obj in GMXObjects)
+			{
+				PlaceableElement el = new PlaceableElement()
+				{
+					Name = "std_" + obj.Name,
+					Sprite = (obj.sprite != null) ? obj.sprite.Name : GMSpriteData.undefinedSprite,
+					Mask = "",
+					Depth = 0,
+					ShadowSize = 0,
+					Solid = false,
+					Wind = false,
+					MultiDraw = false,
+					Shadow = false,
+					Visible = false,
+					Parent = "",
+					useDefaultObjectDepth = false,
+					useDefaultObjectMask = false,
+					useDefaultObjectSolid = false,
+					useDefaultObjectSprite = false,
+					useDefaultObjectVisible = false,
+				};
+
+				PlaceableList.Add(el);
+			}
 		}
 
 		private void _readSubNode(XmlNode node, string nodeName, string nodeElementsName, GMItem main)
@@ -795,6 +822,23 @@ namespace MapEditor.Common
 
 
 		}
+
+		public void regenerateBrushList()
+		{
+			foreach (BrushGroup group in BrushGroups)
+			{
+				ListView l = Manager.MainWindow.brushGroupList;
+				ListViewGroup gr = l.Groups.Add(group.GroupName, group.GroupName);
+				foreach (string name in group.objects)
+				{
+					GMSpriteData sprite = Manager.Project.GMXObjects.Find(item => item.Name == name).sprite;
+					ListViewItem o = new ListViewItem() { Text = name, ImageKey = (sprite == null) ? GMSpriteData.undefinedSprite : sprite.Name };
+					o.Group = gr;
+					l.Items.Add(o);
+				}
+			}
+		}
+
 		#endregion
 
 

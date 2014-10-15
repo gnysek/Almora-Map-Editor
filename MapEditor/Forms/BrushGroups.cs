@@ -18,6 +18,9 @@ namespace MapEditor.Forms
 		public BrushGroups()
 		{
 			InitializeComponent();
+
+			Manager.SetSpacing(objectList, 48, 48);
+
 			brushGroupsObjectTree.ImageList = Manager.MainWindow.imageListFolders;
 			objectList.SmallImageList = objectList.LargeImageList = Manager.MainWindow.imageListObjects;
 			Manager.Project.renderItemsTree(brushGroupsObjectTree, "objects");
