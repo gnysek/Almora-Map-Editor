@@ -18,6 +18,7 @@ namespace MapEditor
 		{
 			InitializeComponent();
 			Manager.MainWindow = this;
+			Manager.SetSpacing(this.brushGroupList, 48, 48);
 		}
 
 		public BrushMode CurrentBrush
@@ -52,10 +53,10 @@ namespace MapEditor
 			{
 				tbSaveProject.Enabled = false;
 				tsOptions.Enabled = tsEditors.Enabled = tsMap.Enabled = false;
-				if (treeViewGMX.Nodes.Count > 0)
+				/*if (treeViewGMX.Nodes.Count > 0)
 				{
 					treeViewGMX.Nodes.Clear();
-				}
+				}*/
 				tsMap.Enabled = false;
 				tabControlMain.Visible = tabControlMain.Enabled = false;
 			}
@@ -93,8 +94,8 @@ namespace MapEditor
 			{
 				if (Manager.newProject(openFileDialog1.FileName))
 				{
-					Manager.Project.renderItemsTree(treeViewGMX);
-					treeViewGMX.Nodes[0].Expand();
+					//Manager.Project.renderItemsTree(treeViewGMX);
+					//treeViewGMX.Nodes[0].Expand();
 					ensureButtonsDisabled();
 				}
 			}
@@ -112,8 +113,8 @@ namespace MapEditor
 				{
 					if (Manager.Project != null)
 					{
-						Manager.Project.renderItemsTree(treeViewGMX);
-						treeViewGMX.Nodes[0].Expand();
+						//Manager.Project.renderItemsTree(treeViewGMX);
+						//treeViewGMX.Nodes[0].Expand();
 					}
 					ensureButtonsDisabled();
 					if (lbRooms.Items.Count > 0)

@@ -10,7 +10,6 @@ namespace MapEditor.Common
 	{
 		public const string SprDefName = "<no sprite>";
 		public const string MaskDefName = "<same as sprite>";
-
 		
 		private GMSpriteData _spriteData = null;
 		public bool useDefaultObjectSprite = true;
@@ -33,6 +32,8 @@ namespace MapEditor.Common
 		
 		public string textureId = null;
 		public string addCode = "";
+
+		public GMObjectData gmobject = null;
 
 		public string Parent
 		{
