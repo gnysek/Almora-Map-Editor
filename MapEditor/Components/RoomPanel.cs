@@ -200,10 +200,10 @@ namespace MapEditor.Components
 							//GraphicsManager.DrawSprite(instance.Element.textureId, instance.XCenter / _zoom, instance.YCenter / _zoom, instance.Rotation, color);
 							GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, instance.Rotation, color);
 
-							if (instance.Element.MultiDraw)
+							/*if (instance.Element.MultiDraw)
 							{
 								GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, instance.Rotation + 90, color);
-							}
+							}*/
 							//GraphicsManager.draw
 						}
 					}

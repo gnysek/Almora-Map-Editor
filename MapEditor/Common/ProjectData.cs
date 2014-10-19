@@ -28,11 +28,12 @@ namespace MapEditor.Common
 		public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
 		//public List<PlaceableInstance> PlacedInstances = new List<PlaceableInstance>();
 		public List<MapRoom> RoomList = new List<MapRoom>();
-		public List<string> RegisteredResources = new List<string>();
+		//public List<string> RegisteredResources = new List<string>();
 		public List<GMSpriteData> GMXSprites = new List<GMSpriteData>();
 		public List<GMObjectData> GMXObjects = new List<GMObjectData>();
 		//public List<string> GMObjects = new List<string>();
 		public ObservableCollection<BrushGroup> BrushGroups = new ObservableCollection<BrushGroup>();
+		public ObservableCollection<MapLayers> RoomLayers = new ObservableCollection<MapLayers>();
 		public GMItem allItems = null;
 		public string defaultPlaceable = "oEnvMain";
 
@@ -88,7 +89,7 @@ namespace MapEditor.Common
 
 		public bool createNewProject(string sourcePath, bool load)
 		{
-			resetUsedRes();
+			//resetUsedRes();
 			ProjectSource = Path.GetDirectoryName(sourcePath);
 
 			Manager.Project = this;
@@ -101,7 +102,7 @@ namespace MapEditor.Common
 				if (Manager.Project != null)
 				{
 					_readAME();
-					_checkForRegisteredRes(allItems.getSubitems());
+					//_checkForRegisteredRes(allItems.getSubitems());
 				}
 			}
 			else
@@ -129,17 +130,17 @@ namespace MapEditor.Common
 			options.AppendChild(_addXmlElement(file, "gmsProjectFile", GmxFilename));
 			options.AppendChild(_addXmlElement(file, "gridEnabled", "0"));
 
-			XmlElement resources = file.CreateElement("resources");
-			foreach (string name in RegisteredResources)
+			//XmlElement resources = file.CreateElement("resources");
+			/*foreach (string name in RegisteredResources)
 			{
 				resources.AppendChild(_addXmlElement(file, "resource", name));
-			}
+			}*/
 
-			XmlElement placeables = file.CreateElement("placeables");
+			/*XmlElement placeables = file.CreateElement("placeables");
 			foreach (PlaceableElement elem in PlaceableList)
 			{
 				placeables.AppendChild(elem.toXml(file));
-			}
+			}*/
 
 			XmlElement rooms = file.CreateElement("rooms");
 			foreach (MapRoom elem in RoomList)
@@ -154,11 +155,21 @@ namespace MapEditor.Common
 				brushes.AppendChild(elem.toXml(file));
 			}
 
+			XmlElement layers = file.CreateElement("layers");
+			foreach (MapLayers layer in RoomLayers)
+			{
+				XmlElement elem = file.CreateElement("layer");
+				elem.SetAttribute("name", layer.LayerName);
+				elem.SetAttribute("depth", layer.LayerDepth.ToString());
+				layers.AppendChild(elem);
+			}
+			
 			assets.AppendChild(options);
-			assets.AppendChild(resources);
-			assets.AppendChild(placeables);
+			//assets.AppendChild(resources);
+			//assets.AppendChild(placeables);
 			assets.AppendChild(rooms);
 			assets.AppendChild(brushes);
+			assets.AppendChild(layers);
 
 			file.AppendChild(comment);
 			file.AppendChild(assets);
@@ -242,12 +253,13 @@ namespace MapEditor.Common
 
 			XmlNode root = XMLfile.SelectSingleNode("assets/resources");
 
-			foreach (XmlNode n in root)
+			/*foreach (XmlNode n in root)
 			{
 				addUsedRes(n.InnerText);
-			}
+			}*/
 
-			try
+			// don't use PlaceableElement definitions anymore, they are converted from Objects now
+			/*try
 			{
 				root = XMLfile.SelectSingleNode("assets/placeables");
 				foreach (XmlNode n in root)
@@ -278,7 +290,7 @@ namespace MapEditor.Common
 			catch
 			{
 
-			}
+			}*/
 
 			// read rooms
 			try
@@ -330,6 +342,17 @@ namespace MapEditor.Common
 				MessageBox.Show("Reading brush node from AME file failed: " + e.Message);
 			}
 
+			// read layers
+			root = XMLfile.SelectSingleNode("assets/layers");
+			foreach (XmlNode n in root)
+			{
+				RoomLayers.Add(new MapLayers()
+				{
+					LayerDepth = int.Parse(n.Attributes["depth"].Value),
+					LayerName = n.Attributes["name"].Value
+				});
+			}
+
 			regenerateEnvDefList();
 			regenerateRoomList();
 			regenerateTextureList();
@@ -347,9 +370,13 @@ namespace MapEditor.Common
 
 			foreach (XmlNode n in root)
 			{
-				foreach (PlaceableElement pl in PlaceableList)
-				{
-					if (pl.Name == n.Attributes["name"].Value)
+				//PlaceableElement pl = PlaceableList.Find(item => item.Name == n.Attributes["name"].Value);
+				PlaceableElement pl = PlaceableList.Find(item => item.Name == n.Attributes["object"].Value);
+
+				//foreach (PlaceableElement pl in PlaceableList)
+				//{
+					//if (pl.Name == n.Attributes["name"].Value)
+					if (pl != null)
 					{
 						PlaceableInstance inst = new PlaceableInstance()
 						{
@@ -361,13 +388,14 @@ namespace MapEditor.Common
 							ID = int.Parse(n.Attributes["id"].Value)
 						};
 						room.addInstance(inst);
-						break;
+						//break;
 					}
-				}
+				//}
 			}
 
+			/// ! moved to main project !
 			// layers
-			root = XMLfile.SelectSingleNode("assets/layers");
+			/*root = XMLfile.SelectSingleNode("assets/layers");
 			foreach (XmlNode n in root)
 			{
 				room.Layers.Add(new MapLayers()
@@ -375,7 +403,7 @@ namespace MapEditor.Common
 					LayerDepth = int.Parse(n.Attributes["depth"].Value),
 					LayerName = n.Attributes["name"].Value
 				});
-			}
+			}*/
 
 			//room.Layers.Sort(MapLayers.SortByLayerDepth);
 		}
@@ -400,8 +428,8 @@ namespace MapEditor.Common
 			string[] resTree = new string[] { "sprites", "backgrounds", "scripts", "objects", "rooms" };
 
 			// none sprite add
-			/*GMItem noneSprite = new GMItem(GMSpriteData.undefinedSprite) { ResourceType = GMItemType.Sprite, isGroup = false };
-			GMXSprites.Add( new GMSpriteData() { offsetX = 0, offsetY = 0, firstFramePath = "", owner = noneSprite });*/
+			GMItem noneSprite = new GMItem(GMSpriteData.undefinedSprite) { ResourceType = GMItemType.Sprite, isGroup = false };
+			GMXSprites.Add( new GMSpriteData() { offsetX = 0, offsetY = 0, firstFramePath = "", owner = noneSprite });
 
 			foreach (string nodeName in resTree)
 			{
@@ -434,29 +462,35 @@ namespace MapEditor.Common
 			BrushGroups.Add(defaultBrushGroup);
 
 			//List<string> objects = Manager.Project.renderItemsList("objects");
+			//addUsedRes(GMSpriteData.undefinedSprite);
+
 			foreach (GMObjectData obj in GMXObjects)
 			{
 				PlaceableElement el = new PlaceableElement()
 				{
-					Name = "std_" + obj.Name,
+					Name = obj.Name,
 					Sprite = (obj.sprite != null) ? obj.sprite.Name : GMSpriteData.undefinedSprite,
-					Mask = "",
-					Depth = 0,
-					ShadowSize = 0,
-					Solid = false,
-					Wind = false,
-					MultiDraw = false,
-					Shadow = false,
-					Visible = false,
+					//Mask = "",
+					//Depth = 0,
+					//ShadowSize = 0,
+					//Solid = false,
+					//Wind = false,
+					//MultiDraw = false,
+					//Shadow = false,
+					//Visible = false,
 					Parent = "",
-					useDefaultObjectDepth = false,
-					useDefaultObjectMask = false,
-					useDefaultObjectSolid = false,
-					useDefaultObjectSprite = false,
-					useDefaultObjectVisible = false,
+					//useDefaultObjectDepth = false,
+					//useDefaultObjectMask = false,
+					//useDefaultObjectSolid = false,
+					//useDefaultObjectSprite = false,
+					//useDefaultObjectVisible = false,
 				};
 
 				PlaceableList.Add(el);
+				if (obj.sprite != null)
+				{
+					//addUsedRes(obj.sprite.Name);
+				}
 			}
 		}
 
@@ -617,12 +651,12 @@ namespace MapEditor.Common
 			return anyChecked;
 		}
 
-		public void resetUsedRes()
+		/*public void resetUsedRes()
 		{
 			RegisteredResources = new List<string>();
-		}
+		}*/
 
-		public void addUsedRes(string name)
+		/*public void addUsedRes(string name)
 		{
 			if (RegisteredResources == null)
 			{
@@ -636,9 +670,9 @@ namespace MapEditor.Common
 			//    GraphicsManager.LoadTexture(new Bitmap(spritePath), RegisteredResources.Count);
 			//}
 			RegisteredResources.Add(name);
-		}
+		}*/
 
-		public void checkForRegisteredRes()
+		/*public void checkForRegisteredRes()
 		{
 			_checkForRegisteredRes(allItems.getSubitems());
 		}
@@ -660,7 +694,7 @@ namespace MapEditor.Common
 					else { item.used = (item.used == GMItemUsage.used) ? GMItemUsage.disposed : GMItemUsage.unused; }
 				}
 			}
-		}
+		}*/
 
 		#region ENVinstances
 		public void addEnvDef(string name)
@@ -711,22 +745,25 @@ namespace MapEditor.Common
 
 				//GraphicsManager.DeleteTextures();
 
-				foreach (GMSpriteData sp in this.GMXSprites)
+				/*foreach (GMSpriteData sp in this.GMXSprites)
 				{
 					if (sp.owner.used == GMItemUsage.disposed) GraphicsManager.DeleteTexture(sp.Name);
-				}
+				}*/
 
 				int i = 0;
 				/*Manager.MainWindow.tsProgress.Maximum = RegisteredResources.Count;
 				Manager.MainWindow.tsProgress.Value = 0;
 				Manager.MainWindow.tsProgress.Visible = true;*/
 
-				form.loadingBar.Maximum = RegisteredResources.Count;
+				form.loadingBar.Maximum = this.GMXObjects.Count;// RegisteredResources.Count;
 				form.loadingBar.Value = 0;
 
-				foreach (string file in RegisteredResources)
+				//foreach (string file in RegisteredResources)
+				List<string> objects = renderItemsList("objects");
+				foreach (string gmobject in objects)
 				{
-					GMSpriteData itm = this.GMXSprites.Find(item => item.Name == file);
+					//GMSpriteData itm = this.GMXSprites.Find(item => item.Name == file);
+					GMSpriteData itm = this.GMXObjects.Find(item => item.Name == gmobject).sprite;
 
 					if (itm != null)
 					{
@@ -737,11 +774,23 @@ namespace MapEditor.Common
 							{
 								GraphicsManager.LoadTexture(itm.Name, new Bitmap(itm.firstFramePath));
 							}
+							else if (itm.Name == GMSpriteData.undefinedSprite)
+							{
+								GraphicsManager.LoadTexture(itm.Name, new Bitmap(Manager.MainWindow.imageListObjects.Images[GMSpriteData.undefinedSprite]));
+							}
+						}
+
+						if (!Manager.MainWindow.imageListObjects.Images.ContainsKey(itm.Name))
+						{
+							if (File.Exists(itm.firstFramePath))
+							{
+								Manager.MainWindow.imageListObjects.Images.Add(itm.Name, new Bitmap(itm.firstFramePath));
+							}
 						}
 					}
 					//Manager.MainWindow.tsProgress.Value++;
 					form.loadingBar.Value++;
-					if (i % 10 == 0 || i == RegisteredResources.Count - 1)
+					if (i % 10 == 0 || i == this.GMXObjects.Count - 1/*RegisteredResources.Count - 1*/)
 					{
 						form.Refresh();
 					}
@@ -757,7 +806,7 @@ namespace MapEditor.Common
 				form.Close();
 			}
 
-			using (LoadingForm form = new LoadingForm())
+			/*using (LoadingForm form = new LoadingForm())
 			{
 				form.Show();
 
@@ -772,25 +821,20 @@ namespace MapEditor.Common
 					{
 						// prevent adding duplicates
 						//if (!GraphicsManager.Sprites.ContainsKey(itm.Name))
-						if (!Manager.MainWindow.imageListObjects.Images.ContainsKey(itm.Name))
-						{
-							if (File.Exists(itm.firstFramePath))
-							{
-								Manager.MainWindow.imageListObjects.Images.Add(itm.Name, new Bitmap(itm.firstFramePath));
-							}
-						}
+						
 					}
 				}
 
 				form.Close();
-			}
+			}*/
 		}
 
 		public void regenerateLayerList()
 		{
 			if (Room == null) return;
 
-			Room.Layers.Sort(MapLayers.SortByLayerDepth);
+			//Room.Layers.Sort(MapLayers.SortByLayerDepth);
+			RoomLayers = new ObservableCollection<MapLayers>(RoomLayers.OrderByDescending(x => x.LayerDepth));
 
 			ToolStripComboBox tb = Manager.MainWindow.tbLayerDropDown;
 			ListBoxEx lb = Manager.MainWindow.lbLayers;

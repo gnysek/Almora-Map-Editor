@@ -198,14 +198,15 @@ namespace MapEditor.Components
 			}
 			else if (_listBoxType == ListType.Placeables)
 			{
-				if (Manager.Project.PlaceableList[itemNumber].useDefaultObjectMask)
-				{
-					addText += "/skip mask/";
-				}
-				else
-				{
-					addText += (Manager.Project.PlaceableList[itemNumber].Mask == "") ? "-" : ("Mask: " + Manager.Project.PlaceableList[itemNumber].Mask);
-				}
+				addText += Manager.Project.PlaceableList[itemNumber].Sprite;
+				//if (Manager.Project.PlaceableList[itemNumber].useDefaultObjectMask)
+				//{
+				//    addText += "/skip mask/";
+				//}
+				//else
+				//{
+				//    addText += (Manager.Project.PlaceableList[itemNumber].Mask == "") ? "-" : ("Mask: " + Manager.Project.PlaceableList[itemNumber].Mask);
+				//}
 			}
 
 			_paintItem(text, args, item);

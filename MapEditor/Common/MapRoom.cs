@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.IO;
 using System.Windows.Forms;
+using System.Collections.ObjectModel;
 
 namespace MapEditor.Common
 {
@@ -48,13 +49,18 @@ namespace MapEditor.Common
 		public int Height;
 		public List<PlaceableInstance> Instances = new List<PlaceableInstance>();
 		public string LinkedWith = null;
-		public List<MapLayers> Layers = new List<MapLayers>();
+		//public List<MapLayers> Layers = new List<MapLayers>();
 		public int LastUsedLayer = -1;
 		public int InternalCounter = 0;
 
 		public MapLayers ActiveLayer
 		{
 			get { return null; }
+		}
+
+		public ObservableCollection<MapLayers> Layers
+		{
+			get { return Manager.Project.RoomLayers; }
 		}
 
 		public int InstanceCount
@@ -116,17 +122,17 @@ namespace MapEditor.Common
 			foreach (PlaceableInstance place in Instances)
 			{
 				string code = "";
-				if (place.Element.useDefaultObjectSprite == false) code += "sprite_index = " + place.Element.Sprite + ";";
-				if (place.Element.useDefaultObjectDepth == false) code += " depth = " + place.Element.Depth.ToString() + ";";
-				if (place.Element.Solid && place.Element.useDefaultObjectSolid == false) code += " solid = true;";
-				if (place.Element.Shadow) code += " drop_shadow = true; shadow = " + place.Element.ShadowSize.ToString() + ";";
-				if (place.Element.MultiDraw) code += " multi_draw = true;";
-				if (place.Element.Wind) code += " wind = true; scEnvWindSet();";
-				if (place.Element.Visible == false && place.Element.useDefaultObjectVisible == false) code += " visible = false;";
-				if (place.Element.useDefaultObjectMask == false) code += " mask_index = " + ((place.Element.Mask == "") ? place.Element.Sprite : place.Element.Mask) + ";";
+				//if (place.Element.useDefaultObjectSprite == false) code += "sprite_index = " + place.Element.Sprite + ";";
+				//if (place.Element.useDefaultObjectDepth == false) code += " depth = " + place.Element.Depth.ToString() + ";";
+				//if (place.Element.Solid && place.Element.useDefaultObjectSolid == false) code += " solid = true;";
+				//if (place.Element.Shadow) code += " drop_shadow = true; shadow = " + place.Element.ShadowSize.ToString() + ";";
+				//if (place.Element.MultiDraw) code += " multi_draw = true;";
+				//if (place.Element.Wind) code += " wind = true; scEnvWindSet();";
+				//if (place.Element.Visible == false && place.Element.useDefaultObjectVisible == false) code += " visible = false;";
+				//if (place.Element.useDefaultObjectMask == false) code += " mask_index = " + ((place.Element.Mask == "") ? place.Element.Sprite : place.Element.Mask) + ";";
 
 				XmlElement elem = file.CreateElement("instance");
-				elem.SetAttribute("objName", place.Element.Parent); // returns default or overriden
+				elem.SetAttribute("objName", place.Element.Name); // returns default or overriden
 				elem.SetAttribute("x", place.X.ToString());
 				elem.SetAttribute("y", place.Y.ToString());
 				elem.SetAttribute("name", "inst_AME" + counter.ToString("X"));
@@ -168,7 +174,7 @@ namespace MapEditor.Common
 			{
 				XmlElement elem = file.CreateElement("instance");
 				elem.SetAttribute("name", place.Element.Name);
-				elem.SetAttribute("object", place.Element.Parent);
+				elem.SetAttribute("object", place.Element.Name);
 				elem.SetAttribute("x", place.X.ToString());
 				elem.SetAttribute("y", place.Y.ToString());
 				elem.SetAttribute("sprite", place.Element.Sprite);
@@ -186,7 +192,7 @@ namespace MapEditor.Common
 			}
 			assets.AppendChild(instances);
 
-			XmlElement layers = file.CreateElement("layers");
+			/*XmlElement layers = file.CreateElement("layers");
 			foreach (MapLayers layer in Layers)
 			{
 				XmlElement elem = file.CreateElement("layer");
@@ -194,7 +200,7 @@ namespace MapEditor.Common
 				elem.SetAttribute("depth", layer.LayerDepth.ToString());
 				layers.AppendChild(elem);
 			}
-			assets.AppendChild(layers);
+			assets.AppendChild(layers);*/
 
 			// everything added to asseds, now compile rest of file
 
