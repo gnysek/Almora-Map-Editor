@@ -8,30 +8,30 @@ namespace MapEditor.Common
 {
 	public class PlaceableElement
 	{
-		public const string SprDefName = "<no sprite>";
-		public const string MaskDefName = "<same as sprite>";
+		public const string SprDefName = GMSpriteData.undefinedSprite;
+		//public const string MaskDefName = "<same as sprite>";
 		
 		private GMSpriteData _spriteData = null;
-		public bool useDefaultObjectSprite = true;
-		private string _mask = "";
-		public bool useDefaultObjectMask = true;
+		//public bool useDefaultObjectSprite = true;
+		//private string _mask = "";
+		//public bool useDefaultObjectMask = true;
 		private string _parent = "";
 
 		public string Name = "undefined";
-		public bool Visible = true;
-		public bool useDefaultObjectVisible = true;
-		public bool Solid = false;
-		public bool useDefaultObjectSolid = true;
-		public int Depth = 0;
-		public bool useDefaultObjectDepth = true;
+		//public bool Visible = true;
+		//public bool useDefaultObjectVisible = true;
+		//public bool Solid = false;
+		//public bool useDefaultObjectSolid = true;
+		//public int Depth = 0;
+		//public bool useDefaultObjectDepth = true;
 
-		public bool Wind = false;
-		public bool MultiDraw = false;
-		public bool Shadow = false;
-		public int ShadowSize = 0;
+		//public bool Wind = false;
+		//public bool MultiDraw = false;
+		//public bool Shadow = false;
+		//public int ShadowSize = 0;
 		
 		public string textureId = null;
-		public string addCode = "";
+		//public string addCode = "";
 
 		public GMObjectData gmobject = null;
 
@@ -64,11 +64,11 @@ namespace MapEditor.Common
 			get { return (_spriteData == null) ? 0 : this._spriteData.offsetY; }
 		}
 
-		public string Mask
+		/*public string Mask
 		{
 			get { return (this._mask == PlaceableElement.MaskDefName) ? "" : this._mask; }
 			set { this._mask = (value == PlaceableElement.MaskDefName) ? "" : value; }
-		}
+		}*/
 
 		private XmlElement createChild(XmlDocument doc, string name, string value) {
 			XmlElement e = doc.CreateElement(name);
@@ -91,50 +91,50 @@ namespace MapEditor.Common
 			//XmlElement sprDef = doc.CreateElement("defsprite");
 			//sprDef.InnerText = (useDefaultObjectSprite) ? "1" : "0";
 
-			XmlElement mask = doc.CreateElement("mask");
-			mask.InnerText = Mask;
+			//XmlElement mask = doc.CreateElement("mask");
+			//mask.InnerText = Mask;
 
 			//XmlElement maskDef = doc.CreateElement("defmask");
 			//maskDef.InnerText = (useDefaultObjectSprite) ? "1" : "0";
 
-			XmlElement depth = doc.CreateElement("depth");
-			depth.InnerText = Depth.ToString();
+			//XmlElement depth = doc.CreateElement("depth");
+			//depth.InnerText = Depth.ToString();
 
-			XmlElement ss = doc.CreateElement("shadowsize");
-			ss.InnerText = ShadowSize.ToString();
+			//XmlElement ss = doc.CreateElement("shadowsize");
+			//ss.InnerText = ShadowSize.ToString();
 
-			XmlElement solid = doc.CreateElement("solid");
-			solid.InnerText = (Solid) ? "1" : "0";
+			//XmlElement solid = doc.CreateElement("solid");
+			//solid.InnerText = (Solid) ? "1" : "0";
 
-			XmlElement wind = doc.CreateElement("wind");
-			wind.InnerText = (Wind) ? "1" : "0";
+			//XmlElement wind = doc.CreateElement("wind");
+			//wind.InnerText = (Wind) ? "1" : "0";
 
-			XmlElement multidraw = doc.CreateElement("multidraw");
-			multidraw.InnerText = (MultiDraw) ? "1" : "0";
+			//XmlElement multidraw = doc.CreateElement("multidraw");
+			//multidraw.InnerText = (MultiDraw) ? "1" : "0";
 
-			XmlElement shadow = doc.CreateElement("shadow");
-			shadow.InnerText = (Shadow) ? "1" : "0";
+			//XmlElement shadow = doc.CreateElement("shadow");
+			//shadow.InnerText = (Shadow) ? "1" : "0";
 
-			XmlElement visible = doc.CreateElement("visible");
-			visible.InnerText = (Visible) ? "1" : "0";
+			//XmlElement visible = doc.CreateElement("visible");
+			//visible.InnerText = (Visible) ? "1" : "0";
 
 			XmlElement parent = doc.CreateElement("parent");
 			parent.InnerText = (hasDefaultParent()) ? "" : Parent;
 
 			self.AppendChild(sprite);
-			self.AppendChild(createChild(doc, "defsprite", useDefaultObjectSprite));
-			self.AppendChild(mask);
-			self.AppendChild(createChild(doc, "defmask", useDefaultObjectMask));
-			self.AppendChild(depth);
-			self.AppendChild(createChild(doc, "defdepth", useDefaultObjectDepth));
-			self.AppendChild(ss);
-			self.AppendChild(solid);
-			self.AppendChild(createChild(doc, "defsolid", useDefaultObjectSolid));
-			self.AppendChild(wind);
-			self.AppendChild(multidraw);
-			self.AppendChild(shadow);
-			self.AppendChild(visible);
-			self.AppendChild(createChild(doc, "defvisible", useDefaultObjectVisible));
+			//self.AppendChild(createChild(doc, "defsprite", useDefaultObjectSprite));
+			//self.AppendChild(mask);
+			//self.AppendChild(createChild(doc, "defmask", useDefaultObjectMask));
+			//self.AppendChild(depth);
+			//self.AppendChild(createChild(doc, "defdepth", useDefaultObjectDepth));
+			//self.AppendChild(ss);
+			//self.AppendChild(solid);
+			//self.AppendChild(createChild(doc, "defsolid", useDefaultObjectSolid));
+			//self.AppendChild(wind);
+			//self.AppendChild(multidraw);
+			//self.AppendChild(shadow);
+			//self.AppendChild(visible);
+			//self.AppendChild(createChild(doc, "defvisible", useDefaultObjectVisible));
 			self.AppendChild(parent);
 			self.SetAttribute("name", Name);
 

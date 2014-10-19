@@ -223,7 +223,7 @@ namespace MapEditor
 			}
 		}
 
-		private void addOrEditPlaceable(bool edit)
+		/*private void addOrEditPlaceable(bool edit)
 		{
 			string defName = "Undefined Placeable " + lbPlaceables.Items.Count.ToString();
 
@@ -264,7 +264,7 @@ namespace MapEditor
 			}
 
 			statusLabelPlaceables.Text = Manager.Project.PlaceableList.Count.ToString();
-		}
+		}*/
 
 		private void addOrEditLayer(bool edit)
 		{
@@ -323,7 +323,7 @@ namespace MapEditor
 				}
 				else if (tabControlRooms.SelectedTab == tpDefinitions)
 				{
-					addOrEditPlaceable(false);
+					//addOrEditPlaceable(false);
 				}
 			}
 			else if (tabControlMain.SelectedTab == tabRooms)
@@ -370,7 +370,7 @@ namespace MapEditor
 					switch (tabControlRooms.SelectedIndex)
 					{
 						case 0: addOrEditRoom(true); break;
-						case 1: addOrEditPlaceable(true); break;
+						//case 1: addOrEditPlaceable(true); break;
 					}
 					break;
 				case 2:

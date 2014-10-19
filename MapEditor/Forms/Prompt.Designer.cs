@@ -31,7 +31,7 @@
 			this.description = new System.Windows.Forms.Label();
 			this.value = new System.Windows.Forms.TextBox();
 			this.OkButton = new System.Windows.Forms.Button();
-			this.CancelButton = new System.Windows.Forms.Button();
+			this.CancelActionButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// description
@@ -61,23 +61,23 @@
 			this.OkButton.UseVisualStyleBackColor = true;
 			this.OkButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
-			// CancelButton
+			// CancelActionButton
 			// 
-			this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.CancelButton.Location = new System.Drawing.Point(116, 51);
-			this.CancelButton.Name = "CancelButton";
-			this.CancelButton.Size = new System.Drawing.Size(75, 23);
-			this.CancelButton.TabIndex = 3;
-			this.CancelButton.Text = "Cancel";
-			this.CancelButton.UseVisualStyleBackColor = true;
-			this.CancelButton.Click += new System.EventHandler(this.OkButton_Click);
+			this.CancelActionButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.CancelActionButton.Location = new System.Drawing.Point(116, 51);
+			this.CancelActionButton.Name = "CancelActionButton";
+			this.CancelActionButton.Size = new System.Drawing.Size(75, 23);
+			this.CancelActionButton.TabIndex = 3;
+			this.CancelActionButton.Text = "Cancel";
+			this.CancelActionButton.UseVisualStyleBackColor = true;
+			this.CancelActionButton.Click += new System.EventHandler(this.OkButton_Click);
 			// 
 			// Prompt
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(284, 88);
-			this.Controls.Add(this.CancelButton);
+			this.Controls.Add(this.CancelActionButton);
 			this.Controls.Add(this.OkButton);
 			this.Controls.Add(this.value);
 			this.Controls.Add(this.description);
@@ -95,7 +95,7 @@
 
 		public System.Windows.Forms.Label description;
 		private System.Windows.Forms.Button OkButton;
-		private System.Windows.Forms.Button CancelButton;
+		private System.Windows.Forms.Button CancelActionButton;
 		public System.Windows.Forms.TextBox value;
 	}
 }
