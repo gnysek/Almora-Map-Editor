@@ -68,6 +68,11 @@ namespace MapEditor.Components
 			get { return this._zoom; }
 		}
 
+		public void addToolbarLog(string txt)
+		{
+			Manager.MainWindow.statusLabelMousePos.Text += " " + txt;
+		}
+
 		public bool GridEnabled = true;
 
 		#region drawGrid
@@ -125,13 +130,14 @@ namespace MapEditor.Components
 			// draw selected instance
 			if (Manager.Project.SelectedInstance != null)
 			{
-				PlaceableInstance instance = Manager.Project.SelectedInstance;
-				//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
-				GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, instance.Rotation, 2);
-				//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Red, true);
-				GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Red, instance.Rotation, 2);
-				//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
-				GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, instance.Rotation, 2);
+				//    PlaceableInstance instance = Manager.Project.SelectedInstance;
+				//    //GraphicsManager.DrawRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
+				//    GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, instance.Rotation, 2);
+				//    //GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Red, true);
+				//    GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Red, instance.Rotation, 2);
+				//    //GraphicsManager.DrawRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
+				//    GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, instance.Rotation, 2);
+				this.drawSelectedInstance(Manager.Project.SelectedInstance);
 			}
 
 			// ???
@@ -139,17 +145,62 @@ namespace MapEditor.Components
 			{
 				if (Manager.Project.HighlightedInstance != null && Manager.Project.HighlightedInstance != Manager.Project.SelectedInstance)
 				{
-					PlaceableInstance instance = Manager.Project.HighlightedInstance;
+					//PlaceableInstance instance = Manager.Project.HighlightedInstance;
 					//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.FromArgb(30, Color.Yellow), false);
 					//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), Color.Black, true);
 					//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), Color.Yellow, true);
 					//GraphicsManager.DrawRectangle(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), Color.Black, true);
-					GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), instance.Rotation, Color.FromArgb(30, Color.Yellow), false);
-					GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStart - 1, instance.YStart - 1, instance.Width + 2, instance.Height + 2), instance.Rotation, Color.Black, true);
-					GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStart, instance.YStart, instance.Width, instance.Height), instance.Rotation, Color.Yellow, true);
-					GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStart + 1, instance.YStart + 1, instance.Width - 2, instance.Height - 2), instance.Rotation, Color.Black, true);
+					this.drawHighlightedInstance(Manager.Project.HighlightedInstance);
 				}
 			}
+		}
+
+		private void drawHighlightedInstance(PlaceableInstance instance)
+		{
+			GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStartZoomed, instance.YStartZoomed, instance.WidthZoomed, instance.HeightZoomed), instance.Rotation, Color.FromArgb(30, Color.Yellow), false);
+			GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStartZoomed - 1, instance.YStartZoomed - 1, instance.WidthZoomed + 2, instance.HeightZoomed + 2), instance.Rotation, Color.Black, true);
+			GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStartZoomed, instance.YStartZoomed, instance.WidthZoomed, instance.HeightZoomed), instance.Rotation, Color.Yellow, true);
+			GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStartZoomed + 1, instance.YStartZoomed + 1, instance.WidthZoomed - 2, instance.HeightZoomed - 2), instance.Rotation, Color.Black, true);
+
+			/*if (instance.Rotation != 0)
+			{
+				int rot = instance.Rotation;
+
+				Point rotated = RotatePoint(new Point(_mx, _my), new Point(instance.XCenterZoomed, instance.YCenterZoomed), (double)rot);
+
+				GraphicsManager.DrawRectangle(new Rectangle(rotated.X - 5, rotated.Y - 5, 10, 10), Color.Aqua, false);
+
+				GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStartZoomed, instance.YStartZoomed, instance.WidthZoomed, instance.HeightZoomed), rot, Color.FromArgb(30, Color.Orange), false);
+				GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStartZoomed - 1, instance.YStartZoomed - 1, instance.WidthZoomed + 2, instance.HeightZoomed + 2), rot, Color.Black, true);
+				GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStartZoomed, instance.YStartZoomed, instance.WidthZoomed, instance.HeightZoomed), rot, Color.Orange, true);
+				GraphicsManager.DrawRectangleRotated(new Rectangle(instance.XStartZoomed + 1, instance.YStartZoomed + 1, instance.WidthZoomed - 2, instance.HeightZoomed - 2), rot, Color.Black, true);
+			}*/
+		}
+
+		static Point RotatePoint(Point pointToRotate, Point centerPoint, double angleInDegrees)
+		{
+			double angleInRadians = (angleInDegrees) * (Math.PI / 180);
+			double cosTheta = Math.Cos(angleInRadians);
+			double sinTheta = Math.Sin(angleInRadians);
+			return new Point
+			{
+				X =
+					(int)
+					(cosTheta * (pointToRotate.X - centerPoint.X) -
+					sinTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.X),
+				Y =
+					(int)
+					(sinTheta * (pointToRotate.X - centerPoint.X) +
+					cosTheta * (pointToRotate.Y - centerPoint.Y) + centerPoint.Y)
+			};
+		}
+
+		private void drawSelectedInstance(PlaceableInstance instance)
+		{
+
+			GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStartZoomed - 1, instance.YStartZoomed - 1, instance.WidthZoomed + 2, instance.HeightZoomed + 2), Color.Black, instance.Rotation, 2);
+			GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStartZoomed, instance.YStartZoomed, instance.WidthZoomed, instance.HeightZoomed), Color.Red, instance.Rotation, 2);
+			GraphicsManager.DrawStippledRectangle(new Rectangle(instance.XStartZoomed + 1, instance.YStartZoomed + 1, instance.WidthZoomed - 2, instance.HeightZoomed - 2), Color.Black, instance.Rotation, 2);
 		}
 
 		private Size getCurrentCanvas()
@@ -368,6 +419,8 @@ namespace MapEditor.Components
 
 				// Begin drawing the scene.
 				GraphicsManager.BeginScene();
+
+				// Draw background pattern
 				int sq = 0;
 				int lastStartedFrom = 1;
 				for (int i = 0; i < Math.Min(Manager.Room.Width, this.Width); i += _gridX / 2)
@@ -403,7 +456,7 @@ namespace MapEditor.Components
 
 				if (_drawMousePosition)
 				{
-					drawMouseGrid(new Rectangle(_mouseX, _mouseY, _gridX / _zoom, _gridY / _zoom));
+					drawRectangleAroundMouseOnGrid(new Rectangle(_mouseX, _mouseY, _gridX / _zoom, _gridY / _zoom));
 				}
 
 				// Disable scissor testing.
@@ -434,7 +487,7 @@ namespace MapEditor.Components
 			GraphicsManager.DrawStippledRectangle(rec, c, angle, offset);
 		}
 
-		private void drawMouseGrid(Rectangle rec)
+		private void drawRectangleAroundMouseOnGrid(Rectangle rec)
 		{
 			rec.Width++;
 			rec.Height++;
@@ -651,8 +704,8 @@ namespace MapEditor.Components
 
 			int __mx, __my;
 
-			__mx = Offset.X + e.Location.X;
-			__my = Offset.Y + e.Location.Y;
+			__mx = (Offset.X + e.Location.X);
+			__my = (Offset.Y + e.Location.Y);
 
 			if (__mx != _mx || __my != _my)
 			{
@@ -672,30 +725,39 @@ namespace MapEditor.Components
 					if (Manager.Room.Layers[Manager.MainWindow.tbLayerDropDown.SelectedIndex].LayerDepth != pinstance.Layer)
 						continue;
 
-					double dist = pointDistance(pinstance.X, pinstance.Y, _mx, _my);
+					double dist = pointDistance(pinstance.XCenterZoomed, pinstance.YCenterZoomed, _mx, _my);
+
+					if (dist > 300) continue;
 
 					if (dist < distance)
 					{
-						if (pinstance.XStart <= _mx)
-							if (pinstance.YStart <= _my)
-								if (pinstance.XEnd >= _mx)
-									if (pinstance.YEnd >= _my)
+
+						int _mxr = _mx;
+						int _myr = _my;
+						if (pinstance.Rotation != 0)
+						{
+							Point rotated = RotatePoint(new Point(_mx, _my), new Point(pinstance.XCenterZoomed, pinstance.YCenterZoomed), (double)pinstance.Rotation);
+							_mxr = rotated.X;
+							_myr = rotated.Y;
+						}
+
+
+						if (pinstance.XStartZoomed <= _mxr)
+							if (pinstance.YStartZoomed <= _myr)
+								if (pinstance.XEndZoomed >= _mxr)
+									if (pinstance.YEndZoomed >= _myr)
 									{
 										distance = dist;
 										found = pinstance;
 									}
-						//foundId = counter;
 					}
-					//counter++;
 				}
-				//if (found != null)
-				//{
+
 				if (Manager.Project.HighlightedInstance != found)
 				{
 					redraw = true;
 					Manager.Project.HighlightedInstance = found;
 				}
-				//}
 			}
 
 			if (_drag)
@@ -712,8 +774,10 @@ namespace MapEditor.Components
 			{
 				_mouseX = snap.X;
 				_mouseY = snap.Y;
-				Manager.MainWindow.statusLabelMousePos.Text = "X: " + (_mouseX * _zoom).ToString() + ", Y: " + (_mouseY * _zoom).ToString();
-				Manager.MainWindow.statusLabelMousePos.Text += " / RX:  " + _mx.ToString() + ", RY: " + _my.ToString();
+				Manager.MainWindow.statusLabelMousePos.Text = "X: " + (_mouseX).ToString() + ", Y: " + (_mouseY).ToString();
+				Manager.MainWindow.statusLabelMousePos.Text += " / RX:  " + _mx.ToString() + ", RY: " + _my.ToString()
+				 + " / ZOOM" + this._zoom.ToString();
+				Manager.MainWindow.statusStrip1.Refresh();
 				Invalidate();
 			}
 
