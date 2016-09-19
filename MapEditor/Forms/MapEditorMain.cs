@@ -9,6 +9,7 @@ using MapEditor.Components;
 using MapEditor.Forms;
 using MapEditor.Common;
 using MapEditor.Graphics;
+using System.IO;
 
 namespace MapEditor
 {
@@ -19,7 +20,45 @@ namespace MapEditor
 			InitializeComponent();
 			Manager.MainWindow = this;
 			Manager.SetSpacing(this.brushGroupList, 48, 48);
+            Manager.setup();
 		}
+
+        private void MapEditorMain_Load(object sender, EventArgs e)
+        {
+            ensureButtonsDisabled();
+
+            _setRecentItems();
+
+            foreach (string file in Manager.recentFiles)
+            {
+                if (File.Exists(file))
+                {
+                    _openSelectedProject(file);
+                    break;
+                }
+            }
+        }
+
+        private void _setRecentItems()
+        {
+            int i = fileToolStripMenuItem.DropDownItems.IndexOf(tmRecent);
+            for (int j = fileToolStripMenuItem.DropDownItems.Count - 1; j > i; j--)
+            {
+                fileToolStripMenuItem.DropDownItems.RemoveAt(j);
+            }
+
+            foreach (string path in Manager.recentFiles)
+            {
+                ToolStripItem itm = fileToolStripMenuItem.DropDownItems.Add(path);
+                itm.Click += _loadRecentItem;
+            }
+        }
+
+        private void _loadRecentItem(object sender, object e)
+        {
+            ToolStripItem t = sender as ToolStripItem;
+            _openSelectedProject(t.Text);
+        }
 
 		public BrushMode CurrentBrush
 		{
@@ -109,7 +148,12 @@ namespace MapEditor
 			DialogResult result = openFileDialog1.ShowDialog();
 			if (result == DialogResult.OK)
 			{
-				if (Manager.loadProject(openFileDialog1.FileName))
+				_openSelectedProject(openFileDialog1.FileName);
+			}
+		}
+
+        private void _openSelectedProject(string filename) {
+            if (Manager.loadProject(filename))
 				{
 					if (Manager.Project != null)
 					{
@@ -125,13 +169,7 @@ namespace MapEditor
 
 					//GraphicsManager.LoadTexture(new Bitmap(Manager.Project.ProjectSource + "\\sprites\\images\\sprPlant2_0.png"), 0);
 				}
-			}
-		}
-
-		private void MapEditorMain_Load(object sender, EventArgs e)
-		{
-			ensureButtonsDisabled();
-		}
+        }
 
 		private void tbUsedResList_Click(object sender, EventArgs e)
 		{
