@@ -118,18 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="richText.Text" xml:space="preserve">
-    <value>Almora Map Editor
+    <value>Awesome Map Editor
 RPG map editor for GM:Studio
-© 2012 - 2013 Gear-Studio
+© 2012 - 2017 Gear-Studio
 © Piotr 'gnysek' Gnys
 
-Created using MS Visual C# 2010 Express.
-Program cannot be sold, it's freeware to use.
+Created using MS Visual C# 2012 Express.
+FREE TO USE. Cannot be sold.
 __________________________________________________
 
 Special Thanks &amp; Licences:
 
-GM:Studio is craeted and managed by YoYoGames Ltd.
+GM:Studio is created and managed by YoYoGames Ltd.
 http://yoyogames.com/gamemaker/studio
 
 Icons are Copyright © Yusuke Kamiyamane.
@@ -146,8 +146,8 @@ __________________________________________________
 Important Information:
 
 Gear-Studio take no reponsibility for breaking your project.
-Always remember to create backup or use source code to rollback any changes.
-AME can read your project and save GML files into it, by using this software you agree that it cna modify your project.
+ALWAYS MAKE A BACKUP OF YOUR PROJECT, or use source code to rollback any changes.
+AME can read your project and save GML files into it, by using this software you agree that it can modify your project.
 We cannot give you guarranty that it will work with every GM:Studio version and it will be always compatible with all of them.
 It should works with GM:Studio at least v.1.3.x or newer.
 
