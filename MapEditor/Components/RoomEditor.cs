@@ -39,15 +39,15 @@ namespace MapEditor.Components
 
 			if (Manager.Room == null) return;
 
-			if (Manager.Room.Width - _rPanel/*.ClientSize*/.Width > 0)
+			if (Manager.Room.width - _rPanel/*.ClientSize*/.Width > 0)
 			{
 				tableLayoutPanel1.RowStyles[1].Height = 17;
-				horizontalScb.Maximum = Manager.Room.Width - _rPanel.ClientSize.Width - 1;
+				horizontalScb.Maximum = Manager.Room.width - _rPanel.ClientSize.Width - 1;
 			}
-			if (Manager.Room.Height - _rPanel.ClientSize.Height > 0)
+			if (Manager.Room.height - _rPanel.ClientSize.Height > 0)
 			{
 				tableLayoutPanel1.ColumnStyles[1].Width = 17;
-				verticalScb.Maximum = Manager.Room.Height - _rPanel.ClientSize.Height - 1;
+				verticalScb.Maximum = Manager.Room.height - _rPanel.ClientSize.Height - 1;
 			}
 		}
 

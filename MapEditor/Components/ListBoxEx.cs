@@ -184,17 +184,17 @@ namespace MapEditor.Components
 
 			if (_listBoxType == ListType.PlaceableInstances && Manager.Room != null)
 			{
-				addText += "X: " + Manager.Room.Instances[itemNumber].X.ToString();
-				addText += ", Y: " + Manager.Room.Instances[itemNumber].X.ToString();
-				addText += ", ID: " + Manager.Room.Instances[itemNumber].ID.ToString();
+				addText += "X: " + Manager.Room.instances[itemNumber].x.ToString();
+				addText += ", Y: " + Manager.Room.instances[itemNumber].x.ToString();
+				addText += ", ID: " + Manager.Room.instances[itemNumber].gms_id.ToString();
 			}
 			else if (_listBoxType == ListType.Layers)
 			{
-				addText += "Depth: " + Manager.Room.Layers[itemNumber].LayerDepth.ToString();
+				//addText += "Depth: " + Manager.Room.Layers[itemNumber].LayerDepth.ToString();
 			}
 			else if (_listBoxType == ListType.Rooms)
 			{
-				addText += "Instances: " + Manager.Project.RoomList[itemNumber].InstanceCount.ToString();
+				addText += "Instances: " + Manager.Project.GMRooms[itemNumber].instances.Count.ToString();
 			}
 			else if (_listBoxType == ListType.Placeables)
 			{

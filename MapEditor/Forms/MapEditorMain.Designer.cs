@@ -126,6 +126,7 @@ namespace MapEditor
             this.tmSaveProjectAs = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmRecent = new System.Windows.Forms.ToolStripSeparator();
             this.tmEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.roomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enviromentPlaceablesItemsListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -147,7 +148,6 @@ namespace MapEditor
             this.lbPlaceables = new MapEditor.Components.ListBoxEx();
             this.lbInstances = new MapEditor.Components.ListBoxEx();
             this.lbLayers = new MapEditor.Components.ListBoxEx();
-            this.tmRecent = new System.Windows.Forms.ToolStripSeparator();
             this.tableLayoutPanel1.SuspendLayout();
             this.tsMap.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -227,7 +227,7 @@ namespace MapEditor
             this.tbSelectMap.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbSelectMap.Name = "tbSelectMap";
             this.tbSelectMap.Size = new System.Drawing.Size(23, 20);
-            this.tbSelectMap.Text = "Select";
+            this.tbSelectMap.Text = "Select (Q)";
             this.tbSelectMap.Click += new System.EventHandler(this.tbSelectMap_Click);
             // 
             // tbPaintMap
@@ -237,7 +237,7 @@ namespace MapEditor
             this.tbPaintMap.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbPaintMap.Name = "tbPaintMap";
             this.tbPaintMap.Size = new System.Drawing.Size(23, 20);
-            this.tbPaintMap.Text = "Paint";
+            this.tbPaintMap.Text = "Place (W)";
             this.tbPaintMap.Click += new System.EventHandler(this.tbPaintMap_Click);
             // 
             // tbMoveMap
@@ -247,7 +247,7 @@ namespace MapEditor
             this.tbMoveMap.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbMoveMap.Name = "tbMoveMap";
             this.tbMoveMap.Size = new System.Drawing.Size(23, 20);
-            this.tbMoveMap.Text = "Move";
+            this.tbMoveMap.Text = "Move (E)";
             this.tbMoveMap.Click += new System.EventHandler(this.tbMoveMap_Click);
             // 
             // tbRotateMap
@@ -257,7 +257,7 @@ namespace MapEditor
             this.tbRotateMap.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbRotateMap.Name = "tbRotateMap";
             this.tbRotateMap.Size = new System.Drawing.Size(23, 20);
-            this.tbRotateMap.Text = "Rotate";
+            this.tbRotateMap.Text = "Rotate (R)";
             this.tbRotateMap.Click += new System.EventHandler(this.tbRotateMap_Click);
             // 
             // tbDeleteMap
@@ -267,7 +267,7 @@ namespace MapEditor
             this.tbDeleteMap.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbDeleteMap.Name = "tbDeleteMap";
             this.tbDeleteMap.Size = new System.Drawing.Size(23, 20);
-            this.tbDeleteMap.Text = "toolStripButton2";
+            this.tbDeleteMap.Text = "Delete (D)";
             this.tbDeleteMap.Click += new System.EventHandler(this.tbDeleteMap_Click);
             // 
             // toolStripSeparator4
@@ -1114,6 +1114,11 @@ namespace MapEditor
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // tmRecent
+            // 
+            this.tmRecent.Name = "tmRecent";
+            this.tmRecent.Size = new System.Drawing.Size(259, 6);
+            // 
             // tmEdit
             // 
             this.tmEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1238,6 +1243,7 @@ namespace MapEditor
             this.openFileDialog1.DefaultExt = "*.project.gmx";
             this.openFileDialog1.Filter = "GM:S Projects|*.project.gmx";
             this.openFileDialog1.SupportMultiDottedExtensions = true;
+            this.openFileDialog1.Title = "Open file...";
             // 
             // roomEditor1
             // 
@@ -1295,11 +1301,6 @@ namespace MapEditor
             this.lbLayers.Size = new System.Drawing.Size(308, 350);
             this.lbLayers.TabIndex = 0;
             this.lbLayers.Type = MapEditor.Components.ListBoxEx.ListType.Layers;
-            // 
-            // tmRecent
-            // 
-            this.tmRecent.Name = "tmRecent";
-            this.tmRecent.Size = new System.Drawing.Size(259, 6);
             // 
             // MapEditorMain
             // 
