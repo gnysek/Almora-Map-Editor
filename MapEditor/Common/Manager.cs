@@ -88,7 +88,6 @@ namespace MapEditor.Common
 				return false;
 			}
 
-			/*Project =*/
             if (recentFiles.IndexOf(filename) == -1)
             {
                 if (recentFiles.Count > 5)
@@ -104,11 +103,12 @@ namespace MapEditor.Common
             recentFiles.Insert(0, filename);
             saveSettings();
 
+            /*Project =*/
 			new ProjectData(filename, load);
 			return true;
 		}
 
-		public static MapRoom Room
+		public static GMRoom Room
 		{
 			get { return (Project == null) ? null : Project.Room; }
 		}

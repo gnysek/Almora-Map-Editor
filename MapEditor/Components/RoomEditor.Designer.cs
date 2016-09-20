@@ -30,7 +30,7 @@
 		{
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this._rPanel = new MapEditor.Components.RoomPanel();
+			this._rPanel = new MapEditor.Components.RoomCanvas();
 			this.horizontalScb = new MapEditor.Components.customHScrollBar();
 			this.verticalScb = new MapEditor.Components.customVScrollBar();
 			this.panel1.SuspendLayout();
@@ -122,6 +122,6 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private customHScrollBar horizontalScb;
 		private customVScrollBar verticalScb;
-		public RoomPanel _rPanel;
+		public RoomCanvas _rPanel;
 	}
 }

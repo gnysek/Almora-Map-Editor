@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -190,4 +191,63 @@ namespace MapEditor.Common
 			return null;
 		}
 	}
+
+
+    public class GMRoom
+    {
+        public string name = "";
+        public int width = 0;
+        public int height = 0;
+        public List<GMRoomInstance> instances = new List<GMRoomInstance>();
+
+        //todo: remove
+        public ObservableCollection<MapLayers> Layers
+        {
+            get { return Manager.Project.RoomLayers; }
+        }
+        public int LastUsedLayer = 0;
+    }
+
+    public class GMRoomInstanceEditorData
+    {
+        public int Layer = 0;
+        public int Width = 0, Height = 0;
+        public int XStartZoomed = 0, YStartZoomed = 0, WidthZoomed = 0, HeightZoomed = 0;
+        public int XCenterZoomed = 0, YCenterZoomed = 0, XEndZoomed = 0, YEndZoomed = 0;
+        public PlaceableElement Element = null;
+        public GMRoomInstance parent = null;
+
+        public int XStart
+        {
+            get { return parent.x - Element.offsetX; }
+            set { }
+        }
+
+        public int YStart
+        {
+            get { return parent.y - Element.offsetY; }
+            set { }
+        }
+
+        
+    }
+
+    public class GMRoomInstance
+    {
+        public string objName = "<undefined>";
+        public GMObjectData linkedObj = null;
+        public int x, y;
+        public string gms_id = "";
+        public bool locked = false;
+        public string code = "";
+        public float scaleX, scaleY, rotation;
+        public uint colour;
+
+        public GMRoomInstanceEditorData editor_data;
+
+        public GMRoomInstance()
+        {
+            editor_data = new GMRoomInstanceEditorData() { parent = this };
+        }
+    }
 }

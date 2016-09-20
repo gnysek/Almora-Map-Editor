@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\BrushGroup.cs" />
+    <Compile Include="Common\GMScommon.cs" />
     <Compile Include="Common\PlaceableElement.cs" />
     <Compile Include="Common\EnvInstance.cs" />
     <Compile Include="Common\GmCommon.cs" />
@@ -103,12 +104,6 @@
     <Compile Include="Forms\LoadingForm.Designer.cs">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RoomForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RoomForm.Designer.cs">
-      <DependentUpon>RoomForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Components\RoomEditor.cs">
       <SubType>UserControl</SubType>
@@ -116,11 +111,11 @@
     <Compile Include="Components\RoomEditor.Designer.cs">
       <DependentUpon>RoomEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Components\RoomPanel.cs">
+    <Compile Include="Components\RoomCanvas.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Components\RoomPanel.Designer.cs">
-      <DependentUpon>RoomPanel.cs</DependentUpon>
+    <Compile Include="Components\RoomCanvas.Designer.cs">
+      <DependentUpon>RoomCanvas.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MapEditorMain.cs">
       <SubType>Form</SubType>
@@ -165,9 +160,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RoomForm.resx">
-      <DependentUpon>RoomForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Textures.resx">
       <DependentUpon>Textures.cs</DependentUpon>

@@ -6,6 +6,31 @@ using System.Xml;
 
 namespace MapEditor.Common
 {
+    public class SpriteTextureContainer
+    {
+        public string name = GMSpriteData.undefinedSprite;
+        private GMSpriteData _spriteData;
+        public string textureId;
+        public GMObjectData gmobject = null;
+
+        public string Sprite
+        {
+            get { return (this._spriteData == null) ? GMSpriteData.undefinedSprite : this._spriteData.Name; }
+            set { _spriteData = Manager.Project.GMXSprites.Find(item => item.Name == value); }
+        }
+
+        public int offsetX
+        {
+            get { return (_spriteData == null) ? 0 : this._spriteData.offsetX; }
+        }
+
+        public int offsetY
+        {
+            get { return (_spriteData == null) ? 0 : this._spriteData.offsetY; }
+        }
+    }
+
+
 	public class PlaceableElement
 	{
 		public const string SprDefName = GMSpriteData.undefinedSprite;

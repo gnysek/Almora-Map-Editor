@@ -528,7 +528,7 @@ namespace MapEditor.Graphics
 			_quads.Add(new Quad(texture, new PointF(x, y), new PointF(scaleX, scaleY), 0, color));
 		}
 
-		public static RoomPanel RPanel
+		public static RoomCanvas RPanel
 		{
 			get { return Manager.MainWindow.roomEditor1._rPanel; }
 		}

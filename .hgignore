@@ -1,6 +1,6 @@
 # use glob syntax.
 syntax: glob
-
 MapEditor\bin\Debug\*
 MapEditor\bin\Release\*
-obj\*
+MapEditor\obj\*
+WPF\*

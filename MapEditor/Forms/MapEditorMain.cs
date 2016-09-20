@@ -225,42 +225,6 @@ namespace MapEditor
 			Close();
 		}
 
-		private void addOrEditRoom(bool edit)
-		{
-			string defName = "Undefined Room " + lbRooms.Items.Count.ToString();
-			using (RoomForm form = new RoomForm())
-			{
-				MapRoom elem;
-				if (edit)
-				{
-					elem = Manager.Project.RoomList[lbRooms.SelectedIndex];
-					form.Element = elem;
-					form.Text = "Edit Room Definition: " + defName;
-				}
-				else
-				{
-					elem = new MapRoom() { Width = 1024, Height = 768 };
-					form.Element = elem;
-					form.Text = "Paint new Room Definition: " + defName;
-				}
-
-				if (form.ShowDialog() == DialogResult.OK)
-				{
-					if (edit)
-					{
-						//TODO: since elem is referenced, it shouldn't be changed that way
-						//elem = form.Element;
-					}
-					else
-					{
-						Manager.Project.RoomList.Add(form.Element);
-					}
-					Manager.Project.regenerateRoomList();
-					Manager.Project.Room = elem;
-				}
-			}
-		}
-
 		/*private void addOrEditPlaceable(bool edit)
 		{
 			string defName = "Undefined Placeable " + lbPlaceables.Items.Count.ToString();
@@ -357,7 +321,7 @@ namespace MapEditor
 			{
 				if (tabControlRooms.SelectedTab == tpRoomList)
 				{
-					addOrEditRoom(false);
+					//addOrEditRoom(false);
 				}
 				else if (tabControlRooms.SelectedTab == tpDefinitions)
 				{
@@ -404,13 +368,13 @@ namespace MapEditor
 		{
 			switch (tabControlMain.SelectedIndex)
 			{
-				case 1:
+				/*case 1:
 					switch (tabControlRooms.SelectedIndex)
 					{
-						case 0: addOrEditRoom(true); break;
+						//case 0: addOrEditRoom(true); break;
 						//case 1: addOrEditPlaceable(true); break;
 					}
-					break;
+					break;*/
 				case 2:
 					switch (tabControlEnv.SelectedIndex)
 					{
@@ -422,18 +386,20 @@ namespace MapEditor
 
 		private void lbRooms_DoubleClick(object sender, EventArgs e)
 		{
-			if (lbRooms.SelectedIndex > -1)
+            int select = lbRooms.SelectedIndex;
+
+            if (select > -1)
 			{
 				if (Manager.Room != null)
 				{
-					if (Manager.Project.RoomList[lbRooms.SelectedIndex] == Manager.Project.Room) return;
-					if (MessageBox.Show("Do you want to close current room?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.OK)
+                    if (Manager.Project.GMRooms[select] == Manager.Project.Room) return;
+					if (MessageBox.Show("Do you want to close current room?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
 					{
 						return;
 					}
 				}
 
-				Manager.Project.Room = Manager.Project.RoomList[lbRooms.SelectedIndex];
+                Manager.Project.Room = Manager.Project.GMRooms[select];
 				//if (Manager.Project.Room.LastUsedLayer > -1 && Manager.Project.Room.LastUsedLayer < tbLayerDropDown.Items.Count)
 				//{
 				Manager.Project.Room.LastUsedLayer = Math.Max(0, Math.Min(Manager.Project.Room.LastUsedLayer, tbLayerDropDown.Items.Count - 1));
@@ -446,6 +412,7 @@ namespace MapEditor
 					Manager.Project.Instance = Manager.Project.PlaceableList[0];
 				}
 				roomEditor1.Invalidate();
+                roomEditor1._rPanel.Invalidate();
 				ensureButtonsDisabled();
 				CurrentBrush = BrushMode.Select;
 				Manager.Project.regenerateInstanceList();
@@ -514,18 +481,21 @@ namespace MapEditor
 		{
 			switch (e.KeyCode)
 			{
-				case Keys.S:
+				case Keys.Q:
 					CurrentBrush = BrushMode.Select;
 					break;
+                case Keys.W:
+                    CurrentBrush = BrushMode.Paint;
+                    break;
+                case Keys.E:
+                    CurrentBrush = BrushMode.Move;
+                    break;
 				case Keys.R:
 					CurrentBrush = BrushMode.Rotate;
 					break;
-				case Keys.A:
-					CurrentBrush = BrushMode.Paint;
-					break;
-				case Keys.M:
-					CurrentBrush = BrushMode.Move;
-					break;
+				case Keys.D:
+                    CurrentBrush = BrushMode.Delete;
+                    break;
 				case Keys.Escape:
 					Manager.Project.SelectedInstance = null;
 					break;
@@ -542,7 +512,7 @@ namespace MapEditor
 		{
 			if (Manager.Project.SelectedInstance != null)
 			{
-				Manager.Project.Room.Instances.Remove(Manager.Project.SelectedInstance);
+				Manager.Project.Room.instances.Remove(Manager.Project.SelectedInstance);
 				Manager.Project.SelectedInstance = null;
 			}
 		}
@@ -589,9 +559,9 @@ namespace MapEditor
 			if (Manager.Project.SelectedInstance != null)
 			{
 				panelPreviewTab.Enabled = true;
-				Manager.MainWindow.brushPlaceableX.Text = Manager.Project.SelectedInstance.X.ToString();
-				Manager.MainWindow.brushPlaceableY.Text = Manager.Project.SelectedInstance.Y.ToString();
-				Manager.MainWindow.brushPlaceableRotation.Text = Manager.Project.SelectedInstance.Rotation.ToString();
+				Manager.MainWindow.brushPlaceableX.Text = Manager.Project.SelectedInstance.x.ToString();
+				Manager.MainWindow.brushPlaceableY.Text = Manager.Project.SelectedInstance.y.ToString();
+				Manager.MainWindow.brushPlaceableRotation.Text = Manager.Project.SelectedInstance.rotation.ToString();
 			}
 			else
 			{
