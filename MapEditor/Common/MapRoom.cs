@@ -177,7 +177,7 @@ namespace MapEditor.Common
 				elem.SetAttribute("object", place.Element.Name);
 				elem.SetAttribute("x", place.X.ToString());
 				elem.SetAttribute("y", place.Y.ToString());
-				elem.SetAttribute("sprite", place.Element.Sprite);
+                //elem.SetAttribute("sprite", place.Element.Sprite);
 				elem.SetAttribute("id", place.ID.ToString());
 				elem.SetAttribute("rotate", place.Rotation.ToString());
 				try

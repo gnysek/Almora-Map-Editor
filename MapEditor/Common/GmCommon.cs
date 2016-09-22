@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MapEditor.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -96,48 +97,48 @@ namespace MapEditor.Common
 			Name = name;
 			ResourceType = t;
 
-			if (ResourceType == GMItemType.Sprite)
-			{
-				XmlDocument XMLfile = new XmlDocument();
-				XMLfile.Load(Manager.Project.ProjectSource + "\\sprites\\" + Name + ".sprite.gmx");
+            //if (ResourceType == GMItemType.Sprite)
+            //{
+            //    XmlDocument XMLfile = new XmlDocument();
+            //    XMLfile.Load(Manager.Project.ProjectSource + "\\sprites\\" + Name + ".sprite.gmx");
 
-				XmlNode node = XMLfile.SelectSingleNode("sprite/frames/frame[@index='0']");
+            //    XmlNode node = XMLfile.SelectSingleNode("sprite/frames/frame[@index='0']");
 
-				string fnp = "";
-				if (node != null)
-				{
-					fnp = Manager.Project.ProjectSource + "\\sprites\\" + node.InnerText;
+            //    string fnp = "";
+            //    if (node != null)
+            //    {
+            //        fnp = Manager.Project.ProjectSource + "\\sprites\\" + node.InnerText;
 
 
-					Manager.Project.GMXSprites.Add(new GMSpriteData()
-					{
-						offsetX = int.Parse(XMLfile.SelectSingleNode("sprite/xorig").InnerText),
-						offsetY = int.Parse(XMLfile.SelectSingleNode("sprite/yorigin").InnerText),
-						firstFramePath = fnp,
-						owner = this
-					});
-				}
-			}
+            //        Manager.Project.GMXSprites.Add(new GMSpriteData()
+            //        {
+            //            offsetX = int.Parse(XMLfile.SelectSingleNode("sprite/xorig").InnerText),
+            //            offsetY = int.Parse(XMLfile.SelectSingleNode("sprite/yorigin").InnerText),
+            //            firstFramePath = fnp,
+            //            owner = this
+            //        });
+            //    }
+            //}
 
-			if (ResourceType == GMItemType.Object)
-			{
-				XmlDocument XMLfile = new XmlDocument();
-				XMLfile.Load(Manager.Project.ProjectSource + "\\objects\\" + Name + ".object.gmx");
+            //if (ResourceType == GMItemType.Object)
+            //{
+            //    XmlDocument XMLfile = new XmlDocument();
+            //    XMLfile.Load(Manager.Project.ProjectSource + "\\objects\\" + Name + ".object.gmx");
 
-				XmlNode node = XMLfile.SelectSingleNode("object/spriteName");
+            //    XmlNode node = XMLfile.SelectSingleNode("object/spriteName");
 
-				string spriteName = "";
-				if (node != null)
-				{
-					spriteName = node.InnerText;
+            //    string spriteName = "";
+            //    if (node != null)
+            //    {
+            //        spriteName = node.InnerText;
 
-					Manager.Project.GMXObjects.Add(new GMObjectData()
-					{
-						owner = this,
-						sprite = Manager.Project.GMXSprites.Find(item => item.Name == spriteName)
-					});
-				}
-			}
+            //        Manager.Project.GMXObjects.Add(new GMObjectData()
+            //        {
+            //            owner = this,
+            //            sprite = Manager.Project.GMXSprites.Find(item => item.Name == spriteName)
+            //        });
+            //    }
+            //}
 		}
 
 		// adds group
@@ -211,22 +212,87 @@ namespace MapEditor.Common
     public class GMRoomInstanceEditorData
     {
         public int Layer = 0;
-        public int Width = 0, Height = 0;
-        public int XStartZoomed = 0, YStartZoomed = 0, WidthZoomed = 0, HeightZoomed = 0;
-        public int XCenterZoomed = 0, YCenterZoomed = 0, XEndZoomed = 0, YEndZoomed = 0;
-        public PlaceableElement Element = null;
+        //public PlaceableElement Element = null;
         public GMRoomInstance parent = null;
+
+        public int Width
+        {
+            get { return (parent.linkedObj.sprite_index == null) ? 0 : GraphicsManager.Sprites[parent.linkedObj.sprite_index.name].Width; }
+        }
+
+        public int WidthZoomed
+        {
+            get { return this.Width / Manager.MainWindow.roomEditor1._rPanel.Zoom; }
+        }
+
+        public int Height
+        {
+            get { return (parent.linkedObj.sprite_index == null) ? 0 : GraphicsManager.Sprites[parent.linkedObj.sprite_index.name].Height; }
+        }
+
+        public int HeightZoomed
+        {
+            get { return this.Height / Manager.MainWindow.roomEditor1._rPanel.Zoom; }
+        }
 
         public int XStart
         {
-            get { return parent.x - Element.offsetX; }
-            set { }
+            get { return parent.x - parent.linkedObj.sprite_index.origin_x; }
         }
 
         public int YStart
         {
-            get { return parent.y - Element.offsetY; }
-            set { }
+            get { return parent.y - parent.linkedObj.sprite_index.origin_y; }
+        }
+
+        public int XStartZoomed
+        {
+            get { return this.XStart / Manager.MainWindow.roomEditor1._rPanel.Zoom; }
+        }
+
+        public int YStartZoomed
+        {
+            get { return this.YStart / Manager.MainWindow.roomEditor1._rPanel.Zoom; }
+        }
+
+        public int XCenter
+        {
+            get { return (parent.x); }
+        }
+
+        public int XCenterZoomed
+        {
+            get { return this.XCenter / Manager.MainWindow.roomEditor1._rPanel.Zoom; }
+        }
+
+        public int YCenter
+        {
+            get { return (parent.y); }
+        }
+
+        public int YCenterZoomed
+        {
+            get { return this.YCenter / Manager.MainWindow.roomEditor1._rPanel.Zoom; }
+        }
+
+        public int XEnd
+        {
+            get { return XStart + Width; }
+        }
+
+        public int XEndZoomed
+        {
+            get { return this.XEnd / Manager.MainWindow.roomEditor1._rPanel.Zoom; }
+        }
+
+        public int YEnd
+        {
+            get { return YStart + Height; }
+        }
+
+        public int YEndZoomed
+        {
+            get { return this.YEnd / Manager.MainWindow.roomEditor1._rPanel.Zoom; }
         }
 
         
@@ -235,7 +301,8 @@ namespace MapEditor.Common
     public class GMRoomInstance
     {
         public string objName = "<undefined>";
-        public GMObjectData linkedObj = null;
+        //public GMObjectData linkedObj = null;
+        public GmsObject linkedObj = null;
         public int x, y;
         public string gms_id = "";
         public bool locked = false;

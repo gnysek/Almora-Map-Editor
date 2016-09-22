@@ -28,8 +28,8 @@ namespace MapEditor.Common
         private GMRoomInstance _SelectedInstance = null;
         public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
         //public List<MapRoom> RoomList = new List<MapRoom>();
-        public List<GMSpriteData> GMXSprites = new List<GMSpriteData>();
-        public List<GMObjectData> GMXObjects = new List<GMObjectData>();
+        //public List<GMSpriteData> GMXSprites = new List<GMSpriteData>();
+        //public List<GMObjectData> GMXObjects = new List<GMObjectData>();
         public ObservableCollection<BrushGroup> BrushGroups = new ObservableCollection<BrushGroup>();
         public ObservableCollection<MapLayers> RoomLayers = new ObservableCollection<MapLayers>();
 
@@ -113,6 +113,12 @@ namespace MapEditor.Common
                 ProjectFilename = Path.GetFileNameWithoutExtension(GmxFilename) + ".ame";
                 _readGMX();
             }
+
+            regenerateEnvDefList();
+            regenerateRoomList();
+            regenerateTextureList();
+            regenerateLayerList();
+            regenerateBrushList();
 
             return true;
         }
@@ -255,6 +261,7 @@ namespace MapEditor.Common
 
             XmlNode root = XMLfile.SelectSingleNode("assets/resources");
 
+            #region to_remove
             /*foreach (XmlNode n in root)
             {
                 addUsedRes(n.InnerText);
@@ -317,6 +324,7 @@ namespace MapEditor.Common
             {
                 MessageBox.Show("reading room node from AME file failed: " + e.Message);
             }*/
+            #endregion
 
             // read brushes
             try
@@ -354,12 +362,6 @@ namespace MapEditor.Common
                     LayerName = n.Attributes["name"].Value
                 });
             }
-
-            regenerateEnvDefList();
-            regenerateRoomList();
-            regenerateTextureList();
-            regenerateLayerList();
-            regenerateBrushList();
         }
 
         //private void _readAMERoom(MapRoom room, string path)
@@ -437,7 +439,7 @@ namespace MapEditor.Common
 
             // none sprite add
             GMItem noneSprite = new GMItem(GMSpriteData.undefinedSprite) { ResourceType = GMItemType.Sprite, isGroup = false };
-            GMXSprites.Add(new GMSpriteData() { offsetX = 0, offsetY = 0, firstFramePath = "", owner = noneSprite });
+            //GMXSprites.Add(new GMSpriteData() { offsetX = 0, offsetY = 0, firstFramePath = "", owner = noneSprite });
 
             foreach (string resourceType in resTree)
             {
@@ -455,7 +457,7 @@ namespace MapEditor.Common
                     GmsResourceTree.Add(resource);
 
                     _readResourceTree(root, resourceType, resource);
-                    
+
                 }
                 catch (Exception e)
                 {
@@ -497,21 +499,23 @@ namespace MapEditor.Common
             //List<string> objects = Manager.Project.renderItemsList("objects");
             //addUsedRes(GMSpriteData.undefinedSprite);
 
-            foreach (GMObjectData obj in GMXObjects)
-            {
-                PlaceableElement el = new PlaceableElement()
-                {
-                    Name = obj.Name,
-                    Sprite = (obj.sprite != null) ? obj.sprite.Name : GMSpriteData.undefinedSprite,
-                    Parent = "",
-                };
+            //foreach (GMObjectData obj in GMXObjects)
+            //{
+            //    PlaceableElement el = new PlaceableElement()
+            //    {
+            //        Name = obj.Name,
+            //        Sprite = (obj.sprite != null) ? obj.sprite.Name : GMSpriteData.undefinedSprite,
+            //        Parent = "",
+            //    };
 
-                PlaceableList.Add(el);
-                if (obj.sprite != null)
-                {
-                    //addUsedRes(obj.sprite.Name);
-                }
-            }
+            //    PlaceableList.Add(el);
+            //    if (obj.sprite != null)
+            //    {
+            //        //addUsedRes(obj.sprite.Name);
+            //    }
+            //}
+
+            // prepare rooms data
 
             root = XMLfile.SelectSingleNode("assets/rooms");
             if (root != null)
@@ -603,8 +607,9 @@ namespace MapEditor.Common
                                     inst.scaleY = float.Parse(inode.Attributes["scaleY"].InnerText, CultureInfo.InvariantCulture);
                                     inst.colour = UInt32.Parse(inode.Attributes["colour"].InnerText, CultureInfo.InvariantCulture);
                                     inst.rotation = float.Parse(inode.Attributes["rotation"].InnerText, CultureInfo.InvariantCulture);
+                                    inst.linkedObj = GmsResourceObjectList.Find(n => n.name == inode.Attributes["objName"].InnerText);
                                 };
-                                inst.editor_data.Element = PlaceableList.Find(item => item.Name == inst.objName);
+                                //inst.editor_data.Element = PlaceableList.Find(item => item.Name == inst.objName);
                                 room.instances.Add(inst);
                             }
                             catch (Exception)
@@ -870,64 +875,57 @@ namespace MapEditor.Common
 
                 //GraphicsManager.DeleteTextures();
 
-                /*foreach (GMSpriteData sp in this.GMXSprites)
-                {
-                    if (sp.owner.used == GMItemUsage.disposed) GraphicsManager.DeleteTexture(sp.Name);
-                }*/
-
                 int i = 0;
-                /*Manager.MainWindow.tsProgress.Maximum = RegisteredResources.Count;
-                Manager.MainWindow.tsProgress.Value = 0;
-                Manager.MainWindow.tsProgress.Visible = true;*/
 
-                form.loadingBar.Maximum = this.GMXObjects.Count;// RegisteredResources.Count;
+                //form.loadingBar.Maximum = this.GMXObjects.Count;
+                form.loadingBar.Maximum = this.GmsResourceObjectList.Count;
                 form.loadingBar.Value = 0;
 
                 //foreach (string file in RegisteredResources)
                 // LOAD ONLY SPRITES ASSIGNED TO OBJECTS, SKIP ELSE
-                List<string> objects = renderItemsList("objects");
-                foreach (string gmobject in objects)
+                //List<string> objects = renderItemsList("objects");
+                foreach (GmsObject gmobject in this.GmsResourceObjectList)
                 {
                     //GMSpriteData itm = this.GMXSprites.Find(item => item.Name == file);
-                    GMSpriteData itm = this.GMXObjects.Find(item => item.Name == gmobject).sprite;
+                    //GMSpriteData itm = this.GMXObjects.Find(item => item.Name == gmobject).sprite;
+                    GmsSprite itm = gmobject.sprite_index;
 
                     if (itm != null)
                     {
                         // prevent adding duplicates
-                        if (!GraphicsManager.Sprites.ContainsKey(itm.Name))
+                        if (!GraphicsManager.Sprites.ContainsKey(itm.name))
                         {
-                            if (File.Exists(itm.firstFramePath))
+                            if (File.Exists(itm.image))
                             {
-                                GraphicsManager.LoadTexture(itm.Name, new Bitmap(itm.firstFramePath));
+                                GraphicsManager.LoadTexture(itm.name, new Bitmap(itm.image));
                             }
-                            else if (itm.Name == GMSpriteData.undefinedSprite)
+                            else// if (itm.name == null)
                             {
-                                GraphicsManager.LoadTexture(itm.Name, new Bitmap(Manager.MainWindow.imageListObjects.Images[GMSpriteData.undefinedSprite]));
+                                GraphicsManager.LoadTexture(itm.name, new Bitmap(Manager.MainWindow.imageListObjects.Images[GMSpriteData.undefinedSprite]));
                             }
                         }
 
-                        if (!Manager.MainWindow.imageListObjects.Images.ContainsKey(itm.Name))
+                        if (!Manager.MainWindow.imageListObjects.Images.ContainsKey(itm.name))
                         {
-                            if (File.Exists(itm.firstFramePath))
+                            if (File.Exists(itm.image))
                             {
-                                Manager.MainWindow.imageListObjects.Images.Add(itm.Name, new Bitmap(itm.firstFramePath));
+                                Manager.MainWindow.imageListObjects.Images.Add(itm.name, new Bitmap(itm.image));
                             }
                         }
                     }
                     //Manager.MainWindow.tsProgress.Value++;
                     form.loadingBar.Value++;
-                    if (i % 10 == 0 || i == this.GMXObjects.Count - 1/*RegisteredResources.Count - 1*/)
+                    if (i % 10 == 0 || i == form.loadingBar.Maximum - 1)
                     {
                         form.Refresh();
                     }
                     i++;
                 }
-                //Manager.MainWindow.tsProgress.Visible = false;
 
-                foreach (PlaceableElement elem in PlaceableList)
-                {
-                    elem.textureId = elem.Sprite;
-                }
+                //foreach (PlaceableElement elem in PlaceableList)
+                //{
+                //    elem.textureId = elem.Sprite;
+                //}
 
                 form.Close();
             }
@@ -1001,8 +999,8 @@ namespace MapEditor.Common
                 ListViewGroup gr = l.Groups.Add(group.GroupName, group.GroupName);
                 foreach (string name in group.objects)
                 {
-                    GMSpriteData sprite = Manager.Project.GMXObjects.Find(item => item.Name == name).sprite;
-                    ListViewItem o = new ListViewItem() { Text = name, ImageKey = (sprite == null) ? GMSpriteData.undefinedSprite : sprite.Name };
+                    GmsSprite sprite = Manager.Project.GmsResourceObjectList.Find(item => item.name == name).sprite_index;
+                    ListViewItem o = new ListViewItem() { Text = name, ImageKey = (sprite == null) ? GMSpriteData.undefinedSprite : sprite.name };
                     o.Group = gr;
                     l.Items.Add(o);
                 }

@@ -75,11 +75,16 @@ namespace MapEditor.Forms
 
 			if (currentGroup == null) return;
 
-			foreach (string name in currentGroup.objects)
-			{
-				GMSpriteData sprite = Manager.Project.GMXObjects.Find(item => item.Name == name).sprite;
-				objectList.Items.Add(new ListViewItem() { Text = name, ImageKey = (sprite == null) ? GMSpriteData.undefinedSprite : sprite.Name });
-			}
+            foreach (GmsObject obj in Manager.Project.GmsResourceObjectList)
+            {
+                objectList.Items.Add(new ListViewItem() { Text = obj.name, ImageKey = (obj.sprite_index == null) ? GMSpriteData.undefinedSprite : obj.sprite_index.name });
+            }
+
+            //foreach (string name in currentGroup.objects)
+            //{
+            //    GMSpriteData sprite = Manager.Project.GMXObjects.Find(item => item.Name == name).sprite;
+            //    objectList.Items.Add(new ListViewItem() { Text = name, ImageKey = (sprite == null) ? GMSpriteData.undefinedSprite : sprite.Name });
+            //}
 		}
 
 		private void brushGroupsObjectTree_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
