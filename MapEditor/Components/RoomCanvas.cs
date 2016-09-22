@@ -224,6 +224,7 @@ namespace MapEditor.Components
                 //    }
 
                     Color defaultLayerColor = Color.Gray;
+                    defaultLayerColor = Color.White;//todo - if proper layer
                     //if (layer.LayerDepth == selectedLayerDepth) defaultLayerColor = Color.White;
 
                     foreach (GMRoomInstance instance in Manager.Room.instances)
