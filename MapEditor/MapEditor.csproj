@@ -57,7 +57,6 @@
     <Compile Include="Common\BrushGroup.cs" />
     <Compile Include="Common\GmsCommon.cs" />
     <Compile Include="Common\PlaceableElement.cs" />
-    <Compile Include="Common\EnvInstance.cs" />
     <Compile Include="Common\GmCommon.cs" />
     <Compile Include="Common\Manager.cs" />
     <Compile Include="Common\ProjectData.cs" />

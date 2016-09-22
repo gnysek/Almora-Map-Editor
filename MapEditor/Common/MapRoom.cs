@@ -47,7 +47,7 @@ namespace MapEditor.Common
 	{
 		public int Width;
 		public int Height;
-		public List<PlaceableInstance> Instances = new List<PlaceableInstance>();
+        //public List<PlaceableInstance> Instances = new List<PlaceableInstance>();
 		public string LinkedWith = null;
 		//public List<MapLayers> Layers = new List<MapLayers>();
 		public int LastUsedLayer = -1;
@@ -65,22 +65,22 @@ namespace MapEditor.Common
 
 		public int InstanceCount
 		{
-			get { return Instances.Count; }
+            get { return 0; }// Instances.Count; }
 		}
 
-		public void addInstance(PlaceableInstance instance)
-		{
-			Instances.Add(instance);
-			if (instance.ID == -1)
-			{
-				InternalCounter++;
-				instance.ID = InternalCounter;
-			}
-			else if (InternalCounter < instance.ID)
-			{
-				InternalCounter = instance.ID;
-			}
-		}
+        //public void addInstance(PlaceableInstance instance)
+        //{
+        //    Instances.Add(instance);
+        //    if (instance.ID == -1)
+        //    {
+        //        InternalCounter++;
+        //        instance.ID = InternalCounter;
+        //    }
+        //    else if (InternalCounter < instance.ID)
+        //    {
+        //        InternalCounter = instance.ID;
+        //    }
+        //}
 
 		public XmlElement toXml(XmlDocument doc)
 		{
@@ -119,7 +119,7 @@ namespace MapEditor.Common
 			XmlNode node = file.SelectSingleNode("room/instances");
 
 			int counter = 0;
-			foreach (PlaceableInstance place in Instances)
+			/*foreach (PlaceableInstance place in Instances)
 			{
 				string code = "";
 				//if (place.Element.useDefaultObjectSprite == false) code += "sprite_index = " + place.Element.Sprite + ";";
@@ -146,7 +146,7 @@ namespace MapEditor.Common
 				node.AppendChild(elem);
 
 				counter++;
-			}
+			}*/
 
 			file.Save(path);
 		}
@@ -170,26 +170,26 @@ namespace MapEditor.Common
 
 			XmlElement instances = file.CreateElement("instances");
 			//int counter = 0;
-			foreach (PlaceableInstance place in /*room.*/Instances)
-			{
-				XmlElement elem = file.CreateElement("instance");
-				elem.SetAttribute("name", place.Element.Name);
-				elem.SetAttribute("object", place.Element.Name);
-				elem.SetAttribute("x", place.X.ToString());
-				elem.SetAttribute("y", place.Y.ToString());
-                //elem.SetAttribute("sprite", place.Element.Sprite);
-				elem.SetAttribute("id", place.ID.ToString());
-				elem.SetAttribute("rotate", place.Rotation.ToString());
-				try
-				{
-					elem.SetAttribute("layer", place.Layer.ToString());
-				}
-				catch
-				{
-					elem.SetAttribute("layer", "-1");
-				}
-				instances.AppendChild(elem);
-			}
+            //foreach (PlaceableInstance place in /*room.*/Instances)
+            //{
+            //    XmlElement elem = file.CreateElement("instance");
+            //    elem.SetAttribute("name", place.Element.Name);
+            //    elem.SetAttribute("object", place.Element.Name);
+            //    elem.SetAttribute("x", place.X.ToString());
+            //    elem.SetAttribute("y", place.Y.ToString());
+            //    //elem.SetAttribute("sprite", place.Element.Sprite);
+            //    elem.SetAttribute("id", place.ID.ToString());
+            //    elem.SetAttribute("rotate", place.Rotation.ToString());
+            //    try
+            //    {
+            //        elem.SetAttribute("layer", place.Layer.ToString());
+            //    }
+            //    catch
+            //    {
+            //        elem.SetAttribute("layer", "-1");
+            //    }
+            //    instances.AppendChild(elem);
+            //}
 			assets.AppendChild(instances);
 
 			/*XmlElement layers = file.CreateElement("layers");
