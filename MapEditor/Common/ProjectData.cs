@@ -410,6 +410,12 @@ namespace MapEditor.Common
         //    //room.Layers.Sort(MapLayers.SortByLayerDepth);
         //}
 
+        public List<GmsResource> GmsResourceTree = new List<GmsResource>();
+        public List<GmsSprite> GmsResourceSpriteList = new List<GmsSprite>();
+        public List<GmsBackground> GmsResourceBackgroundList = new List<GmsBackground>();
+        public List<GmsObject> GmsResourceObjectList = new List<GmsObject>();
+        public List<GmsRoom> GmsResourceRoomList = new List<GmsRoom>();
+
         private void _readGMX()
         {
             XmlDocument XMLfile = new XmlDocument();
@@ -432,6 +438,31 @@ namespace MapEditor.Common
             // none sprite add
             GMItem noneSprite = new GMItem(GMSpriteData.undefinedSprite) { ResourceType = GMItemType.Sprite, isGroup = false };
             GMXSprites.Add(new GMSpriteData() { offsetX = 0, offsetY = 0, firstFramePath = "", owner = noneSprite });
+
+            foreach (string resourceType in resTree)
+            {
+                try
+                {
+                    root = XMLfile.SelectSingleNode("assets/" + resourceType);
+
+                    if (root == null)
+                    {
+                        continue;
+                    }
+
+                    GmsResourceGroup resource = new GmsResourceGroup(resourceType);
+
+                    GmsResourceTree.Add(resource);
+
+                    _readResourceTree(root, resourceType, resource);
+                    
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Not found NODE for resource type : " + resourceType + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace.ToString());
+                }
+            }
+
 
             foreach (string nodeName in resTree)
             {
@@ -486,6 +517,51 @@ namespace MapEditor.Common
             if (root != null)
             {
                 _readRoomsNode(root);
+            }
+        }
+
+        private void _readResourceTree(XmlNode root, string resourceType, GmsResourceGroup parent)
+        {
+            foreach (XmlNode node in root)
+            {
+                if (node.Attributes["name"] != null)
+                {
+                    //group
+                    GmsResourceGroup group = new GmsResourceGroup(node.Attributes["name"].InnerText);
+                    _readResourceTree(node, resourceType, group);
+                    parent.subitems.Add(group);
+                }
+                else
+                {
+                    GmsResource resource;
+                    string name = Path.GetFileName(node.InnerText);
+
+                    switch (resourceType)
+                    {
+                        case "sprites":
+                            resource = new GmsSprite(name);
+                            GmsResourceSpriteList.Add((GmsSprite)resource);
+                            break;
+                        case "backgrounds":
+                            resource = new GmsBackground(name);
+                            GmsResourceBackgroundList.Add((GmsBackground)resource);
+                            break;
+                        case "objects":
+                            resource = new GmsObject(name);
+                            GmsResourceObjectList.Add((GmsObject)resource);
+                            break;
+                        case "rooms":
+                            resource = new GmsRoom(name);
+                            GmsResourceRoomList.Add((GmsRoom)resource);
+                            break;
+                        default:
+                            resource = new GmsResource(name);
+                            break;
+                    }
+
+                    resource.name = Path.GetFileName(node.InnerText);
+                    parent.subitems.Add(resource);
+                }
             }
         }
 
