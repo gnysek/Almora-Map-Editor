@@ -6,29 +6,29 @@ using System.Xml;
 
 namespace MapEditor.Common
 {
-    public class SpriteTextureContainer
-    {
-        public string name = GMSpriteData.undefinedSprite;
-        private GMSpriteData _spriteData;
-        public string textureId;
-        public GMObjectData gmobject = null;
+    //public class SpriteTextureContainer
+    //{
+    //    public string name = GMSpriteData.undefinedSprite;
+    //    private GMSpriteData _spriteData;
+    //    public string textureId;
+    //    public GMObjectData gmobject = null;
 
-        public string Sprite
-        {
-            get { return (this._spriteData == null) ? GMSpriteData.undefinedSprite : this._spriteData.Name; }
-            set { _spriteData = Manager.Project.GMXSprites.Find(item => item.Name == value); }
-        }
+    //    public string Sprite
+    //    {
+    //        get { return (this._spriteData == null) ? GMSpriteData.undefinedSprite : this._spriteData.Name; }
+    //        set { _spriteData = Manager.Project.GMXSprites.Find(item => item.Name == value); }
+    //    }
 
-        public int offsetX
-        {
-            get { return (_spriteData == null) ? 0 : this._spriteData.offsetX; }
-        }
+    //    public int offsetX
+    //    {
+    //        get { return (_spriteData == null) ? 0 : this._spriteData.offsetX; }
+    //    }
 
-        public int offsetY
-        {
-            get { return (_spriteData == null) ? 0 : this._spriteData.offsetY; }
-        }
-    }
+    //    public int offsetY
+    //    {
+    //        get { return (_spriteData == null) ? 0 : this._spriteData.offsetY; }
+    //    }
+    //}
 
 
 	public class PlaceableElement
@@ -72,12 +72,12 @@ namespace MapEditor.Common
 			return (this._parent == "");
 		}
 
-		public string Sprite
-		{
-			// TODO: remove ""
-			get { return (this._spriteData == null) ? "" : this._spriteData.Name; }
-			set { _spriteData = Manager.Project.GMXSprites.Find(item => item.Name == value); }
-		}
+        //public string Sprite
+        //{
+        //    // TODO: remove ""
+        //    get { return (this._spriteData == null) ? "" : this._spriteData.Name; }
+        //    set { _spriteData = Manager.Project.GMXSprites.Find(item => item.Name == value); }
+        //}
 
 		public int offsetX
 		{
@@ -111,7 +111,7 @@ namespace MapEditor.Common
 			XmlElement self = doc.CreateElement("placeable");
 
 			XmlElement sprite = doc.CreateElement("sprite");
-			sprite.InnerText = Sprite;
+            sprite.InnerText = "NONE";//Sprite;
 
 			//XmlElement sprDef = doc.CreateElement("defsprite");
 			//sprDef.InnerText = (useDefaultObjectSprite) ? "1" : "0";

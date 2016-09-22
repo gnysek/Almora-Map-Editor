@@ -198,7 +198,7 @@ namespace MapEditor.Components
 			}
 			else if (_listBoxType == ListType.Placeables)
 			{
-				addText += Manager.Project.PlaceableList[itemNumber].Sprite;
+                //addText += Manager.Project.PlaceableList[itemNumber].Sprite;
 				//if (Manager.Project.PlaceableList[itemNumber].useDefaultObjectMask)
 				//{
 				//    addText += "/skip mask/";

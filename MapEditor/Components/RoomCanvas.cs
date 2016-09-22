@@ -235,10 +235,18 @@ namespace MapEditor.Components
                         if (Manager.Project.HighlightedInstance == instance) color = Color.Yellow;
                         if (Manager.Project.SelectedInstance == instance) color = Color.Red;
 
-                        if (instance.editor_data.Element != null)
+                        if (instance.linkedObj.sprite_index != null)
                         {
                             //GraphicsManager.DrawSprite(instance.Element.textureId, instance.XCenter / _zoom, instance.YCenter / _zoom, instance.Rotation, color);
-                            GraphicsManager.DrawSprite(instance.editor_data.Element.textureId, instance.editor_data.XStart, instance.editor_data.YStart, instance.rotation, color);
+
+                            //try
+                            //{
+                                GraphicsManager.DrawSprite(instance.linkedObj.sprite_index.name, instance.editor_data.XStart, instance.editor_data.YStart, instance.rotation, color); //instance.linkedObj.sprite_index.name
+                            //}
+                            //catch (Exception e)
+                            //{
+                            //    MessageBox.Show(e.StackTrace.ToString());
+                            //}
 
                             /*if (instance.Element.MultiDraw)
                             {
@@ -274,9 +282,9 @@ namespace MapEditor.Components
                         if (CurrentBrush == BrushMode.Move)
                         {
                             GraphicsManager.DrawSprite(
-                                Manager.Project.SelectedInstance.editor_data.Element.textureId,
-                                /*Manager.Project.SelectedInstance.X +*/ (_mouseX - Manager.Project.SelectedInstance.editor_data.Element.offsetX),
-                                /*Manager.Project.SelectedInstance.Y +*/ (_mouseY - Manager.Project.SelectedInstance.editor_data.Element.offsetY),
+                                Manager.Project.SelectedInstance.editor_data.parent.linkedObj.sprite_index.name,
+                                /*Manager.Project.SelectedInstance.X +*/ (_mouseX - Manager.Project.SelectedInstance.editor_data.parent.linkedObj.sprite_index.origin_x),
+                                /*Manager.Project.SelectedInstance.Y +*/ (_mouseY - Manager.Project.SelectedInstance.editor_data.parent.linkedObj.sprite_index.origin_y),
                                 Manager.Project.SelectedInstance.rotation, Color.Red);
                         }
 
@@ -323,7 +331,7 @@ namespace MapEditor.Components
                             //Manager.MainWindow.statusLabelMousePos.Text = newRotation.ToString();
 
                             GraphicsManager.DrawSprite(
-                                p.editor_data.Element.textureId,
+                                p.editor_data.parent.linkedObj.sprite_index.name,
                                 p.editor_data.XStart,
                                 p.editor_data.YStart,
                                 (float)_rotateCurrent,
@@ -635,7 +643,7 @@ namespace MapEditor.Components
 								x = _mouseX /*- Manager.Project.Instance.offsetX*/,
 								y = _mouseY /*- Manager.Project.Instance.offsetY*/,
 							};
-                            instance.editor_data.Element = Manager.Project.Instance;
+                            //instance.editor_data.Element = Manager.Project.Instance;
                             instance.editor_data.Layer = Manager.Room.Layers[Manager.Room.LastUsedLayer].LayerDepth;
 
 							Manager.Room.instances.Add(instance);
@@ -711,8 +719,8 @@ namespace MapEditor.Components
                 GMRoomInstance found = null;
                 foreach (GMRoomInstance pinstance in Manager.Room.instances)
                 {
-                    if (Manager.Room.Layers[Manager.MainWindow.tbLayerDropDown.SelectedIndex].LayerDepth != pinstance.editor_data.Layer)
-                        continue;
+                    //if (Manager.Room.Layers[Manager.MainWindow.tbLayerDropDown.SelectedIndex].LayerDepth != pinstance.editor_data.Layer)
+                    //    continue;
 
                     double dist = pointDistance(pinstance.editor_data.XCenterZoomed, pinstance.editor_data.YCenterZoomed, _mx, _my);
 

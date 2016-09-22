@@ -20,7 +20,7 @@ namespace MapEditor.Forms
 
 		private void InstanceProp_Shown(object sender, EventArgs e)
 		{
-            instElement.Text = Instance.editor_data.Element.Name;
+            instElement.Text = Instance.editor_data.parent.objName;
 			instX.Text = Instance.x.ToString();
 			instY.Text = Instance.x.ToString();
 			instRotate.Text = Instance.rotation.ToString();
