@@ -357,9 +357,9 @@ namespace MapEditor
                 {
                     if (Manager.Room != null)
                     {
-                        Manager.Project.Instance = Manager.Project.PlaceableList[lbPlaceables.SelectedIndex];
+                        Manager.Project.Instance = Manager.Project.GmsResourceObjectList[lbPlaceables.SelectedIndex];
                         CurrentBrush = BrushMode.Paint;
-                        brushObjectLabel.Text = Manager.Project.Instance.Name;
+                        brushObjectLabel.Text = Manager.Project.Instance.name;
                         //brushObjectSprite.Image = GraphicsManager.Sprites[Manager.Project.Instance.textureId];
                     }
                 }
@@ -370,13 +370,14 @@ namespace MapEditor
         {
             switch (tabControlMain.SelectedIndex)
             {
-                /*case 1:
-                    switch (tabControlRooms.SelectedIndex)
-                    {
-                        //case 0: addOrEditRoom(true); break;
-                        //case 1: addOrEditPlaceable(true); break;
-                    }
-                    break;*/
+                //case 1:
+                //    switch (tabControlRooms.SelectedIndex)
+                //    {
+                //        //case 0: addOrEditRoom(true); break;
+                //        //case 1: addOrEditPlaceable(true); break;
+                //        case 1: Manager.Project.Instance = Manager.Project.GmsResourceObjectList[ lbPlaceables.SelectedIndex ]; break;
+                //    }
+                //    break;
                 case 2:
                     switch (tabControlEnv.SelectedIndex)
                     {
@@ -409,9 +410,9 @@ namespace MapEditor
 
                 //}
 
-                if (Manager.Project.PlaceableList.Count > 0)
+                if (Manager.Project.GmsResourceObjectList.Count > 0)
                 {
-                    Manager.Project.Instance = Manager.Project.PlaceableList[0];
+                    Manager.Project.Instance = Manager.Project.GmsResourceObjectList[0];
                 }
                 roomEditor1.Invalidate();
                 roomEditor1._rPanel.Invalidate();

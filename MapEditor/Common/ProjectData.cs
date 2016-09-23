@@ -23,10 +23,10 @@ namespace MapEditor.Common
         public bool Saved = false;
         public bool Loaded = false;
         private GMRoom _Room = null;
-        private PlaceableElement _Instance = null;
+        private GmsObject _Instance = null;
         private GMRoomInstance _HighlightedInstance = null;
         private GMRoomInstance _SelectedInstance = null;
-        public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
+        //public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
         //public List<MapRoom> RoomList = new List<MapRoom>();
         //public List<GMSpriteData> GMXSprites = new List<GMSpriteData>();
         //public List<GMObjectData> GMXObjects = new List<GMObjectData>();
@@ -45,15 +45,15 @@ namespace MapEditor.Common
             set
             {
                 _Room = value;
-                if (PlaceableList.Count > 0)
+                if (GmsResourceObjectList.Count > 0)
                 {
-                    Instance = PlaceableList[0];
+                    Instance = GmsResourceObjectList[0];
                 }
                 regenerateLayerList();
             }
         }
 
-        public PlaceableElement Instance
+        public GmsObject Instance
         {
             get { return (_Room == null) ? null : _Instance; }
             set { _Instance = (_Room == null) ? null : value; }
@@ -827,23 +827,27 @@ namespace MapEditor.Common
         }*/
 
         #region ENVinstances
-        public void addEnvDef(string name)
-        {
-            PlaceableElement n = new PlaceableElement() { Name = name };
-            PlaceableList.Add(n);
-        }
+        //public void addEnvDef(string name)
+        //{
+        //    PlaceableElement n = new PlaceableElement() { Name = name };
+        //    PlaceableList.Add(n);
+        //}
 
         public void regenerateEnvDefList()
         {
             ListBoxEx list = Manager.MainWindow.lbPlaceables;
             list.Items.Clear();
-            foreach (PlaceableElement elem in PlaceableList)
+            //foreach (PlaceableElement elem in PlaceableList)
+            //{
+            //    list.Items.Add(elem.Name);
+            //}
+            foreach (GmsObject elem in GmsResourceObjectList)
             {
-                list.Items.Add(elem.Name);
+                list.Items.Add(elem.name);
             }
 
 
-            Manager.MainWindow.statusLabelPlaceables.Text = PlaceableList.Count.ToString();
+            Manager.MainWindow.statusLabelPlaceables.Text = GmsResourceObjectList.Count.ToString();
         }
 
         public void regenerateInstanceList()

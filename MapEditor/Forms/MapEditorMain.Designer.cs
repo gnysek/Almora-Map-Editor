@@ -35,6 +35,8 @@ namespace MapEditor
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tsMap = new System.Windows.Forms.ToolStrip();
             this.tbSelectMap = new System.Windows.Forms.ToolStripButton();
+            this.tbExtendInstanceOnMap = new System.Windows.Forms.ToolStripButton();
+            this.tbSelectRectangleInRoom = new System.Windows.Forms.ToolStripButton();
             this.tbPaintMap = new System.Windows.Forms.ToolStripButton();
             this.tbMoveMap = new System.Windows.Forms.ToolStripButton();
             this.tbRotateMap = new System.Windows.Forms.ToolStripButton();
@@ -83,6 +85,16 @@ namespace MapEditor
             this.tpBrushes = new System.Windows.Forms.TabPage();
             this.brushGroupList = new System.Windows.Forms.ListView();
             this.imageListObjects = new System.Windows.Forms.ImageList(this.components);
+            this.panelWithRoomInfo = new System.Windows.Forms.Panel();
+            this.roomInfoLabelOthers = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.roomInfoLabelInstancesNumber = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.roomInfoLabelWidth = new System.Windows.Forms.Label();
+            this.roomInfoLabelHeight = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.roomInfoLabelName = new System.Windows.Forms.Label();
             this.tabPlaceables = new System.Windows.Forms.TabPage();
             this.tabControlEnv = new System.Windows.Forms.TabControl();
             this.tpInstances = new System.Windows.Forms.TabPage();
@@ -143,21 +155,11 @@ namespace MapEditor
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.panelWithRoomInfo = new System.Windows.Forms.Panel();
-            this.roomInfoLabelName = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.roomInfoLabelHeight = new System.Windows.Forms.Label();
-            this.roomInfoLabelWidth = new System.Windows.Forms.Label();
-            this.roomInfoLabelInstancesNumber = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.roomEditor1 = new MapEditor.Components.RoomEditor();
             this.lbRooms = new MapEditor.Components.ListBoxEx();
             this.lbPlaceables = new MapEditor.Components.ListBoxEx();
             this.lbInstances = new MapEditor.Components.ListBoxEx();
             this.lbLayers = new MapEditor.Components.ListBoxEx();
-            this.label8 = new System.Windows.Forms.Label();
-            this.roomInfoLabelOthers = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tsMap.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -169,6 +171,7 @@ namespace MapEditor
             this.tableLayoutPanel2.SuspendLayout();
             this.panelPreviewTab.SuspendLayout();
             this.tpBrushes.SuspendLayout();
+            this.panelWithRoomInfo.SuspendLayout();
             this.tabPlaceables.SuspendLayout();
             this.tabControlEnv.SuspendLayout();
             this.tpInstances.SuspendLayout();
@@ -179,7 +182,6 @@ namespace MapEditor
             this.tsMain.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.panelWithRoomInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -207,6 +209,8 @@ namespace MapEditor
             this.tsMap.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.tsMap.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tbSelectMap,
+            this.tbExtendInstanceOnMap,
+            this.tbSelectRectangleInRoom,
             this.tbPaintMap,
             this.tbMoveMap,
             this.tbRotateMap,
@@ -241,10 +245,28 @@ namespace MapEditor
             this.tbSelectMap.Text = "Select (Q)";
             this.tbSelectMap.Click += new System.EventHandler(this.tbSelectMap_Click);
             // 
+            // tbExtendInstanceOnMap
+            // 
+            this.tbExtendInstanceOnMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbExtendInstanceOnMap.Image = global::MapEditor.Properties.Resources.cursor1;
+            this.tbExtendInstanceOnMap.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbExtendInstanceOnMap.Name = "tbExtendInstanceOnMap";
+            this.tbExtendInstanceOnMap.Size = new System.Drawing.Size(23, 20);
+            this.tbExtendInstanceOnMap.Text = "toolStripButton2";
+            // 
+            // tbSelectRectangleInRoom
+            // 
+            this.tbSelectRectangleInRoom.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbSelectRectangleInRoom.Image = global::MapEditor.Properties.Resources.selection_select;
+            this.tbSelectRectangleInRoom.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbSelectRectangleInRoom.Name = "tbSelectRectangleInRoom";
+            this.tbSelectRectangleInRoom.Size = new System.Drawing.Size(23, 20);
+            this.tbSelectRectangleInRoom.Text = "toolStripButton2";
+            // 
             // tbPaintMap
             // 
             this.tbPaintMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tbPaintMap.Image = global::MapEditor.Properties.Resources.paint_can;
+            this.tbPaintMap.Image = global::MapEditor.Properties.Resources.broom;
             this.tbPaintMap.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbPaintMap.Name = "tbPaintMap";
             this.tbPaintMap.Size = new System.Drawing.Size(23, 20);
@@ -698,6 +720,106 @@ namespace MapEditor
             this.imageListObjects.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListObjects.ImageStream")));
             this.imageListObjects.TransparentColor = System.Drawing.Color.Transparent;
             this.imageListObjects.Images.SetKeyName(0, "<undefined>");
+            // 
+            // panelWithRoomInfo
+            // 
+            this.panelWithRoomInfo.BackColor = System.Drawing.Color.Transparent;
+            this.panelWithRoomInfo.Controls.Add(this.roomInfoLabelOthers);
+            this.panelWithRoomInfo.Controls.Add(this.label8);
+            this.panelWithRoomInfo.Controls.Add(this.roomInfoLabelInstancesNumber);
+            this.panelWithRoomInfo.Controls.Add(this.label7);
+            this.panelWithRoomInfo.Controls.Add(this.roomInfoLabelWidth);
+            this.panelWithRoomInfo.Controls.Add(this.roomInfoLabelHeight);
+            this.panelWithRoomInfo.Controls.Add(this.label6);
+            this.panelWithRoomInfo.Controls.Add(this.label5);
+            this.panelWithRoomInfo.Controls.Add(this.roomInfoLabelName);
+            this.panelWithRoomInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelWithRoomInfo.Location = new System.Drawing.Point(0, 368);
+            this.panelWithRoomInfo.Name = "panelWithRoomInfo";
+            this.panelWithRoomInfo.Size = new System.Drawing.Size(316, 200);
+            this.panelWithRoomInfo.TabIndex = 2;
+            // 
+            // roomInfoLabelOthers
+            // 
+            this.roomInfoLabelOthers.AutoSize = true;
+            this.roomInfoLabelOthers.Location = new System.Drawing.Point(5, 73);
+            this.roomInfoLabelOthers.Name = "roomInfoLabelOthers";
+            this.roomInfoLabelOthers.Size = new System.Drawing.Size(16, 13);
+            this.roomInfoLabelOthers.TabIndex = 8;
+            this.roomInfoLabelOthers.Text = "...";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(5, 56);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(61, 13);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Other stats:";
+            // 
+            // roomInfoLabelInstancesNumber
+            // 
+            this.roomInfoLabelInstancesNumber.AutoSize = true;
+            this.roomInfoLabelInstancesNumber.Location = new System.Drawing.Point(98, 39);
+            this.roomInfoLabelInstancesNumber.Name = "roomInfoLabelInstancesNumber";
+            this.roomInfoLabelInstancesNumber.Size = new System.Drawing.Size(13, 13);
+            this.roomInfoLabelInstancesNumber.TabIndex = 5;
+            this.roomInfoLabelInstancesNumber.Text = "0";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(5, 39);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(94, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Instances number:";
+            // 
+            // roomInfoLabelWidth
+            // 
+            this.roomInfoLabelWidth.AutoSize = true;
+            this.roomInfoLabelWidth.Location = new System.Drawing.Point(41, 21);
+            this.roomInfoLabelWidth.Name = "roomInfoLabelWidth";
+            this.roomInfoLabelWidth.Size = new System.Drawing.Size(13, 13);
+            this.roomInfoLabelWidth.TabIndex = 4;
+            this.roomInfoLabelWidth.Text = "0";
+            // 
+            // roomInfoLabelHeight
+            // 
+            this.roomInfoLabelHeight.AutoSize = true;
+            this.roomInfoLabelHeight.Location = new System.Drawing.Point(190, 21);
+            this.roomInfoLabelHeight.Name = "roomInfoLabelHeight";
+            this.roomInfoLabelHeight.Size = new System.Drawing.Size(13, 13);
+            this.roomInfoLabelHeight.TabIndex = 3;
+            this.roomInfoLabelHeight.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(153, 21);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(41, 13);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "Height:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(5, 21);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(38, 13);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "Width:";
+            // 
+            // roomInfoLabelName
+            // 
+            this.roomInfoLabelName.AutoSize = true;
+            this.roomInfoLabelName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.roomInfoLabelName.Location = new System.Drawing.Point(5, 3);
+            this.roomInfoLabelName.Name = "roomInfoLabelName";
+            this.roomInfoLabelName.Size = new System.Drawing.Size(77, 13);
+            this.roomInfoLabelName.TabIndex = 0;
+            this.roomInfoLabelName.Text = "<undefined>";
             // 
             // tabPlaceables
             // 
@@ -1257,88 +1379,6 @@ namespace MapEditor
             this.openFileDialog1.SupportMultiDottedExtensions = true;
             this.openFileDialog1.Title = "Open file...";
             // 
-            // panelWithRoomInfo
-            // 
-            this.panelWithRoomInfo.BackColor = System.Drawing.Color.Transparent;
-            this.panelWithRoomInfo.Controls.Add(this.roomInfoLabelOthers);
-            this.panelWithRoomInfo.Controls.Add(this.label8);
-            this.panelWithRoomInfo.Controls.Add(this.roomInfoLabelInstancesNumber);
-            this.panelWithRoomInfo.Controls.Add(this.label7);
-            this.panelWithRoomInfo.Controls.Add(this.roomInfoLabelWidth);
-            this.panelWithRoomInfo.Controls.Add(this.roomInfoLabelHeight);
-            this.panelWithRoomInfo.Controls.Add(this.label6);
-            this.panelWithRoomInfo.Controls.Add(this.label5);
-            this.panelWithRoomInfo.Controls.Add(this.roomInfoLabelName);
-            this.panelWithRoomInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelWithRoomInfo.Location = new System.Drawing.Point(0, 368);
-            this.panelWithRoomInfo.Name = "panelWithRoomInfo";
-            this.panelWithRoomInfo.Size = new System.Drawing.Size(316, 200);
-            this.panelWithRoomInfo.TabIndex = 2;
-            // 
-            // roomInfoLabelName
-            // 
-            this.roomInfoLabelName.AutoSize = true;
-            this.roomInfoLabelName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.roomInfoLabelName.Location = new System.Drawing.Point(5, 3);
-            this.roomInfoLabelName.Name = "roomInfoLabelName";
-            this.roomInfoLabelName.Size = new System.Drawing.Size(77, 13);
-            this.roomInfoLabelName.TabIndex = 0;
-            this.roomInfoLabelName.Text = "<undefined>";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(5, 21);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 13);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "Width:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(153, 21);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(41, 13);
-            this.label6.TabIndex = 2;
-            this.label6.Text = "Height:";
-            // 
-            // roomInfoLabelHeight
-            // 
-            this.roomInfoLabelHeight.AutoSize = true;
-            this.roomInfoLabelHeight.Location = new System.Drawing.Point(190, 21);
-            this.roomInfoLabelHeight.Name = "roomInfoLabelHeight";
-            this.roomInfoLabelHeight.Size = new System.Drawing.Size(13, 13);
-            this.roomInfoLabelHeight.TabIndex = 3;
-            this.roomInfoLabelHeight.Text = "0";
-            // 
-            // roomInfoLabelWidth
-            // 
-            this.roomInfoLabelWidth.AutoSize = true;
-            this.roomInfoLabelWidth.Location = new System.Drawing.Point(41, 21);
-            this.roomInfoLabelWidth.Name = "roomInfoLabelWidth";
-            this.roomInfoLabelWidth.Size = new System.Drawing.Size(13, 13);
-            this.roomInfoLabelWidth.TabIndex = 4;
-            this.roomInfoLabelWidth.Text = "0";
-            // 
-            // roomInfoLabelInstancesNumber
-            // 
-            this.roomInfoLabelInstancesNumber.AutoSize = true;
-            this.roomInfoLabelInstancesNumber.Location = new System.Drawing.Point(98, 39);
-            this.roomInfoLabelInstancesNumber.Name = "roomInfoLabelInstancesNumber";
-            this.roomInfoLabelInstancesNumber.Size = new System.Drawing.Size(13, 13);
-            this.roomInfoLabelInstancesNumber.TabIndex = 5;
-            this.roomInfoLabelInstancesNumber.Text = "0";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 39);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(94, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Instances number:";
-            // 
             // roomEditor1
             // 
             this.roomEditor1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(173)))), ((int)(((byte)(179)))));
@@ -1396,24 +1436,6 @@ namespace MapEditor
             this.lbLayers.TabIndex = 0;
             this.lbLayers.Type = MapEditor.Components.ListBoxEx.ListType.Layers;
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(5, 56);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(61, 13);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Other stats:";
-            // 
-            // roomInfoLabelOthers
-            // 
-            this.roomInfoLabelOthers.AutoSize = true;
-            this.roomInfoLabelOthers.Location = new System.Drawing.Point(5, 73);
-            this.roomInfoLabelOthers.Name = "roomInfoLabelOthers";
-            this.roomInfoLabelOthers.Size = new System.Drawing.Size(16, 13);
-            this.roomInfoLabelOthers.TabIndex = 8;
-            this.roomInfoLabelOthers.Text = "...";
-            // 
             // MapEditorMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1446,6 +1468,8 @@ namespace MapEditor
             this.panelPreviewTab.ResumeLayout(false);
             this.panelPreviewTab.PerformLayout();
             this.tpBrushes.ResumeLayout(false);
+            this.panelWithRoomInfo.ResumeLayout(false);
+            this.panelWithRoomInfo.PerformLayout();
             this.tabPlaceables.ResumeLayout(false);
             this.tabControlEnv.ResumeLayout(false);
             this.tpInstances.ResumeLayout(false);
@@ -1462,8 +1486,6 @@ namespace MapEditor
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.panelWithRoomInfo.ResumeLayout(false);
-            this.panelWithRoomInfo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1597,6 +1619,8 @@ namespace MapEditor
         private System.Windows.Forms.Label roomInfoLabelName;
         private System.Windows.Forms.Label roomInfoLabelOthers;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ToolStripButton tbExtendInstanceOnMap;
+        private System.Windows.Forms.ToolStripButton tbSelectRectangleInRoom;
 	}
 }
 
