@@ -33,7 +33,7 @@ namespace MapEditor.Components
         private int _mx = 0;
         private int _my = 0;
         private bool _drawMousePosition = false;
-        private Cursor _bucketCursor;
+        private Cursor _bucketCursor, _rotateCursor;
         private bool _drag = false;
         private int _rotateStart = 0;
         private int _rotateCurrent = 0;
@@ -53,6 +53,7 @@ namespace MapEditor.Components
             this.SetStyle(ControlStyles.Opaque, true);
 
             _bucketCursor = new Cursor(GetType().Assembly.GetManifestResourceStream("MapEditor.Resources.cur_bucket.cur"));
+            _rotateCursor = new Cursor(GetType().Assembly.GetManifestResourceStream("MapEditor.Resources.cur_rotate.cur"));
         }
 
         public int Zoom
@@ -262,10 +263,14 @@ namespace MapEditor.Components
                 {
                     try
                     {
+                        int x, y;
+                        x = ((GridEnabled) ? _mouseX : _mx) - Manager.Project.Instance.sprite_index.origin_x;
+                        y = ((GridEnabled) ? _mouseY : _my) - Manager.Project.Instance.sprite_index.origin_y;
+
                         GraphicsManager.DrawSprite(
-                            Manager.Project.Instance.textureId,
-                            _mx - Manager.Project.Instance.offsetX,
-                            _my - Manager.Project.Instance.offsetY,
+                            Manager.Project.Instance.sprite_index.name,
+                            x,
+                            y,
                             0, Color.Yellow);
                     }
                     catch { }
@@ -604,7 +609,6 @@ namespace MapEditor.Components
 			base.OnMouseUp(e);
 
 			if (Manager.Room == null) return;
-			if (Manager.Project.Instance == null) return;
 
 			switch (e.Button)
 			{
@@ -638,10 +642,12 @@ namespace MapEditor.Components
 
 							break;
 						case BrushMode.Paint:
+                            if (Manager.Project.Instance == null) return;
 							GMRoomInstance instance = new GMRoomInstance()
 							{
 								x = _mouseX /*- Manager.Project.Instance.offsetX*/,
 								y = _mouseY /*- Manager.Project.Instance.offsetY*/,
+                                linkedObj = Manager.Project.Instance
 							};
                             //instance.editor_data.Element = Manager.Project.Instance;
                             instance.editor_data.Layer = Manager.Room.Layers[Manager.Room.LastUsedLayer].LayerDepth;
@@ -815,7 +821,7 @@ namespace MapEditor.Components
                 {
                     case BrushMode.Paint: Cursor = _bucketCursor; break;
                     case BrushMode.Move: Cursor = Cursors.SizeAll; break;
-                    case BrushMode.Rotate: Cursor = Cursors.AppStarting; break;
+                    case BrushMode.Rotate: Cursor = _rotateCursor; break;
                     default: Cursor = Cursors.Default; break;
                 }
             }

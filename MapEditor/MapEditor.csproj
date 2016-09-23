@@ -280,6 +280,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="1353775151_Maps.ico" />
+    <EmbeddedResource Include="Resources\cur_rotate.cur" />
+    <None Include="Resources\selection-select.png" />
+    <None Include="Resources\broom.png" />
+    <None Include="Resources\cursor1.png" />
     <None Include="Resources\arrow-270.png" />
     <None Include="Resources\arrow-090.png" />
     <None Include="Resources\magnifier-zoom-out.png" />
