@@ -524,12 +524,6 @@ namespace MapEditor
             }
         }
 
-        private void tbEnvList_Click(object sender, EventArgs e)
-        {
-            Textures form = new Textures();
-            form.ShowDialog();
-        }
-
         private void tbDeleteMap_Click(object sender, EventArgs e)
         {
             if (Manager.Project.SelectedInstance != null)
