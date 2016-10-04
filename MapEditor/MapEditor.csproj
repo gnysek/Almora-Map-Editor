@@ -57,6 +57,7 @@
     <Compile Include="Common\BrushGroup.cs" />
     <Compile Include="Common\GmsCommon.cs" />
     <Compile Include="Common\GmCommon.cs" />
+    <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\Manager.cs" />
     <Compile Include="Common\ProjectData.cs" />
     <Compile Include="Common\MapRoom.cs" />
@@ -77,12 +78,6 @@
     </Compile>
     <Compile Include="Forms\Prompt.Designer.cs">
       <DependentUpon>Prompt.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Textures.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Textures.Designer.cs">
-      <DependentUpon>Textures.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\InstanceProp.cs">
       <SubType>Form</SubType>
@@ -159,9 +154,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Textures.resx">
-      <DependentUpon>Textures.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

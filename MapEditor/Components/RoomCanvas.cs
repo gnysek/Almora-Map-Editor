@@ -681,11 +681,27 @@ namespace MapEditor.Components
         {
             if (Manager.Project.Instance == null) return;
 
+            float rotation = 0.0f;
+
+            if (Manager.MainWindow.brushOptionRandomizeCheckbox.Enabled)
+            {
+                float start = Helper.getDirFromInput(Manager.MainWindow.brushOptionRandomizeFrom);
+                float _end = Helper.getDirFromInput(Manager.MainWindow.brushOptionRandomizeTo);
+
+                float end = (start > _end) ? start : _end;
+                start = (start > _end) ? _end : start;
+
+                Random rnd = new Random();
+
+                rotation = start + ((float)rnd.NextDouble() *  (end - start));
+            }
+
             GmsRoomInstance instance = new GmsRoomInstance()
             {
                 x = _mouseX /*- Manager.Project.Instance.offsetX*/,
                 y = _mouseY /*- Manager.Project.Instance.offsetY*/,
-                instance_of = Manager.Project.Instance
+                instance_of = Manager.Project.Instance,
+                rotation = rotation,
             };
             //instance.editor_data.Element = Manager.Project.Instance;
             instance.editor_data.Layer = Manager.Room.Layers[Manager.Room.LastUsedLayer].LayerDepth;
@@ -783,8 +799,8 @@ namespace MapEditor.Components
 
             if (snap.X != _mouseX || snap.Y != _mouseY || redraw)
             {
-                _mouseX = snap.X;
-                _mouseY = snap.Y;
+                _mouseX = (GridEnabled) ? snap.X : _mx;
+                _mouseY = (GridEnabled) ? snap.Y : _my;
                 Manager.MainWindow.statusLabelMousePos.Text = "X: " + (_mouseX).ToString() + ", Y: " + (_mouseY).ToString();
                 Manager.MainWindow.statusLabelMousePos.Text += " / RX:  " + _mx.ToString() + ", RY: " + _my.ToString()
                  + " / ZOOM" + this._zoom.ToString();
