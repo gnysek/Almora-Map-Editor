@@ -413,7 +413,7 @@ namespace MapEditor.Common
         //}
 
         public List<GmsResource> GmsResourceTree = new List<GmsResource>();
-        public List<GmsSprite> GmsResourceSpriteList = new List<GmsSprite>();
+        public List<GmsSprite> GmsResourceSpriteList = new List<GmsSprite>() { (new GmsSprite(GMSpriteData.undefinedSprite){}) };
         public List<GmsBackground> GmsResourceBackgroundList = new List<GmsBackground>();
         public List<GmsObject> GmsResourceObjectList = new List<GmsObject>();
         public List<GmsRoom> GmsResourceRoomList = new List<GmsRoom>();
@@ -884,6 +884,8 @@ namespace MapEditor.Common
                 //form.loadingBar.Maximum = this.GMXObjects.Count;
                 form.loadingBar.Maximum = this.GmsResourceObjectList.Count;
                 form.loadingBar.Value = 0;
+
+                GraphicsManager.LoadTexture(GMSpriteData.undefinedSprite, new Bitmap(Manager.MainWindow.imageListObjects.Images[GMSpriteData.undefinedSprite]));
 
                 //foreach (string file in RegisteredResources)
                 // LOAD ONLY SPRITES ASSIGNED TO OBJECTS, SKIP ELSE

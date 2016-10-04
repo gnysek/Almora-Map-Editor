@@ -61,7 +61,7 @@ namespace MapEditor.Common
 
     public class GmsSprite : GmsBackground
     {
-        public int origin_x, origin_y;
+        public int origin_x = 0, origin_y = 0;
         public List<string> images = new List<string>();
 
         public new string image
@@ -77,16 +77,19 @@ namespace MapEditor.Common
 
         protected override void _load(string new_name)
         {
-            XmlDocument XMLfile = new XmlDocument();
-            XMLfile.Load(Manager.Project.ProjectSource + "\\sprites\\" + new_name + ".sprite.gmx");
-
-            XmlNode node = XMLfile.SelectSingleNode("sprite/frames/frame[@index='0']");
-
-            if (node != null)
+            if (new_name != GMSpriteData.undefinedSprite)
             {
-                images.Add(Manager.Project.ProjectSource + "\\sprites\\" + node.InnerText);
-                origin_x = int.Parse(XMLfile.SelectSingleNode("sprite/xorig").InnerText);
-                origin_y = int.Parse(XMLfile.SelectSingleNode("sprite/yorigin").InnerText);
+                XmlDocument XMLfile = new XmlDocument();
+                XMLfile.Load(Manager.Project.ProjectSource + "\\sprites\\" + new_name + ".sprite.gmx");
+
+                XmlNode node = XMLfile.SelectSingleNode("sprite/frames/frame[@index='0']");
+
+                if (node != null)
+                {
+                    images.Add(Manager.Project.ProjectSource + "\\sprites\\" + node.InnerText);
+                    origin_x = int.Parse(XMLfile.SelectSingleNode("sprite/xorig").InnerText);
+                    origin_y = int.Parse(XMLfile.SelectSingleNode("sprite/yorigin").InnerText);
+                }
             }
         }
     }
@@ -103,12 +106,15 @@ namespace MapEditor.Common
 
             XmlNode node = XMLfile.SelectSingleNode("object/spriteName");
 
+            sprite_index = Manager.Project.GmsResourceSpriteList[0];
+
             string spriteName = "";
             if (node != null)
             {
                 spriteName = node.InnerText;
                 sprite_index = Manager.Project.GmsResourceSpriteList.Find(item => item.name == spriteName);
             }
+            
         }
     }
 

@@ -642,18 +642,7 @@ namespace MapEditor.Components
 
 							break;
 						case BrushMode.Paint:
-                            if (Manager.Project.Instance == null) return;
-							GMRoomInstance instance = new GMRoomInstance()
-							{
-								x = _mouseX /*- Manager.Project.Instance.offsetX*/,
-								y = _mouseY /*- Manager.Project.Instance.offsetY*/,
-                                linkedObj = Manager.Project.Instance
-							};
-                            //instance.editor_data.Element = Manager.Project.Instance;
-                            instance.editor_data.Layer = Manager.Room.Layers[Manager.Room.LastUsedLayer].LayerDepth;
-
-							Manager.Room.instances.Add(instance);
-							Manager.Project.regenerateInstanceList();
+                            this._onInstancePaint();
 							break;
 						case BrushMode.Move:
 							if (_drag)
@@ -687,6 +676,25 @@ namespace MapEditor.Components
 			// Force redraw
 			Invalidate();
 		}
+
+        protected void _onInstancePaint()
+        {
+            if (Manager.Project.Instance == null) return;
+
+            GMRoomInstance instance = new GMRoomInstance()
+            {
+                x = _mouseX /*- Manager.Project.Instance.offsetX*/,
+                y = _mouseY /*- Manager.Project.Instance.offsetY*/,
+                linkedObj = Manager.Project.Instance
+            };
+            //instance.editor_data.Element = Manager.Project.Instance;
+            instance.editor_data.Layer = Manager.Room.Layers[Manager.Room.LastUsedLayer].LayerDepth;
+
+            Manager.Project.HighlightedInstance = instance;
+
+            Manager.Room.instances.Add(instance);
+            Manager.Project.regenerateInstanceList();
+        }
 
         /// <summary>
         /// When there's a mouse move over map canvas

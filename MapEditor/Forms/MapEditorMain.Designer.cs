@@ -114,7 +114,6 @@ namespace MapEditor
             this.tbUsedResList = new System.Windows.Forms.ToolStripButton();
             this.tbRoomList = new System.Windows.Forms.ToolStripButton();
             this.tbLayerList = new System.Windows.Forms.ToolStripButton();
-            this.tbEnvList = new System.Windows.Forms.ToolStripButton();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.tbSaveProject = new System.Windows.Forms.ToolStripButton();
             this.tbOpenProject = new System.Windows.Forms.ToolStripButton();
@@ -155,6 +154,12 @@ namespace MapEditor
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.roomEditor1 = new MapEditor.Components.RoomEditor();
             this.lbRooms = new MapEditor.Components.ListBoxEx();
             this.lbPlaceables = new MapEditor.Components.ListBoxEx();
@@ -182,6 +187,7 @@ namespace MapEditor
             this.tsMain.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -513,9 +519,10 @@ namespace MapEditor
             this.tpDefinitions.Controls.Add(this.tableLayoutPanel2);
             this.tpDefinitions.Location = new System.Drawing.Point(4, 22);
             this.tpDefinitions.Name = "tpDefinitions";
+            this.tpDefinitions.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tpDefinitions.Size = new System.Drawing.Size(308, 342);
             this.tpDefinitions.TabIndex = 1;
-            this.tpDefinitions.Text = "Env Definitions";
+            this.tpDefinitions.Text = "Object list";
             this.tpDefinitions.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel2
@@ -696,6 +703,7 @@ namespace MapEditor
             // tpBrushes
             // 
             this.tpBrushes.Controls.Add(this.brushGroupList);
+            this.tpBrushes.Controls.Add(this.panel3);
             this.tpBrushes.Location = new System.Drawing.Point(4, 22);
             this.tpBrushes.Name = "tpBrushes";
             this.tpBrushes.Padding = new System.Windows.Forms.Padding(3);
@@ -711,7 +719,7 @@ namespace MapEditor
             this.brushGroupList.LargeImageList = this.imageListObjects;
             this.brushGroupList.Location = new System.Drawing.Point(3, 3);
             this.brushGroupList.Name = "brushGroupList";
-            this.brushGroupList.Size = new System.Drawing.Size(302, 336);
+            this.brushGroupList.Size = new System.Drawing.Size(302, 155);
             this.brushGroupList.TabIndex = 0;
             this.brushGroupList.UseCompatibleStateImageBehavior = false;
             // 
@@ -896,7 +904,7 @@ namespace MapEditor
             this.tbDuplicateItem,
             this.tbSortItem});
             this.tsOptions.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.tsOptions.Location = new System.Drawing.Point(163, 0);
+            this.tsOptions.Location = new System.Drawing.Point(171, 0);
             this.tsOptions.Name = "tsOptions";
             this.tsOptions.Size = new System.Drawing.Size(125, 25);
             this.tsOptions.TabIndex = 3;
@@ -984,12 +992,11 @@ namespace MapEditor
             this.tsEditors.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tbUsedResList,
             this.tbRoomList,
-            this.tbLayerList,
-            this.tbEnvList});
+            this.tbLayerList});
             this.tsEditors.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.tsEditors.Location = new System.Drawing.Point(70, 0);
             this.tsEditors.Name = "tsEditors";
-            this.tsEditors.Size = new System.Drawing.Size(93, 25);
+            this.tsEditors.Size = new System.Drawing.Size(101, 25);
             this.tsEditors.TabIndex = 2;
             this.tsEditors.Text = "toolStrip1";
             // 
@@ -1024,16 +1031,6 @@ namespace MapEditor
             this.tbLayerList.Text = "toolStripButton9";
             this.tbLayerList.ToolTipText = "Layers List";
             this.tbLayerList.Click += new System.EventHandler(this.tbLayerList_Click);
-            // 
-            // tbEnvList
-            // 
-            this.tbEnvList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tbEnvList.Image = global::MapEditor.Properties.Resources.tree;
-            this.tbEnvList.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tbEnvList.Name = "tbEnvList";
-            this.tbEnvList.Size = new System.Drawing.Size(23, 20);
-            this.tbEnvList.Text = "toolStripButton10";
-            this.tbEnvList.Click += new System.EventHandler(this.tbEnvList_Click);
             // 
             // tsMain
             // 
@@ -1379,6 +1376,66 @@ namespace MapEditor
             this.openFileDialog1.SupportMultiDottedExtensions = true;
             this.openFileDialog1.Title = "Open file...";
             // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.NavajoWhite;
+            this.panel3.Controls.Add(this.label10);
+            this.panel3.Controls.Add(this.textBox2);
+            this.panel3.Controls.Add(this.textBox1);
+            this.panel3.Controls.Add(this.checkBox1);
+            this.panel3.Controls.Add(this.label9);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel3.Location = new System.Drawing.Point(3, 158);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(302, 181);
+            this.panel3.TabIndex = 1;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 3);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(112, 13);
+            this.label9.TabIndex = 0;
+            this.label9.Text = "On placing element(s):";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 19);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(135, 17);
+            this.checkBox1.TabIndex = 1;
+            this.checkBox1.Text = "randomize rotation from";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(135, 18);
+            this.textBox1.MaxLength = 3;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(26, 20);
+            this.textBox1.TabIndex = 2;
+            this.textBox1.Text = "0";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(180, 19);
+            this.textBox2.MaxLength = 3;
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(26, 20);
+            this.textBox2.TabIndex = 3;
+            this.textBox2.Text = "360";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(163, 20);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(16, 13);
+            this.label10.TabIndex = 4;
+            this.label10.Text = "to";
+            // 
             // roomEditor1
             // 
             this.roomEditor1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(173)))), ((int)(((byte)(179)))));
@@ -1486,6 +1543,8 @@ namespace MapEditor
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1551,8 +1610,7 @@ namespace MapEditor
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.ToolStrip tsEditors;
 		private System.Windows.Forms.ToolStripButton tbRoomList;
-		private System.Windows.Forms.ToolStripButton tbLayerList;
-		private System.Windows.Forms.ToolStripButton tbEnvList;
+        private System.Windows.Forms.ToolStripButton tbLayerList;
 		private System.Windows.Forms.ToolStrip tsMain;
 		private System.Windows.Forms.ToolStripButton tbSaveProject;
 		private System.Windows.Forms.ToolStripButton tbOpenProject;
@@ -1621,6 +1679,12 @@ namespace MapEditor
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ToolStripButton tbExtendInstanceOnMap;
         private System.Windows.Forms.ToolStripButton tbSelectRectangleInRoom;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label9;
 	}
 }
 
