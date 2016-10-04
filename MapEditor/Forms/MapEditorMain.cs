@@ -433,7 +433,7 @@ namespace MapEditor
 
             int total = Manager.Project.GMRooms.Sum(r => r.instances.Count);
 
-            int totalObjects = Manager.Project.allItems.subitems.Sum(r => r.subitems.Count);
+            int totalObjects = Manager.Project.GmsResourceObjectList.Count;
 
             roomInfoLabelOthers.Text =
                 "Total rooms: " + Manager.Project.GMRooms.Count.ToString() + Environment.NewLine +

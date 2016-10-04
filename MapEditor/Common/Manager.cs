@@ -108,7 +108,7 @@ namespace MapEditor.Common
 			return true;
 		}
 
-		public static GMRoom Room
+		public static GmsRoom Room
 		{
 			get { return (Project == null) ? null : Project.Room; }
 		}

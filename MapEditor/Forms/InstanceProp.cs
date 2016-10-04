@@ -12,7 +12,7 @@ namespace MapEditor.Forms
 {
 	public partial class InstanceProp : Form
 	{
-		public GMRoomInstance Instance;
+		public GmsRoomInstance Instance;
 		public InstanceProp()
 		{
 			InitializeComponent();
@@ -24,7 +24,7 @@ namespace MapEditor.Forms
 			instX.Text = Instance.x.ToString();
 			instY.Text = Instance.x.ToString();
 			instRotate.Text = Instance.rotation.ToString();
-			instLabel.Text = "Instance: AME_" + Instance.gms_id.ToString();
+			instLabel.Text = "Instance: AME_" + Instance.name.ToString();
 		}
 
 		private void instOK_Click(object sender, EventArgs e)

@@ -77,13 +77,13 @@ namespace MapEditor.Forms
 
             foreach (GmsObject obj in Manager.Project.GmsResourceObjectList)
             {
-                objectList.Items.Add(new ListViewItem() { Text = obj.name, ImageKey = (obj.sprite_index == null) ? GMSpriteData.undefinedSprite : obj.sprite_index.name });
+                objectList.Items.Add(new ListViewItem() { Text = obj.name, ImageKey = (obj.sprite_index == null) ? GmsResource.undefined : obj.sprite_index.name });
             }
 
             //foreach (string name in currentGroup.objects)
             //{
             //    GMSpriteData sprite = Manager.Project.GMXObjects.Find(item => item.Name == name).sprite;
-            //    objectList.Items.Add(new ListViewItem() { Text = name, ImageKey = (sprite == null) ? GMSpriteData.undefinedSprite : sprite.Name });
+            //    objectList.Items.Add(new ListViewItem() { Text = name, ImageKey = (sprite == null) ? GmsResource.undefined : sprite.Name });
             //}
 		}
 

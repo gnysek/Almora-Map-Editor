@@ -186,7 +186,7 @@ namespace MapEditor.Components
 			{
 				addText += "X: " + Manager.Room.instances[itemNumber].x.ToString();
 				addText += ", Y: " + Manager.Room.instances[itemNumber].x.ToString();
-				addText += ", ID: " + Manager.Room.instances[itemNumber].gms_id.ToString();
+				addText += ", ID: " + Manager.Room.instances[itemNumber].name.ToString();
 			}
 			else if (_listBoxType == ListType.Layers)
 			{
