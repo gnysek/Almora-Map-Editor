@@ -145,7 +145,7 @@ namespace MapEditor.Components
             }
         }
 
-        private void drawHighlightedInstance(GMRoomInstance instance)
+        private void drawHighlightedInstance(GmsRoomInstance instance)
         {
             GraphicsManager.DrawRectangleRotated(new Rectangle(instance.editor_data.XStartZoomed, instance.editor_data.YStartZoomed, instance.editor_data.WidthZoomed, instance.editor_data.HeightZoomed), instance.rotation, Color.FromArgb(30, Color.Yellow), false);
             GraphicsManager.DrawRectangleRotated(new Rectangle(instance.editor_data.XStartZoomed - 1, instance.editor_data.YStartZoomed - 1, instance.editor_data.WidthZoomed + 2, instance.editor_data.HeightZoomed + 2), instance.rotation, Color.Black, true);
@@ -185,7 +185,7 @@ namespace MapEditor.Components
             };
         }
 
-        private void drawSelectedInstance(GMRoomInstance instance)
+        private void drawSelectedInstance(GmsRoomInstance instance)
         {
             GraphicsManager.DrawStippledRectangle(new Rectangle(instance.editor_data.XStartZoomed - 1, instance.editor_data.YStartZoomed - 1, instance.editor_data.WidthZoomed + 2, instance.editor_data.HeightZoomed + 2), Color.Black, instance.rotation, 2);
             GraphicsManager.DrawStippledRectangle(new Rectangle(instance.editor_data.XStartZoomed, instance.editor_data.YStartZoomed, instance.editor_data.WidthZoomed, instance.editor_data.HeightZoomed), Color.Red, instance.rotation, 2);
@@ -228,7 +228,7 @@ namespace MapEditor.Components
                     defaultLayerColor = Color.White;//todo - if proper layer
                     //if (layer.LayerDepth == selectedLayerDepth) defaultLayerColor = Color.White;
 
-                    foreach (GMRoomInstance instance in Manager.Room.instances)
+                    foreach (GmsRoomInstance instance in Manager.Room.instances)
                     {
                         //if (instance.editor_data.Layer != layer.LayerDepth) continue;
 
@@ -236,13 +236,13 @@ namespace MapEditor.Components
                         if (Manager.Project.HighlightedInstance == instance) color = Color.Yellow;
                         if (Manager.Project.SelectedInstance == instance) color = Color.Red;
 
-                        if (instance.linkedObj.sprite_index != null)
+                        if (instance.instance_of.sprite_index != null)
                         {
                             //GraphicsManager.DrawSprite(instance.Element.textureId, instance.XCenter / _zoom, instance.YCenter / _zoom, instance.Rotation, color);
 
                             //try
                             //{
-                                GraphicsManager.DrawSprite(instance.linkedObj.sprite_index.name, instance.editor_data.XStart, instance.editor_data.YStart, instance.rotation, color); //instance.linkedObj.sprite_index.name
+                            GraphicsManager.DrawSprite(instance.instance_of.sprite_index.name, instance.editor_data.XStart, instance.editor_data.YStart, instance.rotation, color); //instance.linkedObj.sprite_index.name
                             //}
                             //catch (Exception e)
                             //{
@@ -282,14 +282,14 @@ namespace MapEditor.Components
                 {
                     if (Manager.Project.SelectedInstance != null)
                     {
-                        GMRoomInstance p = Manager.Project.SelectedInstance;
+                        GmsRoomInstance p = Manager.Project.SelectedInstance;
                         // drawing when moving
                         if (CurrentBrush == BrushMode.Move)
                         {
                             GraphicsManager.DrawSprite(
-                                Manager.Project.SelectedInstance.editor_data.parent.linkedObj.sprite_index.name,
-                                /*Manager.Project.SelectedInstance.X +*/ (_mouseX - Manager.Project.SelectedInstance.editor_data.parent.linkedObj.sprite_index.origin_x),
-                                /*Manager.Project.SelectedInstance.Y +*/ (_mouseY - Manager.Project.SelectedInstance.editor_data.parent.linkedObj.sprite_index.origin_y),
+                                Manager.Project.SelectedInstance.editor_data.parent.instance_of.sprite_index.name,
+                                /*Manager.Project.SelectedInstance.X +*/ (_mouseX - Manager.Project.SelectedInstance.instance_of.sprite_index.origin_x),
+                                /*Manager.Project.SelectedInstance.Y +*/ (_mouseY - Manager.Project.SelectedInstance.instance_of.sprite_index.origin_y),
                                 Manager.Project.SelectedInstance.rotation, Color.Red);
                         }
 
@@ -336,7 +336,7 @@ namespace MapEditor.Components
                             //Manager.MainWindow.statusLabelMousePos.Text = newRotation.ToString();
 
                             GraphicsManager.DrawSprite(
-                                p.editor_data.parent.linkedObj.sprite_index.name,
+                                p.instance_of.sprite_index.name,
                                 p.editor_data.XStart,
                                 p.editor_data.YStart,
                                 (float)_rotateCurrent,
@@ -588,7 +588,7 @@ namespace MapEditor.Components
 
                         if (Manager.Project.SelectedInstance != null)
                         {
-                            GMRoomInstance p = Manager.Project.SelectedInstance;
+                            GmsRoomInstance p = Manager.Project.SelectedInstance;
                             this._rotateStart = MathMethods.PointDirection(p.x, p.y, _mx, _my);
                             Manager.MainWindow.statusLabelMousePos.Text = _rotateStart.ToString();
                         }
@@ -681,11 +681,11 @@ namespace MapEditor.Components
         {
             if (Manager.Project.Instance == null) return;
 
-            GMRoomInstance instance = new GMRoomInstance()
+            GmsRoomInstance instance = new GmsRoomInstance()
             {
                 x = _mouseX /*- Manager.Project.Instance.offsetX*/,
                 y = _mouseY /*- Manager.Project.Instance.offsetY*/,
-                linkedObj = Manager.Project.Instance
+                instance_of = Manager.Project.Instance
             };
             //instance.editor_data.Element = Manager.Project.Instance;
             instance.editor_data.Layer = Manager.Room.Layers[Manager.Room.LastUsedLayer].LayerDepth;
@@ -730,8 +730,8 @@ namespace MapEditor.Components
                 //int counter = 0;
                 //int foundId = 0;
                 double distance = 100000;
-                GMRoomInstance found = null;
-                foreach (GMRoomInstance pinstance in Manager.Room.instances)
+                GmsRoomInstance found = null;
+                foreach (GmsRoomInstance pinstance in Manager.Room.instances)
                 {
                     //if (Manager.Room.Layers[Manager.MainWindow.tbLayerDropDown.SelectedIndex].LayerDepth != pinstance.editor_data.Layer)
                     //    continue;

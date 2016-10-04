@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -19,6 +20,7 @@ namespace MapEditor.Common
 
     public class GmsResource
     {
+        public const string undefined = "<undefined>";
         public string name;
         public GmsResourceType resourceType = GmsResourceType.undefined;
 
@@ -77,7 +79,7 @@ namespace MapEditor.Common
 
         protected override void _load(string new_name)
         {
-            if (new_name != GMSpriteData.undefinedSprite)
+            if (new_name != GmsResource.undefined)
             {
                 XmlDocument XMLfile = new XmlDocument();
                 XMLfile.Load(Manager.Project.ProjectSource + "\\sprites\\" + new_name + ".sprite.gmx");
@@ -127,6 +129,12 @@ namespace MapEditor.Common
         public string code = "";
         public float scaleX, scaleY, rotation;
         public uint colour;
+
+        public GMRoomInstanceEditorData editor_data;
+        public GmsRoomInstance()
+        {
+            editor_data = new GMRoomInstanceEditorData() { parent = this };
+        }
     }
 
     public class GmsRoom : GmsResource
@@ -137,6 +145,13 @@ namespace MapEditor.Common
         public AmeRoom _e;
 
         public GmsRoom(string name) : base(name) { }
+
+        //todo: remove
+        public ObservableCollection<MapLayers> Layers
+        {
+            get { return Manager.Project.RoomLayers; }
+        }
+        public int LastUsedLayer = 0;
     }
 
     public class AmeRoom

@@ -22,10 +22,10 @@ namespace MapEditor.Common
         public string ProjectSource = "";
         public bool Saved = false;
         public bool Loaded = false;
-        private GMRoom _Room = null;
+        private GmsRoom _Room = null;
         private GmsObject _Instance = null;
-        private GMRoomInstance _HighlightedInstance = null;
-        private GMRoomInstance _SelectedInstance = null;
+        private GmsRoomInstance _HighlightedInstance = null;
+        private GmsRoomInstance _SelectedInstance = null;
         //public List<PlaceableElement> PlaceableList = new List<PlaceableElement>();
         //public List<MapRoom> RoomList = new List<MapRoom>();
         //public List<GMSpriteData> GMXSprites = new List<GMSpriteData>();
@@ -33,13 +33,13 @@ namespace MapEditor.Common
         public ObservableCollection<BrushGroup> BrushGroups = new ObservableCollection<BrushGroup>();
         public ObservableCollection<MapLayers> RoomLayers = new ObservableCollection<MapLayers>();
 
-        public List<GMRoom> GMRooms = new List<GMRoom>();
-        public GMItem allItems = null;
+        public List<GmsRoom> GMRooms = new List<GmsRoom>();
+        //public GMItem allItems = null;
         public string defaultPlaceable = "oEnvMain";
 
         #region Magical Properties
 
-        public GMRoom Room
+        public GmsRoom Room
         {
             get { return _Room; }
             set
@@ -59,13 +59,13 @@ namespace MapEditor.Common
             set { _Instance = (_Room == null) ? null : value; }
         }
 
-        public GMRoomInstance HighlightedInstance
+        public GmsRoomInstance HighlightedInstance
         {
             get { return (_Room == null) ? null : _HighlightedInstance; }
             set { _HighlightedInstance = value; }
         }
 
-        public GMRoomInstance SelectedInstance
+        public GmsRoomInstance SelectedInstance
         {
             get { return (_Room == null) ? null : _SelectedInstance; }
             set
@@ -413,7 +413,7 @@ namespace MapEditor.Common
         //}
 
         public List<GmsResource> GmsResourceTree = new List<GmsResource>();
-        public List<GmsSprite> GmsResourceSpriteList = new List<GmsSprite>() { (new GmsSprite(GMSpriteData.undefinedSprite){}) };
+        public List<GmsSprite> GmsResourceSpriteList = new List<GmsSprite>() { (new GmsSprite(GmsResource.undefined){}) };
         public List<GmsBackground> GmsResourceBackgroundList = new List<GmsBackground>();
         public List<GmsObject> GmsResourceObjectList = new List<GmsObject>();
         public List<GmsRoom> GmsResourceRoomList = new List<GmsRoom>();
@@ -432,13 +432,13 @@ namespace MapEditor.Common
                 return;
             }
 
-            string nodeElementsName;
+            //string nodeElementsName;
             XmlNode root;
-            allItems = new GMItem(Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(GmxFilename)));
+            //allItems = new GMItem(Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(GmxFilename)));
             string[] resTree = new string[] { "sprites", "backgrounds", "scripts", "objects", "rooms" };
 
             // none sprite add
-            GMItem noneSprite = new GMItem(GMSpriteData.undefinedSprite) { ResourceType = GMItemType.Sprite, isGroup = false };
+            //GMItem noneSprite = new GMItem(GmsResource.undefined) { ResourceType = GMItemType.Sprite, isGroup = false };
             //GMXSprites.Add(new GMSpriteData() { offsetX = 0, offsetY = 0, firstFramePath = "", owner = noneSprite });
 
             foreach (string resourceType in resTree)
@@ -466,45 +466,45 @@ namespace MapEditor.Common
             }
 
 
-            foreach (string nodeName in resTree)
-            {
-                try
-                {
-                    root = XMLfile.SelectSingleNode("assets/" + nodeName);
+            //foreach (string nodeName in resTree)
+            //{
+            //    try
+            //    {
+            //        root = XMLfile.SelectSingleNode("assets/" + nodeName);
 
-                    if (root == null)
-                    {
-                        return;
-                    }
+            //        if (root == null)
+            //        {
+            //            return;
+            //        }
 
-                    nodeElementsName = nodeName;//root.Attributes["name"].InnerText;
+            //        nodeElementsName = nodeName;//root.Attributes["name"].InnerText;
 
-                    //TreeNode main = treeViewGMX.Nodes.Paint(fup(nodeElementsName), fup(nodeElementsName));
+            //        //TreeNode main = treeViewGMX.Nodes.Paint(fup(nodeElementsName), fup(nodeElementsName));
 
-                    GMItem main = new GMItem(nodeElementsName);
-                    allItems.add(main);
+            //        //GMItem main = new GMItem(nodeElementsName);
+            //        //allItems.add(main);
 
-                    _readSubNode(root, nodeName, nodeElementsName, main);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(nodeName + ": " + e.Message);
-                }
-            }
+            //        _readSubNode(root, nodeName, nodeElementsName, main);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        MessageBox.Show(nodeName + ": " + e.Message);
+            //    }
+            //}
 
             BrushGroups = new ObservableCollection<BrushGroup>();
             BrushGroup defaultBrushGroup = new BrushGroup() { GroupName = "Default", isDefault = true };
             BrushGroups.Add(defaultBrushGroup);
 
             //List<string> objects = Manager.Project.renderItemsList("objects");
-            //addUsedRes(GMSpriteData.undefinedSprite);
+            //addUsedRes(GmsResource.undefined);
 
             //foreach (GMObjectData obj in GMXObjects)
             //{
             //    PlaceableElement el = new PlaceableElement()
             //    {
             //        Name = obj.Name,
-            //        Sprite = (obj.sprite != null) ? obj.sprite.Name : GMSpriteData.undefinedSprite,
+            //        Sprite = (obj.sprite != null) ? obj.sprite.Name : GmsResource.undefined,
             //        Parent = "",
             //    };
 
@@ -579,7 +579,7 @@ namespace MapEditor.Common
                 }
                 else
                 {
-                    GMRoom room = new GMRoom() { name = node.InnerText.Replace("rooms\\", "") };
+                    GmsRoom room = new GmsRoom(node.InnerText.Replace("rooms\\", "").ToString());
 
                     XmlDocument roomData = new XmlDocument();
                     roomData.Load(ProjectSource + "/" + node.InnerText + ".room.gmx");
@@ -595,19 +595,19 @@ namespace MapEditor.Common
                         {
                             try
                             {
-                                GMRoomInstance inst = new GMRoomInstance();
+                                GmsRoomInstance inst = new GmsRoomInstance();
                                 {
                                     inst.objName = inode.Attributes["objName"].InnerText;
                                     inst.x = Int32.Parse(inode.Attributes["x"].InnerText, CultureInfo.InvariantCulture);
                                     inst.y = Int32.Parse(inode.Attributes["y"].InnerText, CultureInfo.InvariantCulture);
-                                    inst.gms_id = inode.Attributes["name"].InnerText;
+                                    inst.name = inode.Attributes["name"].InnerText;
                                     inst.locked = inode.Attributes["locked"].InnerText == "1" ? true : false;
                                     inst.code = inode.Attributes["code"].InnerText;
                                     inst.scaleX = float.Parse(inode.Attributes["scaleX"].InnerText, CultureInfo.InvariantCulture);
                                     inst.scaleY = float.Parse(inode.Attributes["scaleY"].InnerText, CultureInfo.InvariantCulture);
                                     inst.colour = UInt32.Parse(inode.Attributes["colour"].InnerText, CultureInfo.InvariantCulture);
                                     inst.rotation = float.Parse(inode.Attributes["rotation"].InnerText, CultureInfo.InvariantCulture);
-                                    inst.linkedObj = GmsResourceObjectList.Find(n => n.name == inode.Attributes["objName"].InnerText);
+                                    inst.instance_of = GmsResourceObjectList.Find(n => n.name == inode.Attributes["objName"].InnerText);
                                 };
                                 //inst.editor_data.Element = PlaceableList.Find(item => item.Name == inst.objName);
                                 room.instances.Add(inst);
@@ -624,29 +624,29 @@ namespace MapEditor.Common
             }
         }
 
-        private void _readSubNode(XmlNode node, string nodeName, string nodeElementsName, GMItem main)
-        {
-            foreach (XmlNode n in node)
-            {
-                if (n.Attributes["name"] != null)
-                {
-                    // group
-                    //TreeNode sub = main.Nodes.Paint(n.Attributes["name"].InnerText);
-                    GMItem sub = new GMItem(n.Attributes["name"].InnerText);
-                    _readSubNode(n, nodeName, nodeElementsName, sub);
-                    main.add(sub);
-                }
-                else
-                {
-                    //TreeNode sub = main.Nodes.Paint(n.InnerText, Path.GetFileName(n.InnerText));
-                    //sub.ImageIndex = sub.SelectedImageIndex = 1;
-                    //sub.ContextMenuStrip = contextMenuStrip2;
-                    string name = (nodeName == "scripts") ? /*n.InnerText*/ Path.GetFileName(n.InnerText) /*+ ".gml"*/ : Path.GetFileName(n.InnerText)/*n.InnerText + "." + n.Name + ".gmx"*/;
-                    GMItem sub = new GMItem(name, nodeName);
-                    main.add(sub);
-                }
-            }
-        }
+        //private void _readSubNode(XmlNode node, string nodeName, string nodeElementsName, GMItem main)
+        //{
+        //    foreach (XmlNode n in node)
+        //    {
+        //        if (n.Attributes["name"] != null)
+        //        {
+        //            // group
+        //            //TreeNode sub = main.Nodes.Paint(n.Attributes["name"].InnerText);
+        //            GMItem sub = new GMItem(n.Attributes["name"].InnerText);
+        //            _readSubNode(n, nodeName, nodeElementsName, sub);
+        //            main.add(sub);
+        //        }
+        //        else
+        //        {
+        //            //TreeNode sub = main.Nodes.Paint(n.InnerText, Path.GetFileName(n.InnerText));
+        //            //sub.ImageIndex = sub.SelectedImageIndex = 1;
+        //            //sub.ContextMenuStrip = contextMenuStrip2;
+        //            string name = (nodeName == "scripts") ? /*n.InnerText*/ Path.GetFileName(n.InnerText) /*+ ".gml"*/ : Path.GetFileName(n.InnerText)/*n.InnerText + "." + n.Name + ".gmx"*/;
+        //            GMItem sub = new GMItem(name, nodeName);
+        //            main.add(sub);
+        //        }
+        //    }
+        //}
 
         public void renderItemsTree(TreeView Tree)
         {
@@ -657,50 +657,50 @@ namespace MapEditor.Common
         {
             Dropdown.Items.Clear();
 
-            _renderObjectsForNode(Dropdown, Manager.Project.allItems.Find("objects"));
+            _renderObjectsForNode(Dropdown, Manager.Project.GmsResourceObjectList);
 
             Dropdown.SelectedIndex = Dropdown.Items.IndexOf(this.defaultPlaceable);
         }
 
-        private void _renderObjectsForNode(ComboBox Dropdown, GMItem _node)
+        private void _renderObjectsForNode(ComboBox Dropdown, List<GmsObject> _node)
         {
             if (_node == null) return;
 
-            foreach (GMItem _object in _node.getSubitems())
+            foreach (GmsObject _object in _node/*.getSubitems()*/)
             {
-                if (_object.isGroup)
-                {
-                    _renderObjectsForNode(Dropdown, _object);
-                }
-                else
-                {
-                    Dropdown.Items.Add(_object.Name);
-                }
+                //if (_object.isGroup)
+                //{
+                //    _renderObjectsForNode(Dropdown, _object);
+                //}
+                //else
+                //{
+                    Dropdown.Items.Add(_object.name);
+                //}
             }
         }
 
         public void renderItemsTree(TreeView Tree, bool skipNonProjectNodes)
         {
             Tree.Nodes.Clear();
-            TreeNode NodeGM = Tree.Nodes.Add("NodeGM", "Project: " + Manager.Project.GmxFilename);
+            //TreeNode NodeGM = Tree.Nodes.Add("NodeGM", "Project: " + Manager.Project.GmxFilename);
 
-            if (skipNonProjectNodes == false)
-            {
-                Tree.Nodes.Add("NodeInternal", "Internal Files");
-            }
+            //if (skipNonProjectNodes == false)
+            //{
+            //    Tree.Nodes.Add("NodeInternal", "Internal Files");
+            //}
 
-            //TreeNode t = treeViewGMX.Nodes["NodeGM"].Nodes.Paint(Manager.Project.allItems.Name);
-            Tree.ExpandAll();
+            ////TreeNode t = treeViewGMX.Nodes["NodeGM"].Nodes.Paint(Manager.Project.allItems.Name);
+            //Tree.ExpandAll();
 
-            if (skipNonProjectNodes == false)
-            {
-                _treeAddGMItemGroup(NodeGM, Manager.Project.allItems.getSubitems());
-            }
-            else
-            {
-                _treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find("sprites") });
-                _treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find("backgrounds") });
-            }
+            //if (skipNonProjectNodes == false)
+            //{
+            //    _treeAddGMItemGroup(NodeGM, Manager.Project.allItems.getSubitems());
+            //}
+            //else
+            //{
+            //    _treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find("sprites") });
+            //    _treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find("backgrounds") });
+            //}
         }
 
         public void renderItemsTree(TreeView Tree, string group)
@@ -708,78 +708,78 @@ namespace MapEditor.Common
             Tree.Nodes.Clear();
             TreeNode NodeGM = Tree.Nodes.Add("NodeGM", "Project: " + Manager.Project.GmxFilename);
 
-            _treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find(group) });
+            //_treeAddGMItemGroup(NodeGM, new List<GMItem>() { Manager.Project.allItems.Find(group) });
         }
 
         public List<string> renderItemsList(string group)
         {
             List<string> list = new List<string>();
-            _renderItemList(list, Manager.Project.allItems.Find("objects"));
+            //_renderItemList(list, Manager.Project.allItems.Find("objects"));
             return list;
         }
 
-        protected void _renderItemList(List<string> list, GMItem _node)
-        {
-            if (_node == null) return;
+        //protected void _renderItemList(List<string> list, GMItem _node)
+        //{
+        //    if (_node == null) return;
 
-            foreach (GMItem _object in _node.getSubitems())
-            {
-                if (_object.isGroup)
-                {
-                    _renderItemList(list, _object);
-                }
-                else
-                {
-                    list.Add(_object.Name);
-                }
-            }
-        }
+        //    foreach (GMItem _object in _node.getSubitems())
+        //    {
+        //        if (_object.isGroup)
+        //        {
+        //            _renderItemList(list, _object);
+        //        }
+        //        else
+        //        {
+        //            list.Add(_object.Name);
+        //        }
+        //    }
+        //}
 
-        private bool _treeAddGMItemGroup(TreeNode t, List<GMItem> items)
-        {
-            bool anyChecked = false;
+        //private bool _treeAddGMItemGroup(TreeNode t, List<GMItem> items)
+        //{
+        //    bool anyChecked = false;
 
-            foreach (GMItem item in items)
-            {
-                TreeNode newT = t.Nodes.Add(item.Name, item.Name);
+        //    foreach (GMItem item in items)
+        //    {
+        //        TreeNode newT = t.Nodes.Add(item.Name, item.Name);
 
-                if (item.isGroup)
-                {
-                    bool anySubChecked = false;
-                    newT.ImageIndex = 0;
-                    newT.SelectedImageIndex = 1;
-                    anySubChecked = _treeAddGMItemGroup(newT, item.getSubitems());
-                    // Tree node doesn't support indeterminade :(
-                    //if (anySubChecked)
-                    //{
-                    //    newT.Check
-                    //}
-                    anyChecked |= anySubChecked;
-                }
-                else
-                {
-                    newT.ImageIndex = 3;
-                    switch (item.ResourceType)
-                    {
-                        case GMItemType.Background:
-                        case GMItemType.Sprite: newT.ImageIndex = 6; break;
-                        case GMItemType.Script: newT.ImageIndex = 5; break;
-                    }
-                    newT.SelectedImageIndex = newT.ImageIndex;
-                    if (item.used == GMItemUsage.used)
-                    {
-                        if (t.TreeView.CheckBoxes)
-                        {
-                            newT.Checked = true;
-                            anyChecked = true;
-                        }
-                        newT.StateImageIndex = 7;
-                    }
-                }
-            }
+        //        if (item.isGroup)
+        //        {
+        //            bool anySubChecked = false;
+        //            newT.ImageIndex = 0;
+        //            newT.SelectedImageIndex = 1;
+        //            anySubChecked = _treeAddGMItemGroup(newT, item.getSubitems());
+        //            // Tree node doesn't support indeterminade :(
+        //            //if (anySubChecked)
+        //            //{
+        //            //    newT.Check
+        //            //}
+        //            anyChecked |= anySubChecked;
+        //        }
+        //        else
+        //        {
+        //            newT.ImageIndex = 3;
+        //            switch (item.ResourceType)
+        //            {
+        //                case GMItemType.Background:
+        //                case GMItemType.Sprite: newT.ImageIndex = 6; break;
+        //                case GMItemType.Script: newT.ImageIndex = 5; break;
+        //            }
+        //            newT.SelectedImageIndex = newT.ImageIndex;
+        //            if (item.used == GMItemUsage.used)
+        //            {
+        //                if (t.TreeView.CheckBoxes)
+        //                {
+        //                    newT.Checked = true;
+        //                    anyChecked = true;
+        //                }
+        //                newT.StateImageIndex = 7;
+        //            }
+        //        }
+        //    }
 
-            return anyChecked;
-        }
+        //    return anyChecked;
+        //}
 
         /*public void resetUsedRes()
         {
@@ -855,9 +855,9 @@ namespace MapEditor.Common
             if (Room == null) return;
             ListBoxEx list = Manager.MainWindow.lbInstances;
             list.Items.Clear();
-            foreach (GMRoomInstance instance in Room.instances)
+            foreach (GmsRoomInstance instance in Room.instances)
             {
-                list.Items.Add(instance.objName + ": " + instance.gms_id);
+                list.Items.Add(instance.objName + ": " + instance.name);
             }
         }
 
@@ -865,7 +865,7 @@ namespace MapEditor.Common
         {
             ListBoxEx list = Manager.MainWindow.lbRooms;
             list.Items.Clear();
-            foreach (GMRoom elem in GMRooms)
+            foreach (GmsRoom elem in GMRooms)
             {
                 list.Items.Add(elem.name);
             }
@@ -885,7 +885,7 @@ namespace MapEditor.Common
                 form.loadingBar.Maximum = this.GmsResourceObjectList.Count;
                 form.loadingBar.Value = 0;
 
-                GraphicsManager.LoadTexture(GMSpriteData.undefinedSprite, new Bitmap(Manager.MainWindow.imageListObjects.Images[GMSpriteData.undefinedSprite]));
+                GraphicsManager.LoadTexture(GmsResource.undefined, new Bitmap(Manager.MainWindow.imageListObjects.Images[GmsResource.undefined]));
 
                 //foreach (string file in RegisteredResources)
                 // LOAD ONLY SPRITES ASSIGNED TO OBJECTS, SKIP ELSE
@@ -907,7 +907,7 @@ namespace MapEditor.Common
                             }
                             else// if (itm.name == null)
                             {
-                                GraphicsManager.LoadTexture(itm.name, new Bitmap(Manager.MainWindow.imageListObjects.Images[GMSpriteData.undefinedSprite]));
+                                GraphicsManager.LoadTexture(itm.name, new Bitmap(Manager.MainWindow.imageListObjects.Images[GmsResource.undefined]));
                             }
                         }
 
@@ -1006,7 +1006,7 @@ namespace MapEditor.Common
                 foreach (string name in group.objects)
                 {
                     GmsSprite sprite = Manager.Project.GmsResourceObjectList.Find(item => item.name == name).sprite_index;
-                    ListViewItem o = new ListViewItem() { Text = name, ImageKey = (sprite == null) ? GMSpriteData.undefinedSprite : sprite.name };
+                    ListViewItem o = new ListViewItem() { Text = name, ImageKey = (sprite == null) ? GmsResource.undefined : sprite.name };
                     o.Group = gr;
                     l.Items.Add(o);
                 }
