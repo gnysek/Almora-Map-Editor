@@ -77,6 +77,8 @@ namespace MapEditor.Components
 
         public bool GridEnabled = true;
 
+        public bool BackgroundDraw = true;
+
         #region drawGrid
         private void DrawGrid()
         {
@@ -88,8 +90,8 @@ namespace MapEditor.Components
                 int y2 = 0;
                 Size canvas = getCurrentCanvas();//new Size(this.Width, this.Height);
                 // Calculate line amounts.
-                int cols = (int)(canvas.Width / (_gridX / _zoom)) + 2;
-                int rows = (int)(canvas.Height / (_gridY / _zoom)) + 2;
+                int cols = (int)(canvas.Width / (_gridX / _zoom)) + 1;
+                int rows = (int)(canvas.Height / (_gridY / _zoom)) + 1;
 
                 // Grid color.
                 Color color = Color.FromArgb(128, Color.Black);
@@ -107,7 +109,7 @@ namespace MapEditor.Components
                     x1 = (col * (_gridX / _zoom) + snap.X);
                     y1 = snap.Y;
                     x2 = x1;//col * _gridX + snap.X;
-                    y2 = (int)(canvas.Height /*/ _zoom*/) + snap.Y + _gridY;
+                    y2 = (int)(canvas.Height /*/ _zoom*/) + snap.Y;
 
                     // Draw line.
                     GraphicsManager.DrawLineCache(x1, y1, x2, y2, color);
@@ -119,7 +121,7 @@ namespace MapEditor.Components
                     // Calculate coordinates.
                     x1 = snap.X;
                     y1 = (row * (_gridY / _zoom) + snap.Y);
-                    x2 = (int)(canvas.Width /*/ _zoom*/) + snap.X + _gridX;
+                    x2 = (int)(canvas.Width /*/ _zoom*/) + snap.X;
                     y2 = y1;//row * _gridY + snap.Y;
 
                     // Draw line.
@@ -198,16 +200,78 @@ namespace MapEditor.Components
 
             if (Manager.Room == null) return size;
 
-            if (ClientSize.Width > Manager.Room.width)
+            if (ClientSize.Width > Manager.Room.width / Zoom)
             {
-                size.Width = Manager.Room.width;
+                size.Width = Manager.Room.width / Zoom;
             }
-            if (ClientSize.Height > Manager.Room.height)
+            if (ClientSize.Height > Manager.Room.height / Zoom)
             {
-                size.Height = Manager.Room.height;
+                size.Height = Manager.Room.height / Zoom;
             }
 
             return size;
+        }
+
+        private void DrawBackground()
+        {
+            if (Manager.Room.width / Zoom < this.Width)
+            {
+                GraphicsManager.DrawLineCache(Manager.Room.width / Zoom, 0, Manager.Room.width / Zoom, Math.Min(Manager.Room.height / Zoom, this.Height) + 1, Color.Red);
+            }
+
+            if (Manager.Room.height / Zoom < this.Height)
+            {
+                GraphicsManager.DrawLineCache(0, Manager.Room.height / Zoom, Math.Min(Manager.Room.width / Zoom, this.Width) + 1, Manager.Room.height / Zoom, Color.Red);
+            }
+
+            //TODO: pre-cache it
+            if (this.BackgroundDraw && Manager.Room.background != null && Manager.Room.background.image != null)
+            {
+                int width = GraphicsManager.Sprites["@bg:" + Manager.Room.background.name].Width;
+                int height = GraphicsManager.Sprites["@bg:" + Manager.Room.background.name].Height;
+
+                GraphicsManager.DrawRectangle(
+                    new Rectangle(0, 0, this.Width, this.Height), Color.White, false
+                );
+
+                for (int i = (Offset.X - Offset.X % width); i < Offset.X + this.Width * Zoom; i += width)
+                {
+                    for (int j = (Offset.Y - Offset.Y % height); j < Offset.Y + this.Height * Zoom; j += height)
+                    {
+                        GraphicsManager.DrawSprite("@bg:" + Manager.Room.background.name, i, j, 0, Color.White);
+                    }
+                }
+            }
+            else
+            {
+                // Draw background pattern
+                int sq = 0;
+                int lastStartedFrom = 1;
+
+                int x_size = _gridX / 2, y_size = _gridY / 2;
+                int xstart = Offset.X - (Offset.X % x_size);
+                int ystart = Offset.Y - (Offset.Y % y_size);
+
+                for (int i = 0; i < Math.Min(Manager.Room.width / Zoom, this.Width); i += x_size)
+                {
+                    if (lastStartedFrom == sq % 2)
+                    {
+                        sq++;
+                    }
+
+                    lastStartedFrom = sq % 2;
+
+                    for (int j = 0; j < Math.Min(Manager.Room.height / Zoom, this.Height); j += y_size)
+                    {
+                        GraphicsManager.DrawRectangle(
+                            new Rectangle(xstart + i, ystart + j, x_size + 1, y_size + 1),
+                            (sq % 2 == 1) ? Color.Silver : Color.White,
+                            false
+                            );
+                        sq++;
+                    }
+                }
+            }
         }
 
         private void DrawInstances()
@@ -224,38 +288,38 @@ namespace MapEditor.Components
                 //        if (!layer.Active) continue;
                 //    }
 
-                    Color defaultLayerColor = Color.Gray;
-                    defaultLayerColor = Color.White;//todo - if proper layer
-                    //if (layer.LayerDepth == selectedLayerDepth) defaultLayerColor = Color.White;
+                Color defaultLayerColor = Color.Gray;
+                defaultLayerColor = Color.White;//todo - if proper layer
+                //if (layer.LayerDepth == selectedLayerDepth) defaultLayerColor = Color.White;
 
-                    foreach (GmsRoomInstance instance in Manager.Room.instances)
+                foreach (GmsRoomInstance instance in Manager.Room.instances)
+                {
+                    //if (instance.editor_data.Layer != layer.LayerDepth) continue;
+
+                    Color color = defaultLayerColor;
+                    if (Manager.Project.HighlightedInstance == instance) color = Color.Yellow;
+                    if (Manager.Project.SelectedInstance == instance) color = Color.Red;
+
+                    if (instance.instance_of.sprite_index != null)
                     {
-                        //if (instance.editor_data.Layer != layer.LayerDepth) continue;
+                        //GraphicsManager.DrawSprite(instance.Element.textureId, instance.XCenter / _zoom, instance.YCenter / _zoom, instance.Rotation, color);
 
-                        Color color = defaultLayerColor;
-                        if (Manager.Project.HighlightedInstance == instance) color = Color.Yellow;
-                        if (Manager.Project.SelectedInstance == instance) color = Color.Red;
+                        //try
+                        //{
+                        GraphicsManager.DrawSprite(instance.instance_of.sprite_index.name, instance.editor_data.XStart, instance.editor_data.YStart, instance.rotation, color); //instance.linkedObj.sprite_index.name
+                        //}
+                        //catch (Exception e)
+                        //{
+                        //    MessageBox.Show(e.StackTrace.ToString());
+                        //}
 
-                        if (instance.instance_of.sprite_index != null)
+                        /*if (instance.Element.MultiDraw)
                         {
-                            //GraphicsManager.DrawSprite(instance.Element.textureId, instance.XCenter / _zoom, instance.YCenter / _zoom, instance.Rotation, color);
-
-                            //try
-                            //{
-                            GraphicsManager.DrawSprite(instance.instance_of.sprite_index.name, instance.editor_data.XStart, instance.editor_data.YStart, instance.rotation, color); //instance.linkedObj.sprite_index.name
-                            //}
-                            //catch (Exception e)
-                            //{
-                            //    MessageBox.Show(e.StackTrace.ToString());
-                            //}
-
-                            /*if (instance.Element.MultiDraw)
-                            {
-                                GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, instance.Rotation + 90, color);
-                            }*/
-                            //GraphicsManager.draw
-                        }
+                            GraphicsManager.DrawSprite(instance.Element.textureId, instance.XStart, instance.YStart, instance.Rotation + 90, color);
+                        }*/
+                        //GraphicsManager.draw
                     }
+                }
                 //    layerCounter++;
                 //}
 
@@ -422,31 +486,12 @@ namespace MapEditor.Components
                 // Begin drawing the scene.
                 GraphicsManager.BeginScene();
 
-                // Draw background pattern
-                int sq = 0;
-                int lastStartedFrom = 1;
-                for (int i = 0; i < Math.Min(Manager.Room.width, this.Width); i += _gridX / 2)
-                {
-                    if (lastStartedFrom == sq % 2)
-                    {
-                        sq++;
-                    }
-
-                    lastStartedFrom = sq % 2;
-
-                    for (int j = 0; j < Math.Min(Manager.Room.height, this.Height); j += _gridY / 2)
-                    {
-                        GraphicsManager.DrawRectangle(
-                            new Rectangle(Offset.X + i, Offset.Y + j, 30, 30),
-                            (sq % 2 == 1) ? Color.Silver : Color.White,
-                            false
-                            );
-                        sq++;
-                    }
-                }
+                DrawBackground();
 
                 //GraphicsManager.DrawRectangle(new Rectangle(Offset.X, Offset.Y, Math.Min(Manager.Room.Width, this.Width) + 1, Math.Min(Manager.Room.Height, this.Height) + 1), Color.Orange, false);
                 GraphicsManager.Scissor = new Rectangle(0, 0, this.Width, this.Height);
+
+
 
                 // draw instances
                 DrawInstances();
@@ -605,77 +650,77 @@ namespace MapEditor.Components
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
-		{
-			base.OnMouseUp(e);
+        {
+            base.OnMouseUp(e);
 
-			if (Manager.Room == null) return;
+            if (Manager.Room == null) return;
 
-			switch (e.Button)
-			{
-				case System.Windows.Forms.MouseButtons.Left:
-					switch (CurrentBrush)
-					{
-						case BrushMode.Select:
+            switch (e.Button)
+            {
+                case System.Windows.Forms.MouseButtons.Left:
+                    switch (CurrentBrush)
+                    {
+                        case BrushMode.Select:
 
-							if (Manager.Project.HighlightedInstance != null)
-							{
-								Manager.Project.SelectedInstance = Manager.Project.HighlightedInstance;
-								//MessageBox.Show(Manager.Project.HighlightedInstance.Element.Name + Manager.Room.Instances.IndexOf(Manager.Project.HighlightedInstance).ToString());
-							}
+                            if (Manager.Project.HighlightedInstance != null)
+                            {
+                                Manager.Project.SelectedInstance = Manager.Project.HighlightedInstance;
+                                //MessageBox.Show(Manager.Project.HighlightedInstance.Element.Name + Manager.Room.Instances.IndexOf(Manager.Project.HighlightedInstance).ToString());
+                            }
 
-							/*int counter = 0;
-							int foundId = 0;
-							double distance = 1000000;
-							PlaceableInstance found = null;
-							foreach (PlaceableInstance pinstance in Manager.Room.Instances)
-							{
-								double dist = pointDistance(pinstance.X, pinstance.Y, _mx, _my);
-								if (dist < distance)
-								{
-									distance = dist;
-									found = pinstance;
-									foundId = counter;
-								}
-								counter++;
-							}
-							MessageBox.Show(found.Element.Name + "[" + foundId.ToString() + "]");*/
+                            /*int counter = 0;
+                            int foundId = 0;
+                            double distance = 1000000;
+                            PlaceableInstance found = null;
+                            foreach (PlaceableInstance pinstance in Manager.Room.Instances)
+                            {
+                                double dist = pointDistance(pinstance.X, pinstance.Y, _mx, _my);
+                                if (dist < distance)
+                                {
+                                    distance = dist;
+                                    found = pinstance;
+                                    foundId = counter;
+                                }
+                                counter++;
+                            }
+                            MessageBox.Show(found.Element.Name + "[" + foundId.ToString() + "]");*/
 
-							break;
-						case BrushMode.Paint:
+                            break;
+                        case BrushMode.Paint:
                             this._onInstancePaint();
-							break;
-						case BrushMode.Move:
-							if (_drag)
-							{
-								if (Manager.Project.SelectedInstance != null)
-								{
-									Manager.Project.SelectedInstance.x = _mouseX;
-									Manager.Project.SelectedInstance.y = _mouseY;
-								}
-							}
-							_drag = false;
-							break;
-						case BrushMode.Rotate:
-							if (_drag)
-							{
-								if (Manager.Project.SelectedInstance != null)
-								{
-									Manager.Project.SelectedInstance.rotation = _rotateCurrent;
-									//(int)(Manager.Project.SelectedInstance.Rotation + pointDistance(Manager.Project.SelectedInstance.XCenter, Manager.Project.SelectedInstance.YCenter, _mx, _my)) % 360;
-								}
-							}
-							_drag = false;
-							break;
+                            break;
+                        case BrushMode.Move:
+                            if (_drag)
+                            {
+                                if (Manager.Project.SelectedInstance != null)
+                                {
+                                    Manager.Project.SelectedInstance.x = _mouseX;
+                                    Manager.Project.SelectedInstance.y = _mouseY;
+                                }
+                            }
+                            _drag = false;
+                            break;
+                        case BrushMode.Rotate:
+                            if (_drag)
+                            {
+                                if (Manager.Project.SelectedInstance != null)
+                                {
+                                    Manager.Project.SelectedInstance.rotation = _rotateCurrent;
+                                    //(int)(Manager.Project.SelectedInstance.Rotation + pointDistance(Manager.Project.SelectedInstance.XCenter, Manager.Project.SelectedInstance.YCenter, _mx, _my)) % 360;
+                                }
+                            }
+                            _drag = false;
+                            break;
 
-					}
-					break;
-			}
+                    }
+                    break;
+            }
 
-			Manager.MainWindow.brushPlaceableUpdatePositionAndRotation();
+            Manager.MainWindow.brushPlaceableUpdatePositionAndRotation();
 
-			// Force redraw
-			Invalidate();
-		}
+            // Force redraw
+            Invalidate();
+        }
 
         protected void _onInstancePaint()
         {
@@ -693,7 +738,7 @@ namespace MapEditor.Components
 
                 Random rnd = new Random();
 
-                rotation = start + ((float)rnd.NextDouble() *  (end - start));
+                rotation = start + ((float)rnd.NextDouble() * (end - start));
             }
 
             GmsRoomInstance instance = new GmsRoomInstance()

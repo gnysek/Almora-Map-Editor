@@ -194,7 +194,7 @@ namespace MapEditor.Components
 			}
 			else if (_listBoxType == ListType.Rooms)
 			{
-				addText += "Instances: " + Manager.Project.GMRooms[itemNumber].instances.Count.ToString();
+				addText += "Instances: " + Manager.Project.GmsResourceRoomList[itemNumber].instances.Count.ToString();
 			}
 			else if (_listBoxType == ListType.Placeables)
 			{
