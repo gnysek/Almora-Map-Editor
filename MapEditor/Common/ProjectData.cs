@@ -33,7 +33,7 @@ namespace MapEditor.Common
         public ObservableCollection<BrushGroup> BrushGroups = new ObservableCollection<BrushGroup>();
         public ObservableCollection<MapLayers> RoomLayers = new ObservableCollection<MapLayers>();
 
-        public List<GmsRoom> GMRooms = new List<GmsRoom>();
+        //public List<GmsRoom> GMRooms = new List<GmsRoom>();
         //public GMItem allItems = null;
         public string defaultPlaceable = "oEnvMain";
 
@@ -579,13 +579,31 @@ namespace MapEditor.Common
                 }
                 else
                 {
-                    GmsRoom room = new GmsRoom(node.InnerText.Replace("rooms\\", "").ToString());
+                    GmsRoom room = GmsResourceRoomList.Find(n => n.name == node.InnerText.Replace("rooms\\", "").ToString());
+
+                    if (room == null)
+                    {
+                        continue;
+                    }
 
                     XmlDocument roomData = new XmlDocument();
                     roomData.Load(ProjectSource + "/" + node.InnerText + ".room.gmx");
 
                     room.width = Int32.Parse(roomData.SelectSingleNode("room/width").InnerText);
                     room.height = Int32.Parse(roomData.SelectSingleNode("room/height").InnerText);
+                    string _name;
+
+                    try
+                    {
+                        _name = roomData.SelectSingleNode("room/backgrounds/background").Attributes["name"].InnerText;
+                        if (_name != "")
+                        {
+                            room.background = GmsResourceBackgroundList.Find(n => n.name == _name);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
 
                     XmlNode _instances = roomData.SelectSingleNode("room/instances");
 
@@ -619,7 +637,7 @@ namespace MapEditor.Common
                         }
                     }
 
-                    GMRooms.Add(room);
+                    //GMRooms.Add(room);
                 }
             }
         }
@@ -865,7 +883,7 @@ namespace MapEditor.Common
         {
             ListBoxEx list = Manager.MainWindow.lbRooms;
             list.Items.Clear();
-            foreach (GmsRoom elem in GMRooms)
+            foreach (GmsRoom elem in GmsResourceRoomList)
             {
                 list.Items.Add(elem.name);
             }
@@ -926,6 +944,23 @@ namespace MapEditor.Common
                         form.Refresh();
                     }
                     i++;
+                }
+
+                foreach(GmsRoom r in this.GmsResourceRoomList) {
+
+                    if (r.background != null && r.background.image != null)
+                    {
+                        string imgName = "@bg:" + r.background.name;
+
+                        if (!GraphicsManager.Sprites.ContainsKey(imgName))
+                        {
+                            if (File.Exists(r.background.image))
+                            {
+                                GraphicsManager.LoadTexture(imgName, new Bitmap(r.background.image));
+                            }
+                        }
+                    }
+
                 }
 
                 //foreach (PlaceableElement elem in PlaceableList)

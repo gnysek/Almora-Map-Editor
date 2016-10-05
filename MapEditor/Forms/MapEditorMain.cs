@@ -395,14 +395,14 @@ namespace MapEditor
             {
                 if (Manager.Room != null)
                 {
-                    if (Manager.Project.GMRooms[select] == Manager.Project.Room) return;
+                    if (Manager.Project.GmsResourceRoomList[select] == Manager.Project.Room) return;
                     if (MessageBox.Show("Do you want to close current room?", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                     {
                         return;
                     }
                 }
 
-                Manager.Project.Room = Manager.Project.GMRooms[select];
+                Manager.Project.Room = Manager.Project.GmsResourceRoomList[select];
                 //if (Manager.Project.Room.LastUsedLayer > -1 && Manager.Project.Room.LastUsedLayer < tbLayerDropDown.Items.Count)
                 //{
                 Manager.Project.Room.LastUsedLayer = Math.Max(0, Math.Min(Manager.Project.Room.LastUsedLayer, tbLayerDropDown.Items.Count - 1));
@@ -431,12 +431,12 @@ namespace MapEditor
             roomInfoLabelHeight.Text = Manager.Project.Room.height.ToString() + "px";
             roomInfoLabelInstancesNumber.Text = Manager.Project.Room.instances.Count.ToString();
 
-            int total = Manager.Project.GMRooms.Sum(r => r.instances.Count);
+            int total = Manager.Project.GmsResourceRoomList.Sum(r => r.instances.Count);
 
             int totalObjects = Manager.Project.GmsResourceObjectList.Count;
 
             roomInfoLabelOthers.Text =
-                "Total rooms: " + Manager.Project.GMRooms.Count.ToString() + Environment.NewLine +
+                "Total rooms: " + Manager.Project.GmsResourceRoomList.Count.ToString() + Environment.NewLine +
                 "Total instnaces in rooms: " + total.ToString() + Environment.NewLine +
                 "Total objects: " + totalObjects.ToString();
         }
@@ -606,6 +606,11 @@ namespace MapEditor
             brushPlaceableRotation.Text = "270";
         }
         #endregion
+
+        private void tbShowRoomBackground_Click(object sender, EventArgs e)
+        {
+            roomEditor1._rPanel.BackgroundDraw = ((ToolStripMenuItem)sender).Checked;
+        }
 
     }
 }
