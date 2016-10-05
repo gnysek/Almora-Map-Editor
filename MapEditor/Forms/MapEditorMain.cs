@@ -11,6 +11,7 @@ using MapEditor.Forms;
 using MapEditor.Common;
 using MapEditor.Graphics;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace MapEditor
 {
@@ -439,6 +440,35 @@ namespace MapEditor
                 "Total rooms: " + Manager.Project.GmsResourceRoomList.Count.ToString() + Environment.NewLine +
                 "Total instnaces in rooms: " + total.ToString() + Environment.NewLine +
                 "Total objects: " + totalObjects.ToString();
+
+
+            Manager.Project.RoomLayers = new ObservableCollection<MapLayers>();
+
+            {
+                MapLayers layer = new MapLayers() { LayerName = "_DEFAULT", LayerDepth = 0 };
+                Manager.Project.RoomLayers.Add(layer);
+            }
+
+            foreach (GmsRoomInstance inst in Manager.Project.Room.instances)
+            {
+                if (Manager.Project.RoomLayers.Where(n => n.LayerName == inst.instance_of.name).Count() == 0)
+                {
+                    MapLayers layer = new MapLayers() { LayerName = inst.instance_of.name, LayerDepth = inst.instance_of.depth };
+                    Manager.Project.RoomLayers.Add(layer);
+                }
+            }
+
+            foreach (GmsObject obj in Manager.Project.GmsResourceObjectList)
+            {
+                string _name = "DEPTH " + obj.depth.ToString();
+                if (Manager.Project.RoomLayers.Where(n => n.LayerName == _name).Count() == 0)
+                {
+                    MapLayers layer = new MapLayers() { LayerName = _name, LayerDepth = obj.depth };
+                    Manager.Project.RoomLayers.Add(layer);
+                }
+            }
+
+            Manager.Project.regenerateLayerList();
         }
 
         private void tbSelectMap_Click(object sender, EventArgs e)

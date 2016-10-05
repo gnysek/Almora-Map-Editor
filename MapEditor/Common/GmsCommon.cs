@@ -99,6 +99,7 @@ namespace MapEditor.Common
     public class GmsObject : GmsResource
     {
         public GmsSprite sprite_index;
+        public int depth = 0;
 
         public GmsObject(string new_name)
             : base(new_name)
@@ -109,12 +110,18 @@ namespace MapEditor.Common
             XmlNode node = XMLfile.SelectSingleNode("object/spriteName");
 
             sprite_index = Manager.Project.GmsResourceSpriteList[0];
-
             string spriteName = "";
+
             if (node != null)
             {
                 spriteName = node.InnerText;
                 sprite_index = Manager.Project.GmsResourceSpriteList.Find(item => item.name == spriteName);
+            }
+
+            node = XMLfile.SelectSingleNode("object/depth");
+            if (node != null)
+            {
+                depth = int.Parse(node.InnerText);
             }
             
         }
