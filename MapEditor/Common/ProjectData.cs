@@ -998,8 +998,7 @@ namespace MapEditor.Common
         {
             if (Room == null) return;
 
-            //Room.Layers.Sort(MapLayers.SortByLayerDepth);
-            RoomLayers = new ObservableCollection<MapLayers>(RoomLayers.OrderByDescending(x => x.LayerDepth));
+            //RoomLayers = new ObservableCollection<MapLayers>(RoomLayers.OrderByDescending(x => x.LayerDepth));
 
             ToolStripComboBox tb = Manager.MainWindow.tbLayerDropDown;
             ListBoxEx lb = Manager.MainWindow.lbLayers;
