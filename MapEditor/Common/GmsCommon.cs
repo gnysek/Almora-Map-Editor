@@ -153,6 +153,11 @@ namespace MapEditor.Common
 
         public GmsRoom(string name) : base(name) { }
 
+        public void reorderInstances()
+        {
+            instances = instances.OrderBy(o => -o.instance_of.depth).ToList();
+        }
+
         //todo: remove
         public ObservableCollection<MapLayers> Layers
         {

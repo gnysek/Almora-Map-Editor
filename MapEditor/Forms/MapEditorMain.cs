@@ -432,6 +432,8 @@ namespace MapEditor
             roomInfoLabelHeight.Text = Manager.Project.Room.height.ToString() + "px";
             roomInfoLabelInstancesNumber.Text = Manager.Project.Room.instances.Count.ToString();
 
+            Manager.Project.Room.reorderInstances();
+
             int total = Manager.Project.GmsResourceRoomList.Sum(r => r.instances.Count);
 
             int totalObjects = Manager.Project.GmsResourceObjectList.Count;
