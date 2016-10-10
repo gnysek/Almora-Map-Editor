@@ -217,7 +217,7 @@ namespace MapEditor.Common
 
         public int Width
         {
-            get { return (parent.instance_of.sprite_index == null) ? 0 : GraphicsManager.Sprites[parent.instance_of.sprite_index.name].Width; }
+            get { return (parent.instance_of.sprite_index == null) ? 0 : (int)(GraphicsManager.Sprites[parent.instance_of.sprite_index.name].Width * parent.scaleX); }
         }
 
         public int WidthZoomed
@@ -227,7 +227,7 @@ namespace MapEditor.Common
 
         public int Height
         {
-            get { return (parent.instance_of.sprite_index == null) ? 0 : GraphicsManager.Sprites[parent.instance_of.sprite_index.name].Height; }
+            get { return (parent.instance_of.sprite_index == null) ? 0 : (int)(GraphicsManager.Sprites[parent.instance_of.sprite_index.name].Height * parent.scaleY); }
         }
 
         public int HeightZoomed
@@ -237,12 +237,12 @@ namespace MapEditor.Common
 
         public int XStart
         {
-            get { return parent.x - parent.instance_of.sprite_index.origin_x; }
+            get { return parent.x - (int)(parent.instance_of.sprite_index.origin_x * parent.scaleX); }
         }
 
         public int YStart
         {
-            get { return parent.y - parent.instance_of.sprite_index.origin_y; }
+            get { return parent.y - (int)(parent.instance_of.sprite_index.origin_y * parent.scaleY); }
         }
 
         public int XStartZoomed

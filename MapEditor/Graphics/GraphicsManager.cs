@@ -411,8 +411,8 @@ namespace MapEditor.Graphics
 		public static void DrawRectangleRotated(Rectangle rectangle, float angle, Color color, bool outline)
 		{
 			// Calculate positions.
-			float x0 = rectangle.X - _offsetX;
-			float y0 = rectangle.Y - _offsetY;
+			float x0 = rectangle.X - _offsetX / RPanel.Zoom;
+			float y0 = rectangle.Y - _offsetY / RPanel.Zoom;
 			float x1 = (rectangle.Width + x0) - 1;  // Inclusive offset.
 			float y1 = (rectangle.Height + y0) - 1; // Inclusive offset.
 
@@ -517,12 +517,36 @@ namespace MapEditor.Graphics
 			_quads.Add(new Quad(texture, new PointF(x, y), new PointF(1, 1), angle, color));
 		}
 
-		/// <summary>
-		/// Draws a part of an image resource with the desired, scale, rotation, and blend colors.
+        /// <summary>
+		/// Draws a sprite.
 		/// </summary>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		public static void DrawTile(ResTexture texture, int x, int y, float scaleX, float scaleY, float rotation, Color color)
+		/// <param name="id">The texture resource id.</param>
+		/// <param name="x">The horizontal coordinate.</param>
+		/// <param name="y">The vertical coordinate.</param>
+		/// <param name="color">The blend color.</param>
+		public static void DrawSprite(string id, int x, int y, float scaleX, float scaleY, float angle, Color color)
+        {
+            // If the sprite does not exist, return.
+            if (_sprites.ContainsKey(id) == false)
+                return;
+
+            // Get the resource.
+            ResTexture texture = _sprites[id];
+
+            // If the texture is empty return.
+            if (texture == null)
+                return;
+
+            // Paint a textured quad.
+            _quads.Add(new Quad(texture, new PointF(x, y), new PointF(scaleX, scaleY), angle, color));
+        }
+
+        /// <summary>
+        /// Draws a part of an image resource with the desired, scale, rotation, and blend colors.
+        /// </summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        public static void DrawTile(ResTexture texture, int x, int y, float scaleX, float scaleY, float rotation, Color color)
 		{
 			// Paint a textured quad.
 			_quads.Add(new Quad(texture, new PointF(x, y), new PointF(scaleX, scaleY), 0, color));
@@ -558,16 +582,9 @@ namespace MapEditor.Graphics
 				}
 
 				OpenGL.glPushMatrix();
+         
+                OpenGL.glScalef(1.0f / RPanel.Zoom, 1.0f / RPanel.Zoom, 1.0f);
 
-				//if (quad.Angle != 0 || RPanel.Zoom != 1)
-				//{
-					if (RPanel.Zoom != 1)
-					{
-						OpenGL.glScaled(1.0 / RPanel.Zoom, 1.0 / RPanel.Zoom, 1.0);
-					}
-
-					if (quad.Angle != 0)
-					{
 						float w, h;
 						w = quad.Width / 2;
 						h = quad.Height / 2;
@@ -575,20 +592,17 @@ namespace MapEditor.Graphics
 						xx = -RPanel.Offset.X + quad.Vertices[0].X + (w);
 						yy = -RPanel.Offset.Y + quad.Vertices[0].Y + (h);
 
-						OpenGL.glTranslatef(xx, yy, 0);
-						OpenGL.glRotatef(-quad.Angle, 0, 0, 1);
-						OpenGL.glTranslatef(-xx, -yy, 0);
-					}
-				//}
+                        OpenGL.glTranslatef(xx, yy, 0);
+                        //OpenGL.glScalef(quad.scale.X, quad.scale.Y, 1.0f);
+                        OpenGL.glRotatef(-quad.Angle, 0, 0, 1);
+                OpenGL.glScalef(quad.scale.X, quad.scale.Y, 1.0f);
+                OpenGL.glTranslatef(-xx, -yy, 0);
 
-				
+                
 
-				OpenGL.glBegin(GLPrimative.Quads);
+                OpenGL.glBegin(GLPrimative.Quads);
 
 				OpenGL.glColor4(quad.Color);
-
-				//OpenGL.glScalef(1.0f / RPanel.Zoom, 1.0f / RPanel.Zoom, 1.0f);
-
 				OpenGL.glTexCoord2f(quad.TextureCoordinates[0].X, quad.TextureCoordinates[0].Y);
 				OpenGL.glVertex2f(quad.Vertices[0].X - _offsetX, quad.Vertices[0].Y - _offsetY);
 				OpenGL.glTexCoord2f(quad.TextureCoordinates[1].X, quad.TextureCoordinates[1].Y);
@@ -598,7 +612,7 @@ namespace MapEditor.Graphics
 				OpenGL.glTexCoord2f(quad.TextureCoordinates[3].X, quad.TextureCoordinates[3].Y);
 				OpenGL.glVertex2f(quad.Vertices[3].X - _offsetX, quad.Vertices[3].Y - _offsetY);
 
-				OpenGL.glEnd();
+                OpenGL.glEnd();
 
 				OpenGL.glPopMatrix();
 			}

@@ -306,7 +306,11 @@ namespace MapEditor.Components
 
                         //try
                         //{
-                        GraphicsManager.DrawSprite(instance.instance_of.sprite_index.name, instance.editor_data.XStart, instance.editor_data.YStart, instance.rotation, color); //instance.linkedObj.sprite_index.name
+                        GraphicsManager.DrawSprite(
+                            instance.instance_of.sprite_index.name,
+                            instance.x - instance.instance_of.sprite_index.origin_x,
+                            instance.y - instance.instance_of.sprite_index.origin_y,
+                            instance.scaleX, instance.scaleY, instance.rotation, color); //instance.linkedObj.sprite_index.name
                         //}
                         //catch (Exception e)
                         //{

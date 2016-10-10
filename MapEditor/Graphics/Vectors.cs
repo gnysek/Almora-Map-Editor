@@ -83,6 +83,8 @@ namespace MapEditor.Graphics
 		private int _spriteHeight = 0;
 		private Color _color = Color.White;                    // The blending color.
 
+        public PointF scale = new PointF(1.0f, 1.0f);
+
 		#endregion
 
 		#region Properties
@@ -158,11 +160,17 @@ namespace MapEditor.Graphics
 			_vertices[2] = new PointF(texture.TextureSize + _vertices[0].X, texture.TextureSize + _vertices[0].Y);
 			_vertices[3] = new PointF(position.X, texture.TextureSize + _vertices[0].Y);
 
-			// Set texture coordinates.
-			_textureCoordinates[0] = new PointF(0.0f, 0.0f);
-			_textureCoordinates[1] = new PointF(scale.X, 0.0f);
-			_textureCoordinates[2] = new PointF(scale.X, scale.Y);
-			_textureCoordinates[3] = new PointF(0.0f, scale.Y);
+            // Set texture coordinates.
+            //_textureCoordinates[0] = new PointF(0.0f, 0.0f);
+            //_textureCoordinates[1] = new PointF(scale.X, 0.0f);
+            //_textureCoordinates[2] = new PointF(scale.X, scale.Y);
+            //_textureCoordinates[3] = new PointF(0.0f, scale.Y);
+            _textureCoordinates[0] = new PointF(0.0f, 0.0f);
+            _textureCoordinates[1] = new PointF(1.0f, 0.0f);
+            _textureCoordinates[2] = new PointF(1.0f, 1.0f);
+            _textureCoordinates[3] = new PointF(0.0f, 1.0f);
+
+            this.scale = scale;
 		}
 
 		#endregion
